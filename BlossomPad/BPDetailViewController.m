@@ -3,13 +3,18 @@
 //  BlossomPad
 //
 //  Created by 桜井雄介 on 2013/05/04.
-//  Copyright (c) 2013年 桜井雄介. All rights reserved.
+//  Copyright (c) 2013年 Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
 #import "BPDetailViewController.h"
+#import "BPKeyboardViewController.h"
 
 @interface BPDetailViewController ()
+
+@property () BPKeyboardViewController *keyboardViewController;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 - (void)configureView;
 @end
 
@@ -45,6 +50,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
+    
+    BPKeyboardViewController *kvc = [[BPKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController" bundle:[NSBundle mainBundle]];
+    kvc.activeClient = self.textView;
+    self.textView.inputView = kvc.view;
+    _keyboardViewController = kvc;
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0F50DE8E5408B9D2CB69A /* libPods.a */; };
 		A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15F81735307D00ECE693 /* UIKit.framework */; };
 		A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FA1735307D00ECE693 /* Foundation.framework */; };
 		A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FC1735307D00ECE693 /* CoreGraphics.framework */; };
@@ -19,9 +20,20 @@
 		A63F16121735307D00ECE693 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A63F16101735307D00ECE693 /* MainStoryboard.storyboard */; };
 		A63F16151735307D00ECE693 /* BPMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16141735307D00ECE693 /* BPMasterViewController.m */; };
 		A63F16181735307D00ECE693 /* BPDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16171735307D00ECE693 /* BPDetailViewController.m */; };
+		A63F161F1735309C00ECE693 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F161E1735309C00ECE693 /* CoreData.framework */; };
+		A63F1622173530C500ECE693 /* BPKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F1621173530C500ECE693 /* BPKeyboardViewController.m */; };
+		A63F16251735385B00ECE693 /* BPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16241735385B00ECE693 /* BPKey.m */; };
+		A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */; };
+		A63F162D173539DE00ECE693 /* Abstract.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F162C173539DE00ECE693 /* Abstract.m */; };
+		A63F1630173539DE00ECE693 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F162F173539DE00ECE693 /* Entry.m */; };
+		A63F163B17354DD200ECE693 /* BPPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F163A17354DD200ECE693 /* BPPieView.m */; };
+		A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */; };
+		A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F163E173565CE00ECE693 /* keybg@2x.png */; };
+		A63F1641173565CE00ECE693 /* keyboard.json in Resources */ = {isa = PBXBuildFile; fileRef = A63F163F173565CE00ECE693 /* keyboard.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		54552EB0DC5440F389C0D877 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A63F15F51735307D00ECE693 /* BlossomPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlossomPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63F15F81735307D00ECE693 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A63F15FA1735307D00ECE693 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -40,6 +52,23 @@
 		A63F16141735307D00ECE693 /* BPMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPMasterViewController.m; sourceTree = "<group>"; };
 		A63F16161735307D00ECE693 /* BPDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPDetailViewController.h; sourceTree = "<group>"; };
 		A63F16171735307D00ECE693 /* BPDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPDetailViewController.m; sourceTree = "<group>"; };
+		A63F161E1735309C00ECE693 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A63F1620173530C500ECE693 /* BPKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPKeyboardViewController.h; sourceTree = "<group>"; };
+		A63F1621173530C500ECE693 /* BPKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPKeyboardViewController.m; sourceTree = "<group>"; };
+		A63F16231735385B00ECE693 /* BPKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPKey.h; sourceTree = "<group>"; };
+		A63F16241735385B00ECE693 /* BPKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPKey.m; sourceTree = "<group>"; };
+		A63F1628173538E400ECE693 /* BPModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BPModel.xcdatamodel; sourceTree = "<group>"; };
+		A63F162B173539DE00ECE693 /* Abstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Abstract.h; path = BlossomPad/Abstract.h; sourceTree = "<group>"; };
+		A63F162C173539DE00ECE693 /* Abstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Abstract.m; path = BlossomPad/Abstract.m; sourceTree = "<group>"; };
+		A63F162E173539DE00ECE693 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
+		A63F162F173539DE00ECE693 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
+		A63F163117354B6F00ECE693 /* BLKeyCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLKeyCode.h; sourceTree = "<group>"; };
+		A63F163917354DD200ECE693 /* BPPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPPieView.h; sourceTree = "<group>"; };
+		A63F163A17354DD200ECE693 /* BPPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPPieView.m; sourceTree = "<group>"; };
+		A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPKeyboardViewController.xib; sourceTree = "<group>"; };
+		A63F163E173565CE00ECE693 /* keybg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keybg@2x.png"; path = "BlossomPad/keybg@2x.png"; sourceTree = "<group>"; };
+		A63F163F173565CE00ECE693 /* keyboard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = keyboard.json; path = BlossomPad/keyboard.json; sourceTree = "<group>"; };
+		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,9 +76,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A63F161F1735309C00ECE693 /* CoreData.framework in Frameworks */,
 				A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */,
 				A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */,
 				A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */,
+				6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,9 +90,11 @@
 		A63F15EC1735307D00ECE693 = {
 			isa = PBXGroup;
 			children = (
+				A63F1642173565D200ECE693 /* Resources */,
 				A63F15FE1735307D00ECE693 /* BlossomPad */,
 				A63F15F71735307D00ECE693 /* Frameworks */,
 				A63F15F61735307D00ECE693 /* Products */,
+				54552EB0DC5440F389C0D877 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,9 +109,11 @@
 		A63F15F71735307D00ECE693 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A63F161E1735309C00ECE693 /* CoreData.framework */,
 				A63F15F81735307D00ECE693 /* UIKit.framework */,
 				A63F15FA1735307D00ECE693 /* Foundation.framework */,
 				A63F15FC1735307D00ECE693 /* CoreGraphics.framework */,
+				B7E0F50DE8E5408B9D2CB69A /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -86,13 +121,15 @@
 		A63F15FE1735307D00ECE693 /* BlossomPad */ = {
 			isa = PBXGroup;
 			children = (
+				A63F16101735307D00ECE693 /* MainStoryboard.storyboard */,
 				A63F16071735307D00ECE693 /* BPAppDelegate.h */,
 				A63F16081735307D00ECE693 /* BPAppDelegate.m */,
-				A63F16101735307D00ECE693 /* MainStoryboard.storyboard */,
 				A63F16131735307D00ECE693 /* BPMasterViewController.h */,
 				A63F16141735307D00ECE693 /* BPMasterViewController.m */,
 				A63F16161735307D00ECE693 /* BPDetailViewController.h */,
 				A63F16171735307D00ECE693 /* BPDetailViewController.m */,
+				A63F162A1735395200ECE693 /* Models */,
+				A63F1626173538C400ECE693 /* Views */,
 				A63F15FF1735307D00ECE693 /* Supporting Files */,
 			);
 			path = BlossomPad;
@@ -105,11 +142,48 @@
 				A63F16011735307D00ECE693 /* InfoPlist.strings */,
 				A63F16041735307D00ECE693 /* main.m */,
 				A63F16061735307D00ECE693 /* BlossomPad-Prefix.pch */,
+				A63F163117354B6F00ECE693 /* BLKeyCode.h */,
 				A63F160A1735307D00ECE693 /* Default.png */,
 				A63F160C1735307D00ECE693 /* Default@2x.png */,
 				A63F160E1735307D00ECE693 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A63F1626173538C400ECE693 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A63F1620173530C500ECE693 /* BPKeyboardViewController.h */,
+				A63F1621173530C500ECE693 /* BPKeyboardViewController.m */,
+				A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */,
+				A63F16231735385B00ECE693 /* BPKey.h */,
+				A63F16241735385B00ECE693 /* BPKey.m */,
+				A63F163917354DD200ECE693 /* BPPieView.h */,
+				A63F163A17354DD200ECE693 /* BPPieView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A63F162A1735395200ECE693 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */,
+				A63F162B173539DE00ECE693 /* Abstract.h */,
+				A63F162C173539DE00ECE693 /* Abstract.m */,
+				A63F162E173539DE00ECE693 /* Entry.h */,
+				A63F162F173539DE00ECE693 /* Entry.m */,
+			);
+			name = Models;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		A63F1642173565D200ECE693 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A63F163E173565CE00ECE693 /* keybg@2x.png */,
+				A63F163F173565CE00ECE693 /* keyboard.json */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,6 +196,7 @@
 				A63F15F11735307D00ECE693 /* Sources */,
 				A63F15F21735307D00ECE693 /* Frameworks */,
 				A63F15F31735307D00ECE693 /* Resources */,
+				7F846389B05646CDBDF55541 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -140,7 +215,7 @@
 			attributes = {
 				CLASSPREFIX = BP;
 				LastUpgradeCheck = 0460;
-				ORGANIZATIONNAME = "桜井雄介";
+				ORGANIZATIONNAME = "Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory";
 			};
 			buildConfigurationList = A63F15F01735307D00ECE693 /* Build configuration list for PBXProject "BlossomPad" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -169,10 +244,30 @@
 				A63F160D1735307D00ECE693 /* Default@2x.png in Resources */,
 				A63F160F1735307D00ECE693 /* Default-568h@2x.png in Resources */,
 				A63F16121735307D00ECE693 /* MainStoryboard.storyboard in Resources */,
+				A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */,
+				A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */,
+				A63F1641173565CE00ECE693 /* keyboard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7F846389B05646CDBDF55541 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A63F15F11735307D00ECE693 /* Sources */ = {
@@ -183,6 +278,12 @@
 				A63F16091735307D00ECE693 /* BPAppDelegate.m in Sources */,
 				A63F16151735307D00ECE693 /* BPMasterViewController.m in Sources */,
 				A63F16181735307D00ECE693 /* BPDetailViewController.m in Sources */,
+				A63F1622173530C500ECE693 /* BPKeyboardViewController.m in Sources */,
+				A63F16251735385B00ECE693 /* BPKey.m in Sources */,
+				A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */,
+				A63F162D173539DE00ECE693 /* Abstract.m in Sources */,
+				A63F1630173539DE00ECE693 /* Entry.m in Sources */,
+				A63F163B17354DD200ECE693 /* BPPieView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +369,7 @@
 		};
 		A63F161C1735307D00ECE693 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54552EB0DC5440F389C0D877 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
@@ -279,6 +381,7 @@
 		};
 		A63F161D1735307D00ECE693 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54552EB0DC5440F389C0D877 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
@@ -307,8 +410,22 @@
 				A63F161D1735307D00ECE693 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A63F1628173538E400ECE693 /* BPModel.xcdatamodel */,
+			);
+			currentVersion = A63F1628173538E400ECE693 /* BPModel.xcdatamodel */;
+			path = BPModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A63F15ED1735307D00ECE693 /* Project object */;
 }
