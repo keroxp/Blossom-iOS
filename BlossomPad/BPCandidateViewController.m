@@ -3,7 +3,7 @@
 //  BlossomPad
 //
 //  Created by 桜井雄介 on 2013/05/05.
-//  Copyright (c) 2013年 Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
+//  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
 #import "BPCandidateViewController.h"
@@ -13,9 +13,17 @@
 {
     //
     AFHTTPClient *_httpClient;
+    //
     NSMutableArray *_candidates;
+    //
+    NSMutableDictionary *_candidatesStack;
+    // Socket Clien
+    SocketIO *_socketIO;
 }
 
+- (void)setCandidates:(NSArray*)candidates;
+- (void)appendCandidates:(NSArray*)candidates;
+- (void)removeCandidates;
 
 @property (strong, nonatomic) IBOutlet UIView *openedView;
 @property (weak, nonatomic) IBOutlet UICollectionView *verticalCandidateView;
@@ -29,12 +37,19 @@
 
 @implementation BPCandidateViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil delegate:(id<BPCandidateViewControllerDelegate>)delegate
+- (id)initWithDelegate:(id<BPCandidateViewControllerDelegate>)delegate
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"BPCandidateViewController" bundle:[NSBundle mainBundle]];
     if (self) {
         // Custom initialization
         _delegate = delegate;
+        // HTTPクライアントを作成
+        _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://192.168.11.23:2342/"]];
+        // ソケットクライアントを作成
+        _socketIO = [[SocketIO alloc] initWithDelegate:self];
+        //　候補バッファを作成
+        _candidates = [NSMutableArray array];
+        _candidatesStack = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -42,9 +57,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://192.168.11.23:2342/"]];
-    _candidates = [NSMutableArray array];
+
     [self.horizontalCandidateView registerClass:[BPCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.verticalCandidateView registerClass:[BPCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.horizontalCandidateView reloadData];
@@ -60,6 +73,9 @@
             
         }];
     } forControlEvents:UIControlEventTouchUpInside];
+    
+    // ソケットを開く
+    [_socketIO connectToHost:@"localhost" onPort:2342];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,6 +84,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Candidates
+
+- (void)setCandidates:(NSArray *)candidates
+{
+    if (!candidates) {
+        [_candidates removeAllObjects];
+    }else{
+        [_candidates setArray:candidates];
+    }
+    [self.horizontalCandidateView reloadData];
+}
+
+- (void)appendCandidates:(NSArray *)candidates
+{
+    [self setCandidates:[_candidates arrayByAddingObjectsFromArray:candidates]];
+}
+
+- (void)removeCandidates
+{
+    [self setCandidates:nil];
+}
 
 #pragma mark - Collection
 
@@ -101,14 +138,30 @@
     if (indexPath.row <= _candidates.count - 1) {
         NSString *c = [_candidates objectAtIndex:indexPath.row];
         [_delegate candidateController:self didSelectCandidate:c];
-        [_candidates removeAllObjects];
-        [collectionView reloadData];
+        [self removeCandidates];
     }
 }
 
-- (void)generaetCandidateWithText:(NSString *)text
+- (void)setHiraBuffer:(NSString *)hiraBuffer
 {
-    [_httpClient getPath:@"" parameters:@{@"mode" : @"0", @"hira" : text} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if (![_hiraBuffer isEqualToString:hiraBuffer]) {
+        if (_hiraBuffer.length > hiraBuffer.length) {
+            // 後ろへの削除でかつバッファされた予測変換候補があればそれを出す
+            NSArray *cands = [_candidatesStack objectForKey:hiraBuffer];
+            if (cands) {
+                [self setCandidates:cands];
+                return;
+            }
+        }
+        // なければソケットで予測変換を取得する
+        [_socketIO sendEvent:@"pushed" withData:hiraBuffer];
+        _hiraBuffer = hiraBuffer;
+    }
+}
+
+- (void)performConversion
+{
+    [_httpClient getPath:@"" parameters:@{@"mode" : @"0", @"hira" : self.hiraBuffer} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *resstr = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSError *e = nil;
         NSArray *cands = [resstr objectFromJSONStringWithParseOptions:0 error:&e];
@@ -116,11 +169,29 @@
             TFLog(@"%@",e);
             abort();
         }
-        [_candidates setArray:cands];
-        [self.horizontalCandidateView reloadData];
+        [self setCandidates:cands];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         TFLog(@"%@",error);
     }];
 }
 
+#pragma mark - WebSocket
+
+- (void)socketIO:(SocketIO *)socket onError:(NSError *)error
+{
+    TFLog(@"socket error : %@",error);
+}
+
+- (void)socketIODidConnect:(SocketIO *)socket
+{
+    TFLog(@"socket io connected");
+}
+
+- (void)socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet
+{
+    if ([packet.name isEqualToString:@"send candidates"]) {
+        TFLog(@"event name : %@, data: %@",packet.name,packet.dataAsJSON);
+        [self setCandidates:[packet.args objectAtIndex:0]];
+    }
+}
 @end

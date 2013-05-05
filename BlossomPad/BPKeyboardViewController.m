@@ -3,7 +3,7 @@
 //  BlossomPad
 //
 //  Created by 桜井雄介 on 2013/05/04.
-//  Copyright (c) 2013年 Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory All rights reserved.
+//  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
 #import "BPKeyboardViewController.h"
@@ -64,7 +64,7 @@ typedef enum{
     CGPoint _endPoint;
     // keys
     NSMutableArray *_keys;
-    //
+    // リピートキーのタイマー
     NSTimer *_repeatTimer;
 }
 
@@ -91,7 +91,8 @@ typedef enum{
         _originalBuffer = [NSMutableString string];
         _romaBuffer = [NSMutableString string];
         _inputMode = BPInputModeAlphabet;
-
+        
+        // キーボードを作成
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
@@ -153,18 +154,16 @@ typedef enum{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardSizeDidChange:)
-                                                 name:UIKeyboardDidChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deviceDidRotate:)
                                                  name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];    
-    [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
-    
-
+                                               object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -215,13 +214,6 @@ typedef enum{
 {
     UIDeviceOrientation orientation = [notificatoin.object orientation];
     [self layoutKeysForOrientation:orientation];
-}
-- (void)keyboardSizeDidChange:(NSNotification*)notification
-{
-    CGRect begin = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGRect end = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    TFLog(@"begin : %@",NSStringFromCGRect(begin));
-    TFLog(@"end : %@",NSStringFromCGRect(end));
 }
 
 #pragma mark - Key Handler
@@ -275,10 +267,15 @@ typedef enum{
                 // 改行
                 [self.activeClient insertText:@"\n"];
             }
-        }else if ([s isEqualToString:@"space"]){            
-            [self.activeClient unmarkText];
-            [self setInputMode:BPInputModeAlphabet];
-            [self.activeClient insertText:@" "];
+        }else if ([s isEqualToString:@"space"]){
+            if (self.inputMode == BPInputModeRomaKana) {
+                // 変換
+                [self.candidateViewController performConversion];
+            }else{
+                [self.activeClient unmarkText];
+                [self setInputMode:BPInputModeAlphabet];
+                [self.activeClient insertText:@" "];                
+            }
         }else if ([s isEqualToString:@"delete"]){ // デリート
             if (_originalBuffer.length > 0) {
                 // バッファがあればバッファから文字を削除
@@ -342,10 +339,7 @@ typedef enum{
     } repeats:YES];
 }
 
-- (void)searchCandidatesForPattern:(NSString*)pattern
-{
-    
-}
+#pragma mark - 
 
 - (void)appendOriginalBuffer:(NSString*)character
 {
@@ -374,7 +368,7 @@ typedef enum{
             
             // ローマ字バッファに格納
             if ([ms isLetter]) {
-                NSLog(@"ms:ｙｔｋ%@",ms);
+                TFLog(@"ms:ｙｔｋ%@",ms);
                 // 半角に戻す
                 [_romaBuffer appendString:ms];
             }else{
@@ -389,7 +383,8 @@ typedef enum{
                 [_originalBuffer appendString:converted];
                 [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
                 [_romaBuffer setString:@""];
-                NSLog(@"rome converted");
+                TFLog(@"rome converted");
+                [self.candidateViewController setHiraBuffer:_originalBuffer];
                 return;
             }
             
@@ -405,7 +400,7 @@ typedef enum{
             // はさみうちの処理
             if (_originalBuffer.length > 2) {
                 NSString *head = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 3, 1)];
-                NSLog(@"head is %@, body is %@, tail is %@ ",head,before,add);
+                TFLog(@"head is %@, body is %@, tail is %@ ",head,before,add);
                 if ([head isKana] && [before isLetter] && [add isKana]) {
                     if ([before isEqualToString:@"n"]) {
                         [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 1) withString:@"ん"];
@@ -416,8 +411,8 @@ typedef enum{
             }
             // 文字をセット
             [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-            // 変換
-            [self.candidateViewController generaetCandidateWithText:_originalBuffer];
+            // 候補の作成
+            [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
         }
     }
 }
@@ -457,6 +452,7 @@ typedef enum{
     [self.activeClient insertText:candidate];
     [self setInputMode:BPInputModeAlphabet];
 }
+
 
 #pragma mark - Utility
 

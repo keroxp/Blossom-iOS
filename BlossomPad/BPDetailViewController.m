@@ -3,7 +3,7 @@
 //  BlossomPad
 //
 //  Created by 桜井雄介 on 2013/05/04.
-//  Copyright (c) 2013年 Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory All rights reserved.
+//  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
 #import "BPDetailViewController.h"
@@ -17,6 +17,8 @@
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
+
 
 - (void)configureView;
 @end
@@ -56,6 +58,7 @@
     
     BPKeyboardViewController *kvc = [[BPKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController"
                                                                                bundle:[NSBundle mainBundle]];
+    
     kvc.activeClient = self.textView;
     CGRect f = kvc.view.frame;
     f.size.height = 55.0f;
@@ -63,10 +66,33 @@
     self.textView.inputView = kvc.view;
     self.keyboardViewController = kvc;
     
-    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithNibName:@"BPCandidateViewController" bundle:nil delegate:kvc];
+    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithDelegate:kvc];
     self.textView.inputAccessoryView = cv.view;
     self.candidateViewController = cv;
     [self.keyboardViewController setCandidateViewController:cv];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    CGRect keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    self.bottomConstraint.constant = -keyboardFrame.size.height;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    NSTimeInterval duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    self.bottomConstraint.constant = 0;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)didReceiveMemoryWarning

@@ -16,14 +16,20 @@
     #import <BlocksKit.h>
     #import <JSONKit.h>
     #import <BLKeyCode.h>
+    #import <SRWebSocket.h>
+    #import <SocketIO.h>
+    #import <SocketIOPacket.h>
     #import <TestFlight.h>
     #import "NSString+isKana.h"
 #endif
 
 #ifdef DEBUG
+#define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define TIC() struct timeval ts; gettimeofday(&ts, NULL)
 #define TOC(s) struct timeval te; gettimeofday(&te, NULL); TFLog(@"%@: %f sec", s, te.tv_sec + te.tv_usec * 1e-6 - (ts.tv_sec + ts.tv_usec * 1e-6))
 #else
 #define TIC()
 #define TOC(s)
 #endif
+
+

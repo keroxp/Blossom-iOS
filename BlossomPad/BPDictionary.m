@@ -3,7 +3,7 @@
 //  BlossomPad
 //
 //  Created by 桜井雄介 on 2013/05/05.
-//  Copyright (c) 2013年 Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
+//  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
 #import "BPDictionary.h"
@@ -36,11 +36,26 @@ static NSDictionary *smalls;
 
 + (NSDictionary *)sharedRomaKana
 {
+    if (!romakana) {
+        NSString *path = nil;
+        NSError *e = nil;
+        // ローマ字変換テーブル
+        path = [[NSBundle mainBundle] pathForResource:@"romakana" ofType:@"json"];
+        NSString *romakanastr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&e];
+        romakana = [romakanastr objectFromJSONStringWithParseOptions:0 error:&e];
+    }
     return romakana;
 }
 
 + (NSDictionary *)sharedSmalls
 {
+    if (!smalls) {
+        // 小文字変換テーブル
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"smalls" ofType:@"json"];
+        NSError *e = nil;
+        NSString *smallsstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&e];
+        smalls = [smallsstr objectFromJSONStringWithParseOptions:9 error:&e];
+    }
     return smalls;
 }
 
@@ -55,14 +70,6 @@ static NSDictionary *smalls;
         }
         NSString *path = nil;
         NSError *e = nil;
-        // ローマ字変換テーブル
-        path = [[NSBundle mainBundle] pathForResource:@"romakana" ofType:@"json"];
-        NSString *romakanastr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&e];
-        romakana = [romakanastr objectFromJSONStringWithParseOptions:0 error:&e];
-        // 小文字変換テーブル
-        path = [[NSBundle mainBundle] pathForResource:@"smalls" ofType:@"json"];
-        NSString *smallsstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&e];
-        smalls = [smallsstr objectFromJSONStringWithParseOptions:9 error:&e];
         // 変換用辞書
         path = [[NSBundle mainBundle] pathForResource:@"dict" ofType:@"txt"];
         NSString *dictstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&e];
