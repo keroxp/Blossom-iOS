@@ -8,6 +8,7 @@
 
 #import "BPKeyboardViewController.h"
 #import "BPKey.h"
+#import "BPPieView.h"
 
 #define kKeyboardWidth 1024.f
 #define kKeyboardHeight 352.0f
@@ -26,7 +27,31 @@
 
 #define PI 3.1415926535
 
+
+// フリックの方向
+typedef enum{
+    BPDirectionUp = 0,
+    BPDirectionUpRight,
+    BPDirectionDownRight,
+    BPDirectionDownLeft,
+    BPDirectionUpLeft
+}BPDirection;
+
 @interface BPKeyboardViewController ()
+{
+    // 現在のタッチ
+    UITouch *_currentTouch;
+    // 現在のキー
+    BPKey *_currentKey;
+    // 現在のポップアップ
+    UIButton *_currentPopup;
+    // 現在表示されているPieViewの格納庫
+    NSMutableDictionary *_currentPies;
+    // 最初のタッチポイント
+    CGPoint _beginPoint;
+    // 最後のタッチポイント
+    CGPoint _endPoint;
+}
 
 @end
 
@@ -43,8 +68,7 @@
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
-                BPKey *key = [[BPKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];
-                TFLog(@"%@",key.pieces);
+                BPKey *key = [[BPKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];                
                 CGFloat x = (kKeyWidth + kKeyMarginRight)*j + kKeyMarginRight;
                 CGFloat y = (kKeyHeight + kKeyMarginUp)*i + kKeyMarginUp;
                 CGFloat w = kKeyWidth;
@@ -53,6 +77,48 @@
                 // ２段目をずらす
                 if (i == 1) frame = CGRectMake(kRow2MarginLeft+x,y,w,h);
                 key.frame = frame;
+                __block BPKeyboardViewController *__self = self;
+                [key setTouchesBeganBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                    // マルチタッチは検知しない
+                    if (_currentTouch) return;
+                    // リファレンス・アサイン
+                    _currentTouch = [touches anyObject];
+                    _beginPoint = [[touches anyObject] locationInView:__self.view];
+                    
+                    // 擬似ハンドラへ
+                    [self keyDidTouchDown:key_];
+                } touchesMovedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                    for (UITouch *t in touches) {
+                        // 現在のタッチでなければハンドリングしない
+                        if (t == _currentTouch) {
+                            CGPoint cur = [_currentTouch locationInView:__self.view];
+                            BPDirection dir = [self getDirection:cur from:_beginPoint];
+                            BPPieView *pv = [BPPieView sharedView];                            
+                            // 一度全てを非選択に
+                            for (UIButton*b in pv.piePieces) {
+                                b.highlighted = NO;
+                            }
+                            // 指定方向のパイピースをハイライト
+                            [pv setHighlited:YES atIndex:dir];                            
+                            //ポップアップを更新
+                            [_currentPopup setTitle:[pv.pieces objectAtIndex:dir] forState:UIControlStateNormal];
+                        }
+                    }
+                } touchesEndedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                    for (UITouch*t in touches) {
+                        if (t == _currentTouch) {
+                            _endPoint = [t locationInView:__self.view];
+                            // キーの内部でタッチが終わったか？
+                            BOOL inside = CGRectContainsPoint(key_.frame, [t locationInView:__self.view]);
+                            // それによって擬似ハンドラを振り分け
+                            if (inside) {
+                                [self keyDidTouchUpInside:key_];
+                            }else{
+                                [self keyDidTouchUpOutSide:key_];
+                            }
+                        }
+                    }
+                }];
                 [self.view addSubview:key];
             }];
         }];
@@ -83,6 +149,150 @@
     CGRect end = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     TFLog(@"begin : %@",NSStringFromCGRect(begin));
     TFLog(@"end : %@",NSStringFromCGRect(end));
+}
+
+#pragma mark - Key Handler
+
+- (void)keyDidTouchDown:(BPKey *)sender
+{
+    //    NSLog(@"touch down : %@",sender.key);
+    
+    // 凹ませる
+    [sender setHighlighted:YES];
+    BPPieView *pv = [BPPieView sharedView];
+    // そうでないなら新規に構築
+    if ([pv isShowing]) {
+        [BPPieView hide];
+    }
+
+    [BPPieView showInView:self.view atPoint:sender.center centerChar:sender.keystr pieces:sender.pieces];
+    // ポップアップを構築
+    UIButton *pup = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    pup.center = pv.center;
+    CGPoint c = pup.center;
+    pup.frame = CGRectMake(c.x - 25, c.y - 200, 50, 50);
+    
+    // selfではなく、その上のビューに追加
+    [self.view.superview addSubview:pup];
+
+    _currentKey = sender;
+    _currentPopup = pup;
+    
+}
+
+- (void)keyDidTouchUpInside:(BPKey *)sender
+{
+    NSLog(@"touch up inside : %@", sender.keystr);
+    BPPieView *pv = [BPPieView sharedView];
+    [sender setHighlighted:NO];
+    
+    // 通常入力
+//    if (!sender.isMetaKey) {
+//        NSString *s = pv.centerChar;
+//        [self.activeField insertText:s];
+//    }else{
+//        switch (sender.keyCode) {
+//            case enterKey:
+//                [self.activeField insertText:@"\n"];
+//                break;
+//            case spaceKey:
+//                [self.activeField insertText:@" "];
+//                break;
+//            case deleteKey:
+//                [self.activeField deleteBackward];
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+    
+    [self finishHandling:sender];
+}
+
+- (void)keyDidTouchUpOutSide:(BPKey *)sender
+{
+    NSLog(@"touch up outside : %@", sender.keystr);
+    [sender setHighlighted:NO];
+    BPPieView *pv = [BPPieView sharedView];
+    BPDirection dir = [self getDirection:_endPoint from:_beginPoint];
+    
+    if (pv.pieces.count > 0){
+        NSString *s = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
+        [self.activeClient insertText:s];
+    }
+    
+    [self finishHandling:sender];
+}
+
+- (void)finishHandling:(BPKey*)sender
+{
+    BPPieView *pv = [BPPieView sharedView];
+    if (pv) {
+        [pv removeFromSuperview];
+        [_currentPies removeObjectForKey:sender.keystr];
+    }
+    [_currentPopup removeFromSuperview];
+    
+    _currentKey = nil;
+    _currentTouch = nil;
+    _currentPopup = nil;
+}
+
+#pragma mark - Utility
+
+- (NSInteger)indexFromDirection:(BPDirection)direction
+{
+    switch (direction) {
+        case BPDirectionUp:
+            return 0;
+            break;
+        case BPDirectionUpRight:
+            return 1;
+            break;
+        case BPDirectionDownRight:
+            return 2;
+            break;
+        case BPDirectionDownLeft:
+            return 3;
+            break;
+        case BPDirectionUpLeft:
+            return 4;
+        default:
+            break;
+    }
+}
+
+- (BPDirection)getDirection:(CGPoint)current from:(CGPoint)previous
+{
+    CGFloat dx = current.x - previous.x;
+    CGFloat dy = current.y - previous.y;
+    CGFloat angle = -atan2(dy, dx);
+    
+    //    NSLog(@"current %f, %f",current.x,current.y);
+    //    NSLog(@"prev %f, %f",previous.x,previous.y);
+    //    NSLog(@"angle : %f",angle*180/PI);
+    
+    if (angle < 0) angle += PI*2;
+    
+    if((0 <= angle && angle < PI*3/10) || (PI*19/10 <= angle && angle <= PI*2)){
+        // 右上
+        return BPDirectionUpRight;
+    }else if(PI*3/10  <= angle && angle < PI*7/10 ){
+        // 上
+        return BPDirectionUp;
+    }else if(PI*7/10  <= angle && angle < PI*11/10 ){
+        // 左上
+        return BPDirectionUpLeft;
+    }else if(PI*11/10  <= angle && angle < PI*15/10 ){
+        // 左下
+        return BPDirectionDownLeft;
+    }else if(PI*15/10  <= angle && angle < PI*19/10 ){
+        // 右下
+        return BPDirectionDownRight;
+    }else{
+        NSLog(@"invalid angle %f",angle);
+    }
+    return 0;
 }
 
 @end

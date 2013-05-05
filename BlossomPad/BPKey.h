@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class  BPKey;
+typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* event);
+
 @interface BPKey : UIButton
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 /* アイコン（optional） */
 @property (nonatomic) UIImage *icon;
 /*  */
@@ -30,8 +34,15 @@
 @property (readonly) CGFloat keyHeight;
 /*  */
 @property (readonly) NSIndexPath *indexPath;
+@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesBeganBlock;
+@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesMovedBlock;
+@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesEndedBlock;
 
 /* コンストラクタ */
 - (id)initWithJSON:(NSDictionary*)JSON line:(NSUInteger)line index:(NSUInteger)index;
+/* ハンドラをセット */
+- (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
+           touchesMovedBlock:(BPKeyTouchHandlingBlock)moved
+           touchesEndedBlock:(BPKeyTouchHandlingBlock)ended;
 
 @end

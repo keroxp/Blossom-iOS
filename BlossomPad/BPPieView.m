@@ -29,8 +29,14 @@ static BPPieView *shared;
     [s setCenterChar:centerChar pieces:pieces];
     // ここでなんかアニメとかいれる？
     [view addSubview:s];
+    [s setIsShowing:YES];
 }
 
++ (void)hide
+{
+    [[self sharedView] removeFromSuperview];
+    [[self sharedView] setIsShowing:NO];
+}
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -42,13 +48,13 @@ static BPPieView *shared;
         CGRect e = CGRectMake(38, 130, 50, 50);
         CGRect o = CGRectMake(20, 62, 50, 50);
         CGRect frames [5] = {a,i,u,e,o};
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"piebg"]]];
         
         NSMutableArray *ma = [NSMutableArray arrayWithCapacity:5];
-        for (int i = 0; i < _pieces.count ; i++) {
+        for (int i = 0; i < 5 ; i++) {
             UIButton *p = [[UIButton alloc] initWithFrame:frames[i]];
             [p.titleLabel setShadowOffset:CGSizeMake(0, 1)];
             [p setBackgroundImage:[UIImage imageNamed:@"piepiecebg"] forState:UIControlStateHighlighted];
-            [p setTitle:[_pieces objectAtIndex:i] forState:UIControlStateNormal];
             [ma addObject:p];
             [self addSubview:p];
         }

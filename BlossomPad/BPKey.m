@@ -36,7 +36,10 @@
         _indexPath = [NSIndexPath indexPathForRow:index inSection:line];
         // 背景
         [self setBackgroundImage:[UIImage imageNamed:@"keybg"] forState:UIControlStateNormal];
-        [self setTitleColor:[UIColor colorWithRed:(float)1.0f green:(float)164.0f/255.0f blue:(float)164.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor colorWithRed:(float)1.0f
+                                            green:(float)164.0f/255.0f
+                                             blue:(float)164.0f/255.0f
+                                            alpha:1.0f] forState:UIControlStateNormal];
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [self.titleLabel setFont:[UIFont boldSystemFontOfSize:20.0f]];
         // タイトルもしくはアイコンを設定
@@ -55,6 +58,31 @@
 {
     return ([JSON objectForKey:key]) ? [JSON objectForKey:key] : nil;
 }
+
+- (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
+           touchesMovedBlock:(BPKeyTouchHandlingBlock)moved
+           touchesEndedBlock:(BPKeyTouchHandlingBlock)ended
+{
+    _touchesBeganBlock = began;
+    _touchesMovedBlock = moved;
+    _touchesEndedBlock = ended;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.touchesBeganBlock) self.touchesBeganBlock(self,touches,event);
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.touchesMovedBlock) self.touchesMovedBlock(self,touches,event);
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.touchesMovedBlock) self.touchesEndedBlock(self,touches,event);
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

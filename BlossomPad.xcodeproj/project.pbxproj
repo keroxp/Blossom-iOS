@@ -30,6 +30,10 @@
 		A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */; };
 		A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F163E173565CE00ECE693 /* keybg@2x.png */; };
 		A63F1641173565CE00ECE693 /* keyboard.json in Resources */ = {isa = PBXBuildFile; fileRef = A63F163F173565CE00ECE693 /* keyboard.json */; };
+		A63F16441735E55F00ECE693 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = A63F16431735E55F00ECE693 /* dict.txt */; };
+		A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16461735E5DB00ECE693 /* BPDictionary.m */; };
+		A63F164F1735FDBE00ECE693 /* piebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F164D1735FDBE00ECE693 /* piebg@2x.png */; };
+		A63F16501735FDBE00ECE693 /* piepiecebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F164E1735FDBE00ECE693 /* piepiecebg@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +72,11 @@
 		A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPKeyboardViewController.xib; sourceTree = "<group>"; };
 		A63F163E173565CE00ECE693 /* keybg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keybg@2x.png"; path = "BlossomPad/keybg@2x.png"; sourceTree = "<group>"; };
 		A63F163F173565CE00ECE693 /* keyboard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = keyboard.json; path = BlossomPad/keyboard.json; sourceTree = "<group>"; };
+		A63F16431735E55F00ECE693 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dict.txt; sourceTree = "<group>"; };
+		A63F16451735E5DB00ECE693 /* BPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDictionary.h; sourceTree = "<group>"; };
+		A63F16461735E5DB00ECE693 /* BPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDictionary.m; sourceTree = "<group>"; };
+		A63F164D1735FDBE00ECE693 /* piebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "piebg@2x.png"; sourceTree = "<group>"; };
+		A63F164E1735FDBE00ECE693 /* piepiecebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "piepiecebg@2x.png"; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -122,14 +131,10 @@
 			isa = PBXGroup;
 			children = (
 				A63F16101735307D00ECE693 /* MainStoryboard.storyboard */,
-				A63F16071735307D00ECE693 /* BPAppDelegate.h */,
-				A63F16081735307D00ECE693 /* BPAppDelegate.m */,
-				A63F16131735307D00ECE693 /* BPMasterViewController.h */,
-				A63F16141735307D00ECE693 /* BPMasterViewController.m */,
-				A63F16161735307D00ECE693 /* BPDetailViewController.h */,
-				A63F16171735307D00ECE693 /* BPDetailViewController.m */,
+				A63F164C1735FB3600ECE693 /* Singletons */,
 				A63F162A1735395200ECE693 /* Models */,
 				A63F1626173538C400ECE693 /* Views */,
+				A63F164B1735FB2E00ECE693 /* Controllers */,
 				A63F15FF1735307D00ECE693 /* Supporting Files */,
 			);
 			path = BlossomPad;
@@ -181,9 +186,34 @@
 			isa = PBXGroup;
 			children = (
 				A63F163E173565CE00ECE693 /* keybg@2x.png */,
+				A63F164D1735FDBE00ECE693 /* piebg@2x.png */,
+				A63F164E1735FDBE00ECE693 /* piepiecebg@2x.png */,
 				A63F163F173565CE00ECE693 /* keyboard.json */,
+				A63F16431735E55F00ECE693 /* dict.txt */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		A63F164B1735FB2E00ECE693 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A63F16131735307D00ECE693 /* BPMasterViewController.h */,
+				A63F16141735307D00ECE693 /* BPMasterViewController.m */,
+				A63F16161735307D00ECE693 /* BPDetailViewController.h */,
+				A63F16171735307D00ECE693 /* BPDetailViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A63F164C1735FB3600ECE693 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				A63F16071735307D00ECE693 /* BPAppDelegate.h */,
+				A63F16081735307D00ECE693 /* BPAppDelegate.m */,
+				A63F16451735E5DB00ECE693 /* BPDictionary.h */,
+				A63F16461735E5DB00ECE693 /* BPDictionary.m */,
+			);
+			name = Singletons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,6 +277,9 @@
 				A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */,
 				A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */,
 				A63F1641173565CE00ECE693 /* keyboard.json in Resources */,
+				A63F16441735E55F00ECE693 /* dict.txt in Resources */,
+				A63F164F1735FDBE00ECE693 /* piebg@2x.png in Resources */,
+				A63F16501735FDBE00ECE693 /* piepiecebg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +317,7 @@
 				A63F162D173539DE00ECE693 /* Abstract.m in Sources */,
 				A63F1630173539DE00ECE693 /* Entry.m in Sources */,
 				A63F163B17354DD200ECE693 /* BPPieView.m in Sources */,
+				A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

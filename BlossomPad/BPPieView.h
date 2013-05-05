@@ -17,12 +17,16 @@
            atPoint:(CGPoint)point
         centerChar:(NSString*)centerChar
             pieces:(NSArray*)pieces;
+/* 隠す */
++ (void)hide;
 /* 中央の文字 */
 @property (nonatomic, readonly) NSString *centerChar;
 /* ピース文字 */
 @property (nonatomic, readonly) NSArray *pieces;
 /* ピースの実体。UIButotn */
 @property (nonatomic) NSArray *piePieces;
+/*  */
+@property (nonatomic) BOOL isShowing;
 
 /* セッター */
 - (void)setCenterChar:(NSString *)centerChar pieces:(NSArray *)pieces;

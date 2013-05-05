@@ -7,6 +7,7 @@
 //
 
 #import "BPAppDelegate.h"
+#import "BPDictionary.h"
 
 @implementation BPAppDelegate
 
@@ -16,6 +17,14 @@
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
     UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
     splitViewController.delegate = (id)navigationController.topViewController;
+    
+//    for (NSArray *h in [[BPDictionary sharedDictionary] headList]) {
+//        TFLog(@"%i",h.count);
+//    }
+//    [[[BPDictionary sharedDictionary] connectionList] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+//        TFLog(@"%i : %i", [key integerValue], [(NSArray*)obj count]);
+//    }];
+    
     return YES;
 }
 							
