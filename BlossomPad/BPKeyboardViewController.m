@@ -9,6 +9,7 @@
 #import "BPKeyboardViewController.h"
 #import "BPKey.h"
 #import "BPPieView.h"
+#import "BPDictionary.h"
 #import "BPCandidateViewController.h"
 
 #define kKeyboardWidth 1024.f
@@ -16,6 +17,12 @@
 
 #define kKeyRowHeight 76.0f
 #define kKeyRowMargin 10.0f
+
+#define kKeyWidth 82.0f
+#define kKeyHeight 74.0f
+#define kRow2MarginLeft 40.0f
+#define kKeyMarginRight 10.0f
+#define kKeyMarginUp 10.0f
 
 #define kDefaultPieViewWidth 200.0f
 
@@ -33,6 +40,13 @@ typedef enum{
     BPDirectionDownLeft,
     BPDirectionUpLeft
 }BPDirection;
+
+
+typedef enum{
+    BPInputModeAlphabet = 0,
+    BPInputModeRomaKana
+}BPInputMode;
+
 
 @interface BPKeyboardViewController ()
 {
@@ -54,6 +68,10 @@ typedef enum{
     NSTimer *_repeatTimer;
 }
 
+@property (strong, nonatomic) NSMutableString *originalBuffer;
+@property (strong, nonatomic) NSMutableString *romaBuffer;
+@property (assign, nonatomic) BPInputMode inputMode;
+
 @end
 
 @implementation BPKeyboardViewController
@@ -70,6 +88,10 @@ typedef enum{
         NSArray *rows = [jsonstr objectFromJSONStringWithParseOptions:JKParseOptionNone error:&e];
         _rows = @[@[].mutableCopy,@[].mutableCopy,@[].mutableCopy,@[].mutableCopy];
         _keys = @[].mutableCopy;
+        _originalBuffer = [NSMutableString string];
+        _romaBuffer = [NSMutableString string];
+        _inputMode = BPInputModeAlphabet;
+
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
@@ -139,6 +161,8 @@ typedef enum{
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];    
     [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
+    
+
 }
 
 
@@ -151,8 +175,39 @@ typedef enum{
 
 - (void)layoutKeysForOrientation:(UIDeviceOrientation)orientation
 {
-    [self.keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(BPKey*)obj needsLayoutForOrientation:orientation];
+    if (orientation == UIDeviceOrientationUnknown) {
+        orientation = (UIDeviceOrientation)[[UIApplication sharedApplication] statusBarOrientation];
+    }
+    __block CGFloat totalMarginX = 0;
+    __block CGFloat totalMarginY = 0;
+    [self.rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
+        totalMarginY += kKeyMarginUp;
+        [(NSArray*)obj enumerateObjectsUsingBlock:^(id obw2, NSUInteger j, BOOL *stop2) {
+            BPKey *key = (BPKey*)obw2;
+            CGRect f = CGRectZero;
+            totalMarginX += kKeyMarginRight;
+            CGFloat x,y,w,h;
+            x = totalMarginX;
+            y = totalMarginY;
+            w = key.keyWidth;
+            h = key.keyHeight;
+            if (UIDeviceOrientationIsPortrait(orientation)){
+                // たて
+                [key.titleLabel setFont:[UIFont systemFontOfSize:20]];
+                f = CGRectMake(x*3/4, y*3/4, w*3/4, h*3/4);
+                // ２段目をずらす
+                if (i == 1) f = CGRectMake(kRow2MarginLeft+x*3/4,y*3/4,w*3/4,h*3/4);
+            }else{
+                [key.titleLabel setFont:[UIFont systemFontOfSize:25]];
+                f = CGRectMake(x, y, w, h);
+                // ２段目をずらす
+                if (i == 1) f = CGRectMake(kRow2MarginLeft+x,y,w,h);
+            }
+            [key setFrame:f];
+            totalMarginX += key.keyWidth;
+        }];
+        totalMarginY += kKeyHeight;
+        totalMarginX = 0;
     }];
 }
 
@@ -198,6 +253,81 @@ typedef enum{
     _currentKey = sender;
 }
 
+- (void)keyDidTouchUpInside:(BPKey *)sender
+{
+    [sender setHighlighted:NO];
+    NSString *add = [sender.keystr lowercaseString];    
+    // 通常入力
+    if (!sender.isFunctional && !sender.isModifier) {
+        if (self.inputMode == BPInputModeRomaKana) {
+        }
+        [self appendOriginalBuffer:add];
+    }else{
+        // 特殊キー
+        NSString *s = [sender keystr];
+        if ([s isEqualToString:@"enter"]) { // エンター
+            // バッファを空に
+            if ([self.activeClient textInRange:[self.activeClient markedTextRange]]) {
+                // マークを外す
+                [self.activeClient unmarkText];
+                [self setInputMode:BPInputModeAlphabet];
+            }else{
+                // 改行
+                [self.activeClient insertText:@"\n"];
+            }
+        }else if ([s isEqualToString:@"space"]){            
+            [self.activeClient unmarkText];
+            [self setInputMode:BPInputModeAlphabet];
+            [self.activeClient insertText:@" "];
+        }else if ([s isEqualToString:@"delete"]){ // デリート
+            if (_originalBuffer.length > 0) {
+                // バッファがあればバッファから文字を削除
+                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
+                [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+            }else{
+                // なければフィールドから文字を削除
+                [_originalBuffer setString:@""];
+                [self.activeClient deleteBackward];
+            }
+            if (_romaBuffer.length > 0) {
+                [_romaBuffer deleteCharactersInRange:NSMakeRange(_romaBuffer.length - 1, 1)];
+            }else{
+                [_romaBuffer setString:@""];
+            }
+        }else if ([s isEqualToString:@"small"]){ // 小文字
+            if (_originalBuffer.length > 0) {
+                //あいうえおやゆよつわ
+                NSString *tail = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 1, 1)];
+                NSString *convert = [[BPDictionary sharedSmalls] objectForKey:tail];
+//                    NSLog(@"tail : %@, concert : %@",tail,convert);
+                if (convert) {
+                    [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1) withString:convert];
+                    [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+                }
+            }
+        }
+    }    
+    [self finishHandling:sender];
+}
+
+- (void)keyDidTouchUpOutSide:(BPKey *)sender
+{
+    [sender setHighlighted:NO];
+    BPPieView *pv = [BPPieView sharedView];
+    BPDirection dir = [self getDirection:_endPoint from:_beginPoint];
+    
+    // フリック入力
+    if (pv.pieces.count > 0){
+        if (self.inputMode == BPInputModeAlphabet) {
+            [self setInputMode:BPInputModeAlphabet];
+        }
+        NSString *add = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
+        [self appendOriginalBuffer:add];
+    }
+    
+    [self finishHandling:sender];
+}
+
 - (void)repeatKeyAction:(BPKey*)key
 {
     _repeatTimer = [NSTimer scheduledTimerWithTimeInterval:kKeyRepeatWait block:^(NSTimeInterval time) {
@@ -212,39 +342,93 @@ typedef enum{
     } repeats:YES];
 }
 
-- (void)keyDidTouchUpInside:(BPKey *)sender
+- (void)searchCandidatesForPattern:(NSString*)pattern
 {
-    NSLog(@"touch up inside : %@", sender.keystr);
-    BPPieView *pv = [BPPieView sharedView];    
-    // 通常入力
-    if (sender.isFunctional) {
-        NSString *k = sender.keystr;
-        if ([k isEqualToString:@"enter"]) {
-            [self.activeClient insertText:@"\n"];
-        }else if ([k isEqualToString:@"space"]){
-            [self.activeClient insertText:@" "];
-        }else if ([k isEqualToString:@"delete"]){
-            [self.activeClient deleteBackward];
-        }
-    }else{
-        [self.activeClient insertText:pv.centerChar];
-    }
-    [self finishHandling:sender];
+    
 }
 
-- (void)keyDidTouchUpOutSide:(BPKey *)sender
+- (void)appendOriginalBuffer:(NSString*)character
 {
-    NSLog(@"touch up outside : %@", sender.keystr);
-    [sender setHighlighted:NO];
-    BPPieView *pv = [BPPieView sharedView];
-    BPDirection dir = [self getDirection:_endPoint from:_beginPoint];
-    
-    if (pv.pieces.count > 0){
-        NSString *s = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
-        [self.activeClient insertText:s];
+    NSString *add = character;    
+    // コレクト処理
+    if (_originalBuffer.length == 0) {
+        // インプットモードの変更
+        if ([character isKana]) {
+            [self setInputMode:BPInputModeRomaKana];
+            [_originalBuffer setString:add];
+            [self.activeClient setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];
+        }else{
+            [self setInputMode:BPInputModeAlphabet];
+            [self.activeClient insertText:add];
+        }
+    }else if (_originalBuffer.length > 0) {
+        // バッファに格納        
+        if (self.inputMode == BPInputModeAlphabet) { // 英字入力モード
+            [self.activeClient insertText:character];
+        }else if (self.inputMode == BPInputModeRomaKana) {  // ローマ字入力モード            
+            [_originalBuffer appendString:add];
+            
+            NSString *ms = [add mutableCopy];
+            // 半角に戻す
+            CFStringTransform((CFMutableStringRef)ms, NULL, kCFStringTransformFullwidthHalfwidth, false);
+            
+            // ローマ字バッファに格納
+            if ([ms isLetter]) {
+                NSLog(@"ms:ｙｔｋ%@",ms);
+                // 半角に戻す
+                [_romaBuffer appendString:ms];
+            }else{
+                [_romaBuffer setString:@""];
+            }
+            
+            // ローマ字入力
+            if ([[BPDictionary sharedRomaKana] objectForKey:_romaBuffer]){
+                // 変換
+                NSString *converted = [[BPDictionary sharedRomaKana] objectForKey:_romaBuffer];
+                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - _romaBuffer.length, _romaBuffer.length)];
+                [_originalBuffer appendString:converted];
+                [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+                [_romaBuffer setString:@""];
+                NSLog(@"rome converted");
+                return;
+            }
+            
+            NSString *before = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 2, 1)];
+            
+            // 連続文字の処理
+            if ([character isLetter] && [before isEqualToString:character]) {
+                // 「っ」
+                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 2)];
+                [_originalBuffer appendString:@"っ"];
+            }
+            
+            // はさみうちの処理
+            if (_originalBuffer.length > 2) {
+                NSString *head = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 3, 1)];
+                NSLog(@"head is %@, body is %@, tail is %@ ",head,before,add);
+                if ([head isKana] && [before isLetter] && [add isKana]) {
+                    if ([before isEqualToString:@"n"]) {
+                        [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 1) withString:@"ん"];
+                    }else{
+                        [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 1) withString:@"っ"];
+                    }
+                }
+            }
+            // 文字をセット
+            [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+            // 変換
+            [self.candidateViewController generaetCandidateWithText:_originalBuffer];
+        }
     }
-    
-    [self finishHandling:sender];
+}
+
+- (void)setInputMode:(BPInputMode)inputMode
+{
+    if (inputMode != _inputMode) {
+        [_romaBuffer setString:@""];
+        [_originalBuffer setString:@""];
+        _inputMode = inputMode;
+    }
 }
 
 - (void)finishHandling:(BPKey*)sender
@@ -264,6 +448,14 @@ typedef enum{
     _currentKey = nil;
     _currentTouch = nil;
     _currentPopup = nil;
+}
+
+#pragma mark - CDDelegate
+
+- (void)candidateController:(BPCandidateViewController *)controller didSelectCandidate:(NSString *)candidate
+{
+    [self.activeClient insertText:candidate];
+    [self setInputMode:BPInputModeAlphabet];
 }
 
 #pragma mark - Utility

@@ -41,6 +41,12 @@
 		A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB917364455005F28B8 /* candidateseparator@2x.png */; };
 		A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6711CBC17364735005F28B8 /* BPCandidateViewController.m */; };
 		A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */; };
+		A6711CC217367104005F28B8 /* NSString+isKana.m in Sources */ = {isa = PBXBuildFile; fileRef = A6711CC117367104005F28B8 /* NSString+isKana.m */; };
+		A6711CC5173671F3005F28B8 /* romakana.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC3173671F3005F28B8 /* romakana.json */; };
+		A6711CC6173671F3005F28B8 /* smalls.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC4173671F3005F28B8 /* smalls.json */; };
+		A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */; };
+		A6711F8317368654005F28B8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711F8217368654005F28B8 /* Icon-72.png */; };
+		A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711F8417368657005F28B8 /* Icon-72@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +99,13 @@
 		A6711CBB17364735005F28B8 /* BPCandidateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPCandidateViewController.h; sourceTree = "<group>"; };
 		A6711CBC17364735005F28B8 /* BPCandidateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPCandidateViewController.m; sourceTree = "<group>"; };
 		A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPCandidateViewController.xib; sourceTree = "<group>"; };
+		A6711CC017367104005F28B8 /* NSString+isKana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isKana.h"; sourceTree = "<group>"; };
+		A6711CC117367104005F28B8 /* NSString+isKana.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isKana.m"; sourceTree = "<group>"; };
+		A6711CC3173671F3005F28B8 /* romakana.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = romakana.json; path = BlossomPad/romakana.json; sourceTree = "<group>"; };
+		A6711CC4173671F3005F28B8 /* smalls.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = smalls.json; path = BlossomPad/smalls.json; sourceTree = "<group>"; };
+		A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidatebgselected@2x.png"; path = "BlossomPad/candidatebgselected@2x.png"; sourceTree = "<group>"; };
+		A6711F8217368654005F28B8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		A6711F8417368657005F28B8 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -115,6 +128,8 @@
 		A63F15EC1735307D00ECE693 = {
 			isa = PBXGroup;
 			children = (
+				A6711F8417368657005F28B8 /* Icon-72@2x.png */,
+				A6711F8217368654005F28B8 /* Icon-72.png */,
 				A63F1642173565D200ECE693 /* Resources */,
 				A63F15FE1735307D00ECE693 /* BlossomPad */,
 				A63F15F71735307D00ECE693 /* Frameworks */,
@@ -206,6 +221,7 @@
 		A63F1642173565D200ECE693 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */,
 				A6711CB7173643A3005F28B8 /* togglebutton@2x.png */,
 				A6711CB917364455005F28B8 /* candidateseparator@2x.png */,
 				A63F16511736149A00ECE693 /* keyboardbg@2x.png */,
@@ -213,6 +229,8 @@
 				A63F16521736149A00ECE693 /* piebg@2x.png */,
 				A63F16531736149A00ECE693 /* piepiecebg@2x.png */,
 				A63F163E173565CE00ECE693 /* keybg@2x.png */,
+				A6711CC3173671F3005F28B8 /* romakana.json */,
+				A6711CC4173671F3005F28B8 /* smalls.json */,
 				A63F163F173565CE00ECE693 /* keyboard.json */,
 				A63F16431735E55F00ECE693 /* dict.txt */,
 			);
@@ -237,6 +255,8 @@
 				A63F16081735307D00ECE693 /* BPAppDelegate.m */,
 				A63F16451735E5DB00ECE693 /* BPDictionary.h */,
 				A63F16461735E5DB00ECE693 /* BPDictionary.m */,
+				A6711CC017367104005F28B8 /* NSString+isKana.h */,
+				A6711CC117367104005F28B8 /* NSString+isKana.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -310,6 +330,11 @@
 				A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */,
 				A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */,
 				A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */,
+				A6711CC5173671F3005F28B8 /* romakana.json in Resources */,
+				A6711CC6173671F3005F28B8 /* smalls.json in Resources */,
+				A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */,
+				A6711F8317368654005F28B8 /* Icon-72.png in Resources */,
+				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +375,7 @@
 				A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */,
 				A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */,
 				A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */,
+				A6711CC217367104005F28B8 /* NSString+isKana.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +426,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -425,6 +452,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -440,6 +468,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
 				INFOPLIST_FILE = "BlossomPad/BlossomPad-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/BlossomPad/leveldb\"",
+					"\"$(SRCROOT)/leveldb\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -452,6 +485,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
 				INFOPLIST_FILE = "BlossomPad/BlossomPad-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/BlossomPad/leveldb\"",
+					"\"$(SRCROOT)/leveldb\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

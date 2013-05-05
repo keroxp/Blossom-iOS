@@ -18,6 +18,8 @@ typedef enum{
 @interface BPDictionary : NSObject
 
 + (BPDictionary*)sharedDictionary;
++ (NSDictionary*)sharedRomaKana;
++ (NSDictionary*)sharedSmalls;
 
 @property (readonly) NSArray *entries;
 @property (readonly) NSArray *headList;
@@ -27,11 +29,18 @@ typedef enum{
 
 @interface BPDictEntry : NSObject
 
+/* 読み */
 @property (readonly) NSString *pattern;
+/* 文字 */
 @property (readonly) NSString *word;
 @property (readonly) NSUInteger inConnection;
 @property (readonly) NSUInteger outConnection;
-@property () NSUInteger pattternHeadIndex;
+/* リンクリストのインデックス */
+@property (readonly) NSUInteger connectionLinkIndex;
+/* 先頭読みリストのインデックス*/
+@property (readonly) NSUInteger keyLinkIndex;
+/* 読みの先頭が何処の行に所属するか */
+@property () NSUInteger keyIndex;
 
 - (id)initWithPattern:(NSString*)pattern
                  word:(NSString*)word

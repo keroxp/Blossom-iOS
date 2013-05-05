@@ -38,7 +38,10 @@
 		{"key":"hyphen","label":"-"}				
 	],
 	[
-		{"key":"space","isRepeatable":true,"isFunctional":true},
-		{"key":"number","label":"123","isTrigger":true}
+        {"key":"number","label":"123","isTrigger":true},
+        {"key":"symbol","label":";:@","isTrigger":true},
+        {"key":"space","isRepeatable":true,"isFunctional":true,"width":542.0},
+        {"key":"small","isFunctional":true,"label":"小"},
+        {"key":"close","isFunctional":true,"label":"閉"}
 	]
 ]

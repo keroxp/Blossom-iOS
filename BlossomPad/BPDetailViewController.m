@@ -63,9 +63,10 @@
     self.textView.inputView = kvc.view;
     self.keyboardViewController = kvc;
     
-    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithNibName:@"BPCandidateViewController" bundle:nil];
+    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithNibName:@"BPCandidateViewController" bundle:nil delegate:kvc];
     self.textView.inputAccessoryView = cv.view;
     self.candidateViewController = cv;
+    [self.keyboardViewController setCandidateViewController:cv];
 }
 
 - (void)didReceiveMemoryWarning

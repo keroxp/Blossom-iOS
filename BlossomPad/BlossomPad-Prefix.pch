@@ -17,6 +17,7 @@
     #import <JSONKit.h>
     #import <BLKeyCode.h>
     #import <TestFlight.h>
+    #import "NSString+isKana.h"
 #endif
 
 #ifdef DEBUG

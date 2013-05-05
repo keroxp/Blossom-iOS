@@ -28,6 +28,16 @@
     }
     return self;
 }
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    if (highlighted) {
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebgselected"]]];
+    }else{
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
+    }
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

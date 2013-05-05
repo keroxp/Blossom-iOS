@@ -7,14 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BPCandidateViewController.h"
 @interface BPKeyboardViewController : UIViewController
-<UICollectionViewDelegate,UICollectionViewDataSource>
+<UICollectionViewDelegate,UICollectionViewDataSource,BPCandidateViewControllerDelegate>
 
 /* 入力先 */
 @property (weak) id<UITextInput,UIKeyInput> activeClient;
 /* キーボードの行 */
 @property (readonly) NSArray *rows;
 @property (readonly) NSArray *keys;
+@property (weak) BPCandidateViewController *candidateViewController;
 
 @end
+
+
