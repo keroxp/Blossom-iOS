@@ -14,5 +14,6 @@
 @property (weak) id<UITextInput,UIKeyInput> activeClient;
 /* キーボードの行 */
 @property (readonly) NSArray *rows;
+@property (readonly) NSArray *keys;
 
 @end

@@ -51,11 +51,15 @@ typedef enum{
     CGPoint _beginPoint;
     // 最後のタッチポイント
     CGPoint _endPoint;
+    // keys
+    NSMutableArray *_keys;
 }
 
 @end
 
 @implementation BPKeyboardViewController
+
+@synthesize keys = _keys;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -65,18 +69,12 @@ typedef enum{
         NSString *jsonstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         NSError *e = nil;
         NSArray *rows = [jsonstr objectFromJSONStringWithParseOptions:JKParseOptionNone error:&e];
+        _rows = @[@[].mutableCopy,@[].mutableCopy,@[].mutableCopy,@[].mutableCopy];
+        _keys = @[].mutableCopy;
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
-                BPKey *key = [[BPKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];                
-                CGFloat x = (kKeyWidth + kKeyMarginRight)*j + kKeyMarginRight;
-                CGFloat y = (kKeyHeight + kKeyMarginUp)*i + kKeyMarginUp;
-                CGFloat w = kKeyWidth;
-                CGFloat h = kKeyHeight;
-                CGRect frame = CGRectMake(x,y,w,h);
-                // ２段目をずらす
-                if (i == 1) frame = CGRectMake(kRow2MarginLeft+x,y,w,h);
-                key.frame = frame;
+                BPKey *key = [[BPKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];
                 __block BPKeyboardViewController *__self = self;
                 [key setTouchesBeganBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
                     [key_ setHighlighted:YES];
@@ -122,6 +120,8 @@ typedef enum{
                     }
                 }];
                 [self.view addSubview:key];
+                [[_rows objectAtIndex:i] addObject:key];
+                [_keys addObject:key];
             }];
         }];
     }
@@ -136,6 +136,16 @@ typedef enum{
                                              selector:@selector(keyboardSizeDidChange:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceDidRotate:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,6 +155,44 @@ typedef enum{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)layoutKeysForOrientation:(UIDeviceOrientation)orientation
+{
+    if (orientation == UIDeviceOrientationUnknown) {
+        orientation = (UIDeviceOrientation)[[UIApplication sharedApplication] statusBarOrientation];
+    }
+    [self.keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        BPKey *key = (BPKey*)obj;
+        NSUInteger i = key.indexPath.section;
+        NSUInteger j = key.indexPath.row;
+        CGRect f = CGRectZero;
+        CGFloat x,y,w,h;
+        x = (kKeyWidth + kKeyMarginRight)*j + kKeyMarginRight;
+        y = (kKeyHeight + kKeyMarginUp)*i + kKeyMarginUp;
+        w = kKeyWidth;
+        h = kKeyHeight;
+        if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown){
+            // たて
+            [key.titleLabel setFont:[UIFont systemFontOfSize:20]];
+            f = CGRectMake(x*3/4, y*3/4, w*3/4, h*3/4);
+            // ２段目をずらす
+            if (i == 1) f = CGRectMake(kRow2MarginLeft+x*3/4,y*3/4,w*3/4,h*3/4);
+        }else{
+            [key.titleLabel setFont:[UIFont systemFontOfSize:25]];
+            f = CGRectMake(x, y, w, h);
+            // ２段目をずらす
+            if (i == 1) f = CGRectMake(kRow2MarginLeft+x,y,w,h);
+        }
+        [key setFrame:f];
+    }];
+}
+
+- (void)deviceDidRotate:(NSNotification*)notificatoin
+{
+    UIDeviceOrientation orientation = [notificatoin.object orientation];
+    TFLog(@"%@",notificatoin.object);
+    TFLog(@"%@",notificatoin.userInfo);
+    [self layoutKeysForOrientation:orientation];
+}
 - (void)keyboardSizeDidChange:(NSNotification*)notification
 {
     CGRect begin = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
