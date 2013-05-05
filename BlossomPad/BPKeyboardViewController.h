@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface BPKeyboardViewController : UIViewController
+<UICollectionViewDelegate,UICollectionViewDataSource>
 
 /* 入力先 */
 @property (weak) id<UITextInput,UIKeyInput> activeClient;

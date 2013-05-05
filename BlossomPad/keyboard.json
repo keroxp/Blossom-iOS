@@ -10,7 +10,7 @@
 		{"key":"i","pieces":["い","い","い","い","い"]},
 		{"key":"o","pieces":["お","お","お","お","お"]},
 		{"key":"p","pieces":["ぱ","ぴ","ぷ","ぺ","ぽ"]},		
-		{"key":"delete","label":"⌫","isRepeatable":true}
+		{"key":"delete","label":"⌫","isRepeatable":true,"isFunctional":true}
 	],
 	[
 		{"key":"a","pieces":["あ","あ","あ","あ","あ"]},
@@ -22,7 +22,7 @@
 		{"key":"j","pieces":["じゃ","じ","じゅ","じぇ","じょ"]},
 		{"key":"k","pieces":["か","き","く","け","こ"]},
 		{"key":"l","pieces":["ぁ","ぃ","ぅ","ぇ","ぉ"]},
-		{"key":"enter","isRepeatable":true}
+		{"key":"enter","isRepeatable":true,"width":134.0,"isFunctional":true}
 	],
 	[
 		{"key":"shift","isStickey":true},
@@ -38,7 +38,7 @@
 		{"key":"hyphen","label":"-"}				
 	],
 	[
-		{"key":"space","isRepeatable":true},
+		{"key":"space","isRepeatable":true,"isFunctional":true},
 		{"key":"number","label":"123","isTrigger":true}
 	]
 ]

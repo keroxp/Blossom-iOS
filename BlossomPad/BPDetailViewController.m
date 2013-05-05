@@ -8,10 +8,13 @@
 
 #import "BPDetailViewController.h"
 #import "BPKeyboardViewController.h"
+#import "BPCandidateViewController.h"
 
 @interface BPDetailViewController ()
 
 @property () BPKeyboardViewController *keyboardViewController;
+@property () BPCandidateViewController *candidateViewController;
+
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
@@ -51,10 +54,18 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     
-    BPKeyboardViewController *kvc = [[BPKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController" bundle:[NSBundle mainBundle]];
+    BPKeyboardViewController *kvc = [[BPKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController"
+                                                                               bundle:[NSBundle mainBundle]];
     kvc.activeClient = self.textView;
+    CGRect f = kvc.view.frame;
+    f.size.height = 55.0f;
+    [kvc.view setFrame:f];
     self.textView.inputView = kvc.view;
-    _keyboardViewController = kvc;
+    self.keyboardViewController = kvc;
+    
+    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithNibName:@"BPCandidateViewController" bundle:nil];
+    self.textView.inputAccessoryView = cv.view;
+    self.candidateViewController = cv;
 }
 
 - (void)didReceiveMemoryWarning

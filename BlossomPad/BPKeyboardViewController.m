@@ -9,6 +9,7 @@
 #import "BPKeyboardViewController.h"
 #import "BPKey.h"
 #import "BPPieView.h"
+#import "BPCandidateViewController.h"
 
 #define kKeyboardWidth 1024.f
 #define kKeyboardHeight 352.0f
@@ -16,16 +17,12 @@
 #define kKeyRowHeight 76.0f
 #define kKeyRowMargin 10.0f
 
-#define kKeyWidth 82.0f
-#define kKeyHeight 74.0f
-
-#define kKeyMarginRight 10.0f
-#define kKeyMarginUp 8.0f
-
-#define kRow2MarginLeft 40.0f
 #define kDefaultPieViewWidth 200.0f
 
 #define PI 3.1415926535
+
+#define kKeyRepeatInitialWait 0.3
+#define kKeyRepeatWait 0.083
 
 
 // フリックの方向
@@ -53,6 +50,8 @@ typedef enum{
     CGPoint _endPoint;
     // keys
     NSMutableArray *_keys;
+    //
+    NSTimer *_repeatTimer;
 }
 
 @end
@@ -80,7 +79,6 @@ typedef enum{
                     [key_ setHighlighted:YES];
                     // マルチタッチは検知しない
                     if (_currentTouch) return;
-                    if (key_.pieces.count == 0) return;
                     // リファレンス・アサイン
                     _currentTouch = [touches anyObject];
                     _beginPoint = [[touches anyObject] locationInView:__self.view];
@@ -131,7 +129,7 @@ typedef enum{
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardSizeDidChange:)
                                                  name:UIKeyboardDidChangeFrameNotification
@@ -139,14 +137,10 @@ typedef enum{
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deviceDidRotate:)
                                                  name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+                                               object:nil];    
     [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -157,40 +151,14 @@ typedef enum{
 
 - (void)layoutKeysForOrientation:(UIDeviceOrientation)orientation
 {
-    if (orientation == UIDeviceOrientationUnknown) {
-        orientation = (UIDeviceOrientation)[[UIApplication sharedApplication] statusBarOrientation];
-    }
     [self.keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        BPKey *key = (BPKey*)obj;
-        NSUInteger i = key.indexPath.section;
-        NSUInteger j = key.indexPath.row;
-        CGRect f = CGRectZero;
-        CGFloat x,y,w,h;
-        x = (kKeyWidth + kKeyMarginRight)*j + kKeyMarginRight;
-        y = (kKeyHeight + kKeyMarginUp)*i + kKeyMarginUp;
-        w = kKeyWidth;
-        h = kKeyHeight;
-        if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown){
-            // たて
-            [key.titleLabel setFont:[UIFont systemFontOfSize:20]];
-            f = CGRectMake(x*3/4, y*3/4, w*3/4, h*3/4);
-            // ２段目をずらす
-            if (i == 1) f = CGRectMake(kRow2MarginLeft+x*3/4,y*3/4,w*3/4,h*3/4);
-        }else{
-            [key.titleLabel setFont:[UIFont systemFontOfSize:25]];
-            f = CGRectMake(x, y, w, h);
-            // ２段目をずらす
-            if (i == 1) f = CGRectMake(kRow2MarginLeft+x,y,w,h);
-        }
-        [key setFrame:f];
+        [(BPKey*)obj needsLayoutForOrientation:orientation];
     }];
 }
 
 - (void)deviceDidRotate:(NSNotification*)notificatoin
 {
     UIDeviceOrientation orientation = [notificatoin.object orientation];
-    TFLog(@"%@",notificatoin.object);
-    TFLog(@"%@",notificatoin.userInfo);
     [self layoutKeysForOrientation:orientation];
 }
 - (void)keyboardSizeDidChange:(NSNotification*)notification
@@ -205,57 +173,62 @@ typedef enum{
 
 - (void)keyDidTouchDown:(BPKey *)sender
 {
-    //    NSLog(@"touch down : %@",sender.key);
-    
     // 凹ませる
-    [sender setHighlighted:YES];
     BPPieView *pv = [BPPieView sharedView];
-    // そうでないなら新規に構築
-    if ([pv isShowing]) {
-        [BPPieView hide];
+    if (sender.pieces.count > 0) {
+        // そうでないなら新規に構築
+        if ([pv isShowing]) {
+            [BPPieView hide];
+        }
+        CGPoint c = sender.center;
+        c.y += 55.0f;
+        [BPPieView showInView:self.view.superview atPoint:c centerChar:sender.keystr pieces:sender.pieces];
+        // ポップアップを構築
+        UIButton *pup = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        pup.center = pv.center;
+        c = pup.center;
+        pup.frame = CGRectMake(c.x - 25, c.y - 200, 50, 50);
+        // selfではなく、その上のビューに追加
+        [self.view.superview addSubview:pup];
+        _currentPopup = pup;
     }
-
-    [BPPieView showInView:self.view atPoint:sender.center centerChar:sender.keystr pieces:sender.pieces];
-    // ポップアップを構築
-    UIButton *pup = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    pup.center = pv.center;
-    CGPoint c = pup.center;
-    pup.frame = CGRectMake(c.x - 25, c.y - 200, 50, 50);
-    
-    // selfではなく、その上のビューに追加
-    [self.view.superview addSubview:pup];
-
+    if (sender.isRepeatable) {
+        [self performSelector:@selector(repeatKeyAction:) withObject:sender afterDelay:0.5];
+    }
     _currentKey = sender;
-    _currentPopup = pup;
-    
+}
+
+- (void)repeatKeyAction:(BPKey*)key
+{
+    _repeatTimer = [NSTimer scheduledTimerWithTimeInterval:kKeyRepeatWait block:^(NSTimeInterval time) {
+        NSString *k = key.keystr;
+        if ([k isEqualToString:@"enter"]) {
+            [self.activeClient insertText:@"\n"];
+        }else if ([k isEqualToString:@"space"]){
+            [self.activeClient insertText:@" "];
+        }else if ([k isEqualToString:@"delete"]){
+            [self.activeClient deleteBackward];
+        }
+    } repeats:YES];
 }
 
 - (void)keyDidTouchUpInside:(BPKey *)sender
 {
     NSLog(@"touch up inside : %@", sender.keystr);
-    BPPieView *pv = [BPPieView sharedView];
-    [sender setHighlighted:NO];
-    
+    BPPieView *pv = [BPPieView sharedView];    
     // 通常入力
-//    if (!sender.isMetaKey) {
-//        NSString *s = pv.centerChar;
-//        [self.activeField insertText:s];
-//    }else{
-//        switch (sender.keyCode) {
-//            case enterKey:
-//                [self.activeField insertText:@"\n"];
-//                break;
-//            case spaceKey:
-//                [self.activeField insertText:@" "];
-//                break;
-//            case deleteKey:
-//                [self.activeField deleteBackward];
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-    
+    if (sender.isFunctional) {
+        NSString *k = sender.keystr;
+        if ([k isEqualToString:@"enter"]) {
+            [self.activeClient insertText:@"\n"];
+        }else if ([k isEqualToString:@"space"]){
+            [self.activeClient insertText:@" "];
+        }else if ([k isEqualToString:@"delete"]){
+            [self.activeClient deleteBackward];
+        }
+    }else{
+        [self.activeClient insertText:pv.centerChar];
+    }
     [self finishHandling:sender];
 }
 
@@ -276,6 +249,11 @@ typedef enum{
 
 - (void)finishHandling:(BPKey*)sender
 {
+    // リピート処理を止める
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_repeatTimer invalidate];
+    _repeatTimer = nil;
+    // PieViewを消す
     BPPieView *pv = [BPPieView sharedView];
     if (pv) {
         [pv removeFromSuperview];

@@ -29,6 +29,8 @@ typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* eve
 @property (readonly) BOOL isStickey;
 /* スライドUIが使えるキーか */
 @property (readonly) BOOL isTrigger;
+/* */
+@property (readonly) BOOL isFunctional;
 /* 幅 */
 @property (readonly) CGFloat keyWidth;
 /* 高さ */
@@ -45,5 +47,7 @@ typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* eve
 - (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
            touchesMovedBlock:(BPKeyTouchHandlingBlock)moved
            touchesEndedBlock:(BPKeyTouchHandlingBlock)ended;
+
+- (void)needsLayoutForOrientation:(UIDeviceOrientation)orientation;
 
 @end

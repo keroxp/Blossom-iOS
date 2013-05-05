@@ -35,6 +35,12 @@
 		A63F16541736149A00ECE693 /* keyboardbg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16511736149A00ECE693 /* keyboardbg@2x.png */; };
 		A63F16551736149A00ECE693 /* piebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16521736149A00ECE693 /* piebg@2x.png */; };
 		A63F16561736149A00ECE693 /* piepiecebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16531736149A00ECE693 /* piepiecebg@2x.png */; };
+		A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16581736392200ECE693 /* BPCandidateCell.m */; };
+		A63F165B1736409E00ECE693 /* candidatebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F165A1736409E00ECE693 /* candidatebg@2x.png */; };
+		A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB7173643A3005F28B8 /* togglebutton@2x.png */; };
+		A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB917364455005F28B8 /* candidateseparator@2x.png */; };
+		A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6711CBC17364735005F28B8 /* BPCandidateViewController.m */; };
+		A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +85,14 @@
 		A63F16511736149A00ECE693 /* keyboardbg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardbg@2x.png"; path = "BlossomPad/keyboardbg@2x.png"; sourceTree = "<group>"; };
 		A63F16521736149A00ECE693 /* piebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "piebg@2x.png"; path = "BlossomPad/piebg@2x.png"; sourceTree = "<group>"; };
 		A63F16531736149A00ECE693 /* piepiecebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "piepiecebg@2x.png"; path = "BlossomPad/piepiecebg@2x.png"; sourceTree = "<group>"; };
+		A63F16571736392100ECE693 /* BPCandidateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPCandidateCell.h; sourceTree = "<group>"; };
+		A63F16581736392200ECE693 /* BPCandidateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPCandidateCell.m; sourceTree = "<group>"; };
+		A63F165A1736409E00ECE693 /* candidatebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidatebg@2x.png"; path = "BlossomPad/candidatebg@2x.png"; sourceTree = "<group>"; };
+		A6711CB7173643A3005F28B8 /* togglebutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "togglebutton@2x.png"; path = "BlossomPad/togglebutton@2x.png"; sourceTree = "<group>"; };
+		A6711CB917364455005F28B8 /* candidateseparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidateseparator@2x.png"; path = "BlossomPad/candidateseparator@2x.png"; sourceTree = "<group>"; };
+		A6711CBB17364735005F28B8 /* BPCandidateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPCandidateViewController.h; sourceTree = "<group>"; };
+		A6711CBC17364735005F28B8 /* BPCandidateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPCandidateViewController.m; sourceTree = "<group>"; };
+		A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPCandidateViewController.xib; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,8 +149,8 @@
 				A63F16101735307D00ECE693 /* MainStoryboard.storyboard */,
 				A63F164C1735FB3600ECE693 /* Singletons */,
 				A63F162A1735395200ECE693 /* Models */,
-				A63F1626173538C400ECE693 /* Views */,
 				A63F164B1735FB2E00ECE693 /* Controllers */,
+				A63F1626173538C400ECE693 /* Views */,
 				A63F15FF1735307D00ECE693 /* Supporting Files */,
 			);
 			path = BlossomPad;
@@ -163,6 +177,11 @@
 				A63F1620173530C500ECE693 /* BPKeyboardViewController.h */,
 				A63F1621173530C500ECE693 /* BPKeyboardViewController.m */,
 				A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */,
+				A6711CBB17364735005F28B8 /* BPCandidateViewController.h */,
+				A6711CBC17364735005F28B8 /* BPCandidateViewController.m */,
+				A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */,
+				A63F16571736392100ECE693 /* BPCandidateCell.h */,
+				A63F16581736392200ECE693 /* BPCandidateCell.m */,
 				A63F16231735385B00ECE693 /* BPKey.h */,
 				A63F16241735385B00ECE693 /* BPKey.m */,
 				A63F163917354DD200ECE693 /* BPPieView.h */,
@@ -187,7 +206,10 @@
 		A63F1642173565D200ECE693 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A6711CB7173643A3005F28B8 /* togglebutton@2x.png */,
+				A6711CB917364455005F28B8 /* candidateseparator@2x.png */,
 				A63F16511736149A00ECE693 /* keyboardbg@2x.png */,
+				A63F165A1736409E00ECE693 /* candidatebg@2x.png */,
 				A63F16521736149A00ECE693 /* piebg@2x.png */,
 				A63F16531736149A00ECE693 /* piepiecebg@2x.png */,
 				A63F163E173565CE00ECE693 /* keybg@2x.png */,
@@ -284,6 +306,10 @@
 				A63F16541736149A00ECE693 /* keyboardbg@2x.png in Resources */,
 				A63F16551736149A00ECE693 /* piebg@2x.png in Resources */,
 				A63F16561736149A00ECE693 /* piepiecebg@2x.png in Resources */,
+				A63F165B1736409E00ECE693 /* candidatebg@2x.png in Resources */,
+				A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */,
+				A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */,
+				A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +348,8 @@
 				A63F1630173539DE00ECE693 /* Entry.m in Sources */,
 				A63F163B17354DD200ECE693 /* BPPieView.m in Sources */,
 				A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */,
+				A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */,
+				A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
