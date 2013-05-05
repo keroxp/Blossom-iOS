@@ -79,12 +79,13 @@ typedef enum{
                 key.frame = frame;
                 __block BPKeyboardViewController *__self = self;
                 [key setTouchesBeganBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                    [key_ setHighlighted:YES];
                     // マルチタッチは検知しない
                     if (_currentTouch) return;
+                    if (key_.pieces.count == 0) return;
                     // リファレンス・アサイン
                     _currentTouch = [touches anyObject];
                     _beginPoint = [[touches anyObject] locationInView:__self.view];
-                    
                     // 擬似ハンドラへ
                     [self keyDidTouchDown:key_];
                 } touchesMovedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
@@ -105,6 +106,7 @@ typedef enum{
                         }
                     }
                 } touchesEndedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                    [key_ setHighlighted:NO];
                     for (UITouch*t in touches) {
                         if (t == _currentTouch) {
                             _endPoint = [t locationInView:__self.view];

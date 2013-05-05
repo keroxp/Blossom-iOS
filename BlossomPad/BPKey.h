@@ -18,6 +18,7 @@ typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* eve
 @property (nonatomic) UIImage *icon;
 /*  */
 @property (nonatomic) NSString *keystr;
+@property (nonatomic) NSString *keylabel;
 /* ピース */
 @property (nonatomic) NSArray *pieces;
 /* モディファイアか */

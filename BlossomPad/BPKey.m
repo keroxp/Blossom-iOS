@@ -31,20 +31,20 @@
         _isModifier = [[self objectForKey:@"isModifier" ofJSON:JSON] boolValue];
         _keystr = [self objectForKey:@"key" ofJSON:JSON];
         _pieces = [self objectForKey:@"pieces" ofJSON:JSON];
+        _keylabel = [self objectForKey:@"label" ofJSON:JSON];
         _keyWidth = w;
         _keyHeight = h;
         _indexPath = [NSIndexPath indexPathForRow:index inSection:line];
         // 背景
         [self setBackgroundImage:[UIImage imageNamed:@"keybg"] forState:UIControlStateNormal];
-        [self setTitleColor:[UIColor colorWithRed:(float)1.0f
-                                            green:(float)164.0f/255.0f
-                                             blue:(float)164.0f/255.0f
-                                            alpha:1.0f] forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        [self.titleLabel setFont:[UIFont boldSystemFontOfSize:20.0f]];
+        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.titleLabel setShadowOffset:CGSizeMake(0, 2)];
+        [self.titleLabel setFont:[UIFont systemFontOfSize:25]];
         // タイトルもしくはアイコンを設定
         if (!_icon) {
-            [self setTitle:[_keystr uppercaseString] forState:UIControlStateNormal];
+            [self setTitle:[[self keylabel] uppercaseString] forState:UIControlStateNormal];
         }else{
             UIImageView *iv = [[UIImageView alloc] initWithImage:_icon];
             iv.center = self.center;
@@ -57,6 +57,11 @@
 - (id)objectForKey:(NSString*)key ofJSON:(NSDictionary*)JSON
 {
     return ([JSON objectForKey:key]) ? [JSON objectForKey:key] : nil;
+}
+
+- (NSString *)keylabel
+{
+    return (_keylabel) ? _keylabel : _keystr;
 }
 
 - (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
@@ -84,13 +89,13 @@
 }
 
 
-/*
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
+    [super drawRect:rect];
 }
-*/
 
 @end
