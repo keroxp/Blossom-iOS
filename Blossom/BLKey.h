@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class  BPKey;
-typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* event);
+@class  BLKey;
+typedef void (^BLKeyTouchHandlingBlock)(BLKey* key, NSSet *touches, UIEvent* event);
 
-@interface BPKey : UIButton
+@interface BLKey : UIButton
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 /* アイコン（optional） */
@@ -38,16 +38,16 @@ typedef void (^BPKeyTouchHandlingBlock)(BPKey* key, NSSet *touches, UIEvent* eve
 @property (readonly) CGFloat keyHeight;
 /*  */
 @property (readonly) NSIndexPath *indexPath;
-@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesBeganBlock;
-@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesMovedBlock;
-@property (nonatomic,copy) BPKeyTouchHandlingBlock touchesEndedBlock;
+@property (nonatomic,copy) BLKeyTouchHandlingBlock touchesBeganBlock;
+@property (nonatomic,copy) BLKeyTouchHandlingBlock touchesMovedBlock;
+@property (nonatomic,copy) BLKeyTouchHandlingBlock touchesEndedBlock;
 
 /* コンストラクタ */
 - (id)initWithJSON:(NSDictionary*)JSON line:(NSUInteger)line index:(NSUInteger)index;
 /* ハンドラをセット */
-- (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
-           touchesMovedBlock:(BPKeyTouchHandlingBlock)moved
-           touchesEndedBlock:(BPKeyTouchHandlingBlock)ended;
+- (void)setTouchesBeganBlock:(BLKeyTouchHandlingBlock)began
+           touchesMovedBlock:(BLKeyTouchHandlingBlock)moved
+           touchesEndedBlock:(BLKeyTouchHandlingBlock)ended;
 
 
 @end

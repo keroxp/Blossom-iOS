@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
-#import "BPCandidateCell.h"
+#import "BLCandidateCell.h"
 
-@implementation BPCandidateCell
+@implementation BLCandidateCell
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BPPieView : UIView
+@interface BLPieView : UIView
 
 /* Shared Instance */
-+ (BPPieView*)sharedView;
++ (BLPieView*)sharedView;
 /* みせる */
 + (void)showInView:(UIView*)view
            atPoint:(CGPoint)point

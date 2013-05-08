@@ -6,12 +6,12 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
-#import "BPKey.h"
+#import "BLKey.h"
 #define kDefaultFrame CGRectMake(0,0,82,74)
 #define kLeftMargin 10.0f
 
 
-@implementation BPKey
+@implementation BLKey
 
 - (id)initWithJSON:(NSDictionary *)JSON line:(NSUInteger)line index:(NSUInteger)index
 {
@@ -67,9 +67,9 @@
     return (_keylabel) ? _keylabel : _keystr;
 }
 
-- (void)setTouchesBeganBlock:(BPKeyTouchHandlingBlock)began
-           touchesMovedBlock:(BPKeyTouchHandlingBlock)moved
-           touchesEndedBlock:(BPKeyTouchHandlingBlock)ended
+- (void)setTouchesBeganBlock:(BLKeyTouchHandlingBlock)began
+           touchesMovedBlock:(BLKeyTouchHandlingBlock)moved
+           touchesEndedBlock:(BLKeyTouchHandlingBlock)ended
 {
     _touchesBeganBlock = began;
     _touchesMovedBlock = moved;

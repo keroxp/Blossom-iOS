@@ -7,13 +7,13 @@
 //
 
 #import "BPDetailViewController.h"
-#import "BPKeyboardViewController.h"
-#import "BPCandidateViewController.h"
+#import "BLKeyboardViewController.h"
+#import "BLCandidateViewController.h"
 
 @interface BPDetailViewController ()
 
-@property () BPKeyboardViewController *keyboardViewController;
-@property () BPCandidateViewController *candidateViewController;
+@property () BLKeyboardViewController *keyboardViewController;
+@property () BLCandidateViewController *candidateViewController;
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -58,7 +58,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     
-    BPKeyboardViewController *kvc = [[BPKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController"
+    BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController"
                                                                                bundle:[NSBundle mainBundle]];
     
     kvc.activeClient = self.textView;
@@ -69,7 +69,7 @@
     self.textView.userInteractionEnabled = NO;
     self.keyboardViewController = kvc;
     
-    BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithDelegate:kvc];
+    BLCandidateViewController *cv = [[BLCandidateViewController alloc] initWithDelegate:kvc];
     self.textView.inputAccessoryView = cv.view;
     self.candidateViewController = cv;
     [self.keyboardViewController setCandidateViewController:cv];

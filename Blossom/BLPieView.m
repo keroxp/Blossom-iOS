@@ -6,14 +6,14 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
-#import "BPPieView.h"
+#import "BLPieView.h"
 
 #define kDefaultPieFrame CGRectMake(0,0,200,200)
 
-static BPPieView *shared;
-@implementation BPPieView
+static BLPieView *shared;
+@implementation BLPieView
 
-+ (BPPieView *)sharedView
++ (BLPieView *)sharedView
 {
     if (!shared) {
         shared = [[self alloc] initWithFrame:kDefaultPieFrame];
@@ -23,7 +23,7 @@ static BPPieView *shared;
 
 + (void)showInView:(UIView *)view atPoint:(CGPoint)point centerChar:(NSString *)centerChar pieces:(NSArray *)pieces
 {
-    BPPieView *s = [self sharedView];
+    BLPieView *s = [self sharedView];
     [s removeFromSuperview];
     [s setCenter:point];
     [s setCenterChar:centerChar pieces:pieces];

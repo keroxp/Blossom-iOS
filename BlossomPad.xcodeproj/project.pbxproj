@@ -21,12 +21,8 @@
 		A63F16151735307D00ECE693 /* BPMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16141735307D00ECE693 /* BPMasterViewController.m */; };
 		A63F16181735307D00ECE693 /* BPDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16171735307D00ECE693 /* BPDetailViewController.m */; };
 		A63F161F1735309C00ECE693 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F161E1735309C00ECE693 /* CoreData.framework */; };
-		A63F1622173530C500ECE693 /* BPKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F1621173530C500ECE693 /* BPKeyboardViewController.m */; };
-		A63F16251735385B00ECE693 /* BPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16241735385B00ECE693 /* BPKey.m */; };
 		A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */; };
 		A63F162D173539DE00ECE693 /* Abstract.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F162C173539DE00ECE693 /* Abstract.m */; };
-		A63F163B17354DD200ECE693 /* BPPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F163A17354DD200ECE693 /* BPPieView.m */; };
-		A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */; };
 		A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F163E173565CE00ECE693 /* keybg@2x.png */; };
 		A63F1641173565CE00ECE693 /* keyboard.json in Resources */ = {isa = PBXBuildFile; fileRef = A63F163F173565CE00ECE693 /* keyboard.json */; };
 		A63F16441735E55F00ECE693 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = A63F16431735E55F00ECE693 /* dict.txt */; };
@@ -34,13 +30,17 @@
 		A63F16541736149A00ECE693 /* keyboardbg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16511736149A00ECE693 /* keyboardbg@2x.png */; };
 		A63F16551736149A00ECE693 /* piebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16521736149A00ECE693 /* piebg@2x.png */; };
 		A63F16561736149A00ECE693 /* piepiecebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F16531736149A00ECE693 /* piepiecebg@2x.png */; };
-		A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16581736392200ECE693 /* BPCandidateCell.m */; };
 		A63F165B1736409E00ECE693 /* candidatebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F165A1736409E00ECE693 /* candidatebg@2x.png */; };
+		A6531192173A218D00FAC864 /* BLCandidateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531187173A218D00FAC864 /* BLCandidateCell.m */; };
+		A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531189173A218D00FAC864 /* BLCandidateViewController.m */; };
+		A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118A173A218D00FAC864 /* BLCandidateViewController.xib */; };
+		A6531195173A218D00FAC864 /* BLKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118C173A218D00FAC864 /* BLKey.m */; };
+		A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118E173A218D00FAC864 /* BLKeyboardViewController.m */; };
+		A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */; };
+		A6531198173A218D00FAC864 /* BLPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531191173A218D00FAC864 /* BLPieView.m */; };
+		A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */ = {isa = PBXBuildFile; fileRef = A653119A173A21E500FAC864 /* NSString+isKana.m */; };
 		A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB7173643A3005F28B8 /* togglebutton@2x.png */; };
 		A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB917364455005F28B8 /* candidateseparator@2x.png */; };
-		A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6711CBC17364735005F28B8 /* BPCandidateViewController.m */; };
-		A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */; };
-		A6711CC217367104005F28B8 /* NSString+isKana.m in Sources */ = {isa = PBXBuildFile; fileRef = A6711CC117367104005F28B8 /* NSString+isKana.m */; };
 		A6711CC5173671F3005F28B8 /* romakana.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC3173671F3005F28B8 /* romakana.json */; };
 		A6711CC6173671F3005F28B8 /* smalls.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC4173671F3005F28B8 /* smalls.json */; };
 		A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */; };
@@ -73,17 +73,10 @@
 		A63F16161735307D00ECE693 /* BPDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPDetailViewController.h; sourceTree = "<group>"; };
 		A63F16171735307D00ECE693 /* BPDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPDetailViewController.m; sourceTree = "<group>"; };
 		A63F161E1735309C00ECE693 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		A63F1620173530C500ECE693 /* BPKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPKeyboardViewController.h; sourceTree = "<group>"; };
-		A63F1621173530C500ECE693 /* BPKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPKeyboardViewController.m; sourceTree = "<group>"; };
-		A63F16231735385B00ECE693 /* BPKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPKey.h; sourceTree = "<group>"; };
-		A63F16241735385B00ECE693 /* BPKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPKey.m; sourceTree = "<group>"; };
 		A63F1628173538E400ECE693 /* BPModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BPModel.xcdatamodel; sourceTree = "<group>"; };
 		A63F162B173539DE00ECE693 /* Abstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Abstract.h; path = BlossomPad/Abstract.h; sourceTree = "<group>"; };
 		A63F162C173539DE00ECE693 /* Abstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Abstract.m; path = BlossomPad/Abstract.m; sourceTree = "<group>"; };
 		A63F163117354B6F00ECE693 /* BLKeyCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLKeyCode.h; sourceTree = "<group>"; };
-		A63F163917354DD200ECE693 /* BPPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPPieView.h; sourceTree = "<group>"; };
-		A63F163A17354DD200ECE693 /* BPPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPPieView.m; sourceTree = "<group>"; };
-		A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPKeyboardViewController.xib; sourceTree = "<group>"; };
 		A63F163E173565CE00ECE693 /* keybg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keybg@2x.png"; path = "BlossomPad/keybg@2x.png"; sourceTree = "<group>"; };
 		A63F163F173565CE00ECE693 /* keyboard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = keyboard.json; path = BlossomPad/keyboard.json; sourceTree = "<group>"; };
 		A63F16431735E55F00ECE693 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dict.txt; sourceTree = "<group>"; };
@@ -92,16 +85,23 @@
 		A63F16511736149A00ECE693 /* keyboardbg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardbg@2x.png"; path = "BlossomPad/keyboardbg@2x.png"; sourceTree = "<group>"; };
 		A63F16521736149A00ECE693 /* piebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "piebg@2x.png"; path = "BlossomPad/piebg@2x.png"; sourceTree = "<group>"; };
 		A63F16531736149A00ECE693 /* piepiecebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "piepiecebg@2x.png"; path = "BlossomPad/piepiecebg@2x.png"; sourceTree = "<group>"; };
-		A63F16571736392100ECE693 /* BPCandidateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPCandidateCell.h; sourceTree = "<group>"; };
-		A63F16581736392200ECE693 /* BPCandidateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPCandidateCell.m; sourceTree = "<group>"; };
 		A63F165A1736409E00ECE693 /* candidatebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidatebg@2x.png"; path = "BlossomPad/candidatebg@2x.png"; sourceTree = "<group>"; };
+		A6531186173A218D00FAC864 /* BLCandidateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCandidateCell.h; sourceTree = "<group>"; };
+		A6531187173A218D00FAC864 /* BLCandidateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCandidateCell.m; sourceTree = "<group>"; };
+		A6531188173A218D00FAC864 /* BLCandidateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCandidateViewController.h; sourceTree = "<group>"; };
+		A6531189173A218D00FAC864 /* BLCandidateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCandidateViewController.m; sourceTree = "<group>"; };
+		A653118A173A218D00FAC864 /* BLCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCandidateViewController.xib; sourceTree = "<group>"; };
+		A653118B173A218D00FAC864 /* BLKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKey.h; sourceTree = "<group>"; };
+		A653118C173A218D00FAC864 /* BLKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKey.m; sourceTree = "<group>"; };
+		A653118D173A218D00FAC864 /* BLKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboardViewController.h; sourceTree = "<group>"; };
+		A653118E173A218D00FAC864 /* BLKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboardViewController.m; sourceTree = "<group>"; };
+		A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLKeyboardViewController.xib; sourceTree = "<group>"; };
+		A6531190173A218D00FAC864 /* BLPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPieView.h; sourceTree = "<group>"; };
+		A6531191173A218D00FAC864 /* BLPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPieView.m; sourceTree = "<group>"; };
+		A6531199173A21E500FAC864 /* NSString+isKana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isKana.h"; sourceTree = "<group>"; };
+		A653119A173A21E500FAC864 /* NSString+isKana.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isKana.m"; sourceTree = "<group>"; };
 		A6711CB7173643A3005F28B8 /* togglebutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "togglebutton@2x.png"; path = "BlossomPad/togglebutton@2x.png"; sourceTree = "<group>"; };
 		A6711CB917364455005F28B8 /* candidateseparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidateseparator@2x.png"; path = "BlossomPad/candidateseparator@2x.png"; sourceTree = "<group>"; };
-		A6711CBB17364735005F28B8 /* BPCandidateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPCandidateViewController.h; sourceTree = "<group>"; };
-		A6711CBC17364735005F28B8 /* BPCandidateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPCandidateViewController.m; sourceTree = "<group>"; };
-		A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BPCandidateViewController.xib; sourceTree = "<group>"; };
-		A6711CC017367104005F28B8 /* NSString+isKana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isKana.h"; sourceTree = "<group>"; };
-		A6711CC117367104005F28B8 /* NSString+isKana.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isKana.m"; sourceTree = "<group>"; };
 		A6711CC3173671F3005F28B8 /* romakana.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = romakana.json; path = BlossomPad/romakana.json; sourceTree = "<group>"; };
 		A6711CC4173671F3005F28B8 /* smalls.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = smalls.json; path = BlossomPad/smalls.json; sourceTree = "<group>"; };
 		A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidatebgselected@2x.png"; path = "BlossomPad/candidatebgselected@2x.png"; sourceTree = "<group>"; };
@@ -139,9 +139,10 @@
 			children = (
 				A6711F8417368657005F28B8 /* Icon-72@2x.png */,
 				A6711F8217368654005F28B8 /* Icon-72.png */,
-				A63F1642173565D200ECE693 /* Resources */,
+				A6531185173A218D00FAC864 /* Blossom */,
 				A63F15FE1735307D00ECE693 /* BlossomPad */,
 				A63F15F71735307D00ECE693 /* Frameworks */,
+				A63F1642173565D200ECE693 /* Resources */,
 				A63F15F61735307D00ECE693 /* Products */,
 				54552EB0DC5440F389C0D877 /* Pods.xcconfig */,
 			);
@@ -177,7 +178,6 @@
 				A63F164C1735FB3600ECE693 /* Singletons */,
 				A63F162A1735395200ECE693 /* Models */,
 				A63F164B1735FB2E00ECE693 /* Controllers */,
-				A63F1626173538C400ECE693 /* Views */,
 				A63F15FF1735307D00ECE693 /* Supporting Files */,
 			);
 			path = BlossomPad;
@@ -196,25 +196,6 @@
 				A63F160E1735307D00ECE693 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A63F1626173538C400ECE693 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A63F1620173530C500ECE693 /* BPKeyboardViewController.h */,
-				A63F1621173530C500ECE693 /* BPKeyboardViewController.m */,
-				A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */,
-				A6711CBB17364735005F28B8 /* BPCandidateViewController.h */,
-				A6711CBC17364735005F28B8 /* BPCandidateViewController.m */,
-				A6711CBD17364735005F28B8 /* BPCandidateViewController.xib */,
-				A63F16571736392100ECE693 /* BPCandidateCell.h */,
-				A63F16581736392200ECE693 /* BPCandidateCell.m */,
-				A63F16231735385B00ECE693 /* BPKey.h */,
-				A63F16241735385B00ECE693 /* BPKey.m */,
-				A63F163917354DD200ECE693 /* BPPieView.h */,
-				A63F163A17354DD200ECE693 /* BPPieView.m */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		A63F162A1735395200ECE693 /* Models */ = {
@@ -267,10 +248,29 @@
 				A63F16081735307D00ECE693 /* BPAppDelegate.m */,
 				A63F16451735E5DB00ECE693 /* BPDictionary.h */,
 				A63F16461735E5DB00ECE693 /* BPDictionary.m */,
-				A6711CC017367104005F28B8 /* NSString+isKana.h */,
-				A6711CC117367104005F28B8 /* NSString+isKana.m */,
 			);
 			name = Singletons;
+			sourceTree = "<group>";
+		};
+		A6531185173A218D00FAC864 /* Blossom */ = {
+			isa = PBXGroup;
+			children = (
+				A6531199173A21E500FAC864 /* NSString+isKana.h */,
+				A653119A173A21E500FAC864 /* NSString+isKana.m */,
+				A6531186173A218D00FAC864 /* BLCandidateCell.h */,
+				A6531187173A218D00FAC864 /* BLCandidateCell.m */,
+				A6531188173A218D00FAC864 /* BLCandidateViewController.h */,
+				A6531189173A218D00FAC864 /* BLCandidateViewController.m */,
+				A653118A173A218D00FAC864 /* BLCandidateViewController.xib */,
+				A653118B173A218D00FAC864 /* BLKey.h */,
+				A653118C173A218D00FAC864 /* BLKey.m */,
+				A653118D173A218D00FAC864 /* BLKeyboardViewController.h */,
+				A653118E173A218D00FAC864 /* BLKeyboardViewController.m */,
+				A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */,
+				A6531190173A218D00FAC864 /* BLPieView.h */,
+				A6531191173A218D00FAC864 /* BLPieView.m */,
+			);
+			path = Blossom;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,7 +331,6 @@
 				A63F160D1735307D00ECE693 /* Default@2x.png in Resources */,
 				A63F160F1735307D00ECE693 /* Default-568h@2x.png in Resources */,
 				A63F16121735307D00ECE693 /* MainStoryboard.storyboard in Resources */,
-				A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */,
 				A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */,
 				A63F1641173565CE00ECE693 /* keyboard.json in Resources */,
 				A63F16441735E55F00ECE693 /* dict.txt in Resources */,
@@ -341,12 +340,13 @@
 				A63F165B1736409E00ECE693 /* candidatebg@2x.png in Resources */,
 				A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */,
 				A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */,
-				A6711CBF17364735005F28B8 /* BPCandidateViewController.xib in Resources */,
 				A6711CC5173671F3005F28B8 /* romakana.json in Resources */,
 				A6711CC6173671F3005F28B8 /* smalls.json in Resources */,
 				A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */,
 				A6711F8317368654005F28B8 /* Icon-72.png in Resources */,
 				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
+				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
+				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,16 +378,16 @@
 				A63F16091735307D00ECE693 /* BPAppDelegate.m in Sources */,
 				A63F16151735307D00ECE693 /* BPMasterViewController.m in Sources */,
 				A63F16181735307D00ECE693 /* BPDetailViewController.m in Sources */,
-				A63F1622173530C500ECE693 /* BPKeyboardViewController.m in Sources */,
-				A63F16251735385B00ECE693 /* BPKey.m in Sources */,
 				A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */,
 				A63F162D173539DE00ECE693 /* Abstract.m in Sources */,
-				A63F163B17354DD200ECE693 /* BPPieView.m in Sources */,
 				A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */,
-				A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */,
-				A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */,
-				A6711CC217367104005F28B8 /* NSString+isKana.m in Sources */,
 				A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */,
+				A6531192173A218D00FAC864 /* BLCandidateCell.m in Sources */,
+				A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */,
+				A6531195173A218D00FAC864 /* BLKey.m in Sources */,
+				A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */,
+				A6531198173A218D00FAC864 /* BLPieView.m in Sources */,
+				A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

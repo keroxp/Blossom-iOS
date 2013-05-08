@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BPCandidateCell : UICollectionViewCell
+@interface BLCandidateCell : UICollectionViewCell
 
 @property (readonly) UILabel *textLabel;
 

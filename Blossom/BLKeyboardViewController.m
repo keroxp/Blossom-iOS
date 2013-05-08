@@ -6,11 +6,12 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
-#import "BPKeyboardViewController.h"
-#import "BPKey.h"
-#import "BPPieView.h"
+#import "BLKeyboardViewController.h"
+#import "BLKey.h"
+#import "BLPieView.h"
 #import "BPDictionary.h"
-#import "BPCandidateViewController.h"
+#import "BLCandidateViewController.h"
+#import "NSString+isKana.h"
 
 #define kKeyboardWidth 1024.f
 #define kKeyboardHeight 352.0f
@@ -32,28 +33,28 @@
 #define kKeyRepeatWait 0.083
 
 
-// フリックの方向
+/* フリックの方向 */
 typedef enum{
-    BPDirectionUp = 0,
-    BPDirectionUpRight,
-    BPDirectionDownRight,
-    BPDirectionDownLeft,
-    BPDirectionUpLeft
-}BPDirection;
+    BLTouchDirectionUP = 0,
+    BLTouchDirectionUpRight,
+    BLTouchDirectionDownRight,
+    BLTouchDirectionDownLeft,
+    BLTouchDirectionUpLeft
+}BLTouchDirection;
 
-
+/* 入力モード */
 typedef enum{
     BPInputModeAlphabet = 0,
     BPInputModeRomaKana
 }BPInputMode;
 
 
-@interface BPKeyboardViewController ()
+@interface BLKeyboardViewController ()
 {
     // 現在のタッチ
     UITouch *_currentTouch;
     // 現在のキー
-    BPKey *_currentKey;
+    BLKey *_currentKey;
     // 現在のポップアップ
     UIButton *_currentPopup;
     // 現在表示されているPieViewの格納庫
@@ -66,30 +67,37 @@ typedef enum{
     NSMutableArray *_keys;
     // リピートキーのタイマー
     NSTimer *_repeatTimer;
+    /*  */
+    NSMutableArray *_rows;
 }
 
+/* キーから入力された文字列バッファ */
 @property (strong, nonatomic) NSMutableString *originalBuffer;
+/* 内部的な変換処理が施されたひらがな文字列 */
+@property (strong, nonatomic) NSMutableString *composedBuffer;
+/* ローマ字入力モードの際のアルファベット文字列 */
 @property (strong, nonatomic) NSMutableString *romaBuffer;
+/* 入力モード */
 @property (assign, nonatomic) BPInputMode inputMode;
-
-@property () BPKey *enterKey;
-@property () BPKey *spaceKey;
+/* エンターキー */
+@property () BLKey *enterKey;
+/* スペースキー */
+@property () BLKey *spaceKey;
 
 @end
 
-@implementation BPKeyboardViewController
+@implementation BLKeyboardViewController
 
 @synthesize keys = _keys;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithClient:(UIResponder<UITextInput,UIKeyInput> *)client
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self = [super initWithNibName:@"BLKeyboardViewController" bundle:[NSBundle mainBundle]]) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"keyboard" ofType:@"json"];
         NSString *jsonstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         NSError *e = nil;
         NSArray *rows = [jsonstr objectFromJSONStringWithParseOptions:JKParseOptionNone error:&e];
-        _rows = @[@[].mutableCopy,@[].mutableCopy,@[].mutableCopy,@[].mutableCopy];
+        _rows = @[@[].mutableCopy,@[].mutableCopy,@[].mutableCopy,@[].mutableCopy].mutableCopy;
         _keys = @[].mutableCopy;
         _originalBuffer = [NSMutableString string];
         _romaBuffer = [NSMutableString string];
@@ -99,9 +107,9 @@ typedef enum{
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
-                BPKey *key = [[BPKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];
-                __block BPKeyboardViewController *__self = self;
-                [key setTouchesBeganBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                BLKey *key = [[BLKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];
+                __block BLKeyboardViewController *__self = self;
+                [key setTouchesBeganBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
                     [key_ setHighlighted:YES];
                     // マルチタッチは検知しない
                     if (_currentTouch) return;
@@ -110,24 +118,24 @@ typedef enum{
                     _beginPoint = [[touches anyObject] locationInView:__self.view];
                     // 擬似ハンドラへ
                     [self keyDidTouchDown:key_];
-                } touchesMovedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                } touchesMovedBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
                     for (UITouch *t in touches) {
                         // 現在のタッチでなければハンドリングしない
                         if (t == _currentTouch) {
                             CGPoint cur = [_currentTouch locationInView:__self.view];
-                            BPDirection dir = [self getDirection:cur from:_beginPoint];
-                            BPPieView *pv = [BPPieView sharedView];                            
+                            BLTouchDirection dir = [self getDirection:cur from:_beginPoint];
+                            BLPieView *pv = [BLPieView sharedView];
                             // 一度全てを非選択に
                             for (UIButton*b in pv.piePieces) {
                                 b.highlighted = NO;
                             }
                             // 指定方向のパイピースをハイライト
-                            [pv setHighlited:YES atIndex:dir];                            
+                            [pv setHighlited:YES atIndex:dir];
                             //ポップアップを更新
                             [_currentPopup setTitle:[pv.pieces objectAtIndex:dir] forState:UIControlStateNormal];
                         }
                     }
-                } touchesEndedBlock:^(BPKey *key_, NSSet *touches, UIEvent *event) {
+                } touchesEndedBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
                     [key_ setHighlighted:NO];
                     for (UITouch*t in touches) {
                         if (t == _currentTouch) {
@@ -187,10 +195,10 @@ typedef enum{
     }
     __block CGFloat totalMarginX = 0;
     __block CGFloat totalMarginY = 0;
-    [self.rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
+    [_rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
         totalMarginY += kKeyMarginUp;
         [(NSArray*)obj enumerateObjectsUsingBlock:^(id obw2, NSUInteger j, BOOL *stop2) {
-            BPKey *key = (BPKey*)obw2;
+            BLKey *key = (BLKey*)obw2;
             CGRect f = CGRectZero;
             totalMarginX += kKeyMarginRight;
             CGFloat x,y,w,h;
@@ -224,20 +232,27 @@ typedef enum{
     [self layoutKeysForOrientation:orientation];
 }
 
+#pragma mark - Public
+
+- (BLKey *)keyAtRow:(NSUInteger)row column:(NSUInteger)column
+{
+    return _rows[row][column];
+}
+
 #pragma mark - Key Handler
 
-- (void)keyDidTouchDown:(BPKey *)sender
+- (void)keyDidTouchDown:(BLKey *)sender
 {
     // 凹ませる
-    BPPieView *pv = [BPPieView sharedView];
+    BLPieView *pv = [BLPieView sharedView];
     if (sender.pieces.count > 0) {
         // そうでないなら新規に構築
         if ([pv isShowing]) {
-            [BPPieView hide];
+            [BLPieView hide];
         }
         CGPoint c = sender.center;
         c.y += 55.0f;
-        [BPPieView showInView:self.view.superview atPoint:c centerChar:sender.keystr pieces:sender.pieces];
+        [BLPieView showInView:self.view.superview atPoint:c centerChar:sender.keystr pieces:sender.pieces];
         // ポップアップを構築
         UIButton *pup = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         pup.center = pv.center;
@@ -253,7 +268,7 @@ typedef enum{
     _currentKey = sender;
 }
 
-- (void)keyDidTouchUpInside:(BPKey *)sender
+- (void)keyDidTouchUpInside:(BLKey *)sender
 {
     [sender setHighlighted:NO];
     NSString *add = [sender.keystr lowercaseString];    
@@ -318,11 +333,11 @@ typedef enum{
     [self finishHandling:sender];
 }
 
-- (void)keyDidTouchUpOutSide:(BPKey *)sender
+- (void)keyDidTouchUpOutSide:(BLKey *)sender
 {
     [sender setHighlighted:NO];
-    BPPieView *pv = [BPPieView sharedView];
-    BPDirection dir = [self getDirection:_endPoint from:_beginPoint];
+    BLPieView *pv = [BLPieView sharedView];
+    BLTouchDirection dir = [self getDirection:_endPoint from:_beginPoint];
     
     // フリック入力
     if (pv.pieces.count > 0){
@@ -336,7 +351,7 @@ typedef enum{
     [self finishHandling:sender];
 }
 
-- (void)repeatKeyAction:(BPKey*)key
+- (void)repeatKeyAction:(BLKey*)key
 {
     _repeatTimer = [NSTimer scheduledTimerWithTimeInterval:kKeyRepeatWait block:^(NSTimeInterval time) {
         NSString *k = key.keystr;
@@ -350,7 +365,7 @@ typedef enum{
     } repeats:YES];
 }
 
-#pragma mark - 
+#pragma mark - Bufferring and Composing
 
 - (void)appendOriginalBuffer:(NSString*)character
 {
@@ -442,14 +457,14 @@ typedef enum{
     }
 }
 
-- (void)finishHandling:(BPKey*)sender
+- (void)finishHandling:(BLKey*)sender
 {
     // リピート処理を止める
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_repeatTimer invalidate];
     _repeatTimer = nil;
     // PieViewを消す
-    BPPieView *pv = [BPPieView sharedView];
+    BLPieView *pv = [BLPieView sharedView];
     if (pv) {
         [pv removeFromSuperview];
         [_currentPies removeObjectForKey:sender.keystr];
@@ -463,7 +478,7 @@ typedef enum{
 
 #pragma mark - CDDelegate
 
-- (void)candidateController:(BPCandidateViewController *)controller didSelectCandidate:(NSString *)candidate
+- (void)candidateController:(BLCandidateViewController *)controller didSelectCandidate:(NSString *)candidate
 {
     [self.activeClient insertText:candidate];
     [self setInputMode:BPInputModeAlphabet];
@@ -472,29 +487,21 @@ typedef enum{
 
 #pragma mark - Utility
 
-- (NSInteger)indexFromDirection:(BPDirection)direction
+- (NSInteger)indexFromDirection:(BLTouchDirection)direction
 {
     switch (direction) {
-        case BPDirectionUp:
-            return 0;
-            break;
-        case BPDirectionUpRight:
-            return 1;
-            break;
-        case BPDirectionDownRight:
-            return 2;
-            break;
-        case BPDirectionDownLeft:
-            return 3;
-            break;
-        case BPDirectionUpLeft:
-            return 4;
+        case BLTouchDirectionUP: return 0;
+        case BLTouchDirectionUpRight: return 1;
+        case BLTouchDirectionUpLeft: return 2;
+        case BLTouchDirectionDownRight: return 3;
+        case BLTouchDirectionDownLeft: return 4;
         default:
             break;
     }
+    return -1;
 }
 
-- (BPDirection)getDirection:(CGPoint)current from:(CGPoint)previous
+- (BLTouchDirection)getDirection:(CGPoint)current from:(CGPoint)previous
 {
     CGFloat dx = current.x - previous.x;
     CGFloat dy = current.y - previous.y;
@@ -508,19 +515,19 @@ typedef enum{
     
     if((0 <= angle && angle < PI*3/10) || (PI*19/10 <= angle && angle <= PI*2)){
         // 右上
-        return BPDirectionUpRight;
+        return BLTouchDirectionUpRight;
     }else if(PI*3/10  <= angle && angle < PI*7/10 ){
         // 上
-        return BPDirectionUp;
+        return BLTouchDirectionUP;
     }else if(PI*7/10  <= angle && angle < PI*11/10 ){
         // 左上
-        return BPDirectionUpLeft;
+        return BLTouchDirectionUpLeft;
     }else if(PI*11/10  <= angle && angle < PI*15/10 ){
         // 左下
-        return BPDirectionDownLeft;
+        return BLTouchDirectionDownLeft;
     }else if(PI*15/10  <= angle && angle < PI*19/10 ){
         // 右下
-        return BPDirectionDownRight;
+        return BLTouchDirectionDownRight;
     }else{
         NSLog(@"invalid angle %f",angle);
     }

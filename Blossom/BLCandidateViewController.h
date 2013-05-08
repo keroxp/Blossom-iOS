@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol BPCandidateViewControllerDelegate;
+@protocol BLCandidateViewControllerDelegate;
 
-@interface BPCandidateViewController : UIViewController
+@interface BLCandidateViewController : UIViewController
 <UICollectionViewDelegate,UICollectionViewDataSource,SocketIODelegate>
 
-- (id)initWithDelegate:(id<BPCandidateViewControllerDelegate>)delegate;
+- (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate;
 
-@property (weak) id<BPCandidateViewControllerDelegate> delegate;
+@property (weak) id<BLCandidateViewControllerDelegate> delegate;
 @property (nonatomic) NSString *hiraBuffer;
 
 /* 連文節変換 */
@@ -23,8 +23,8 @@
 
 @end
 
-@protocol BPCandidateViewControllerDelegate <NSObject>
+@protocol BLCandidateViewControllerDelegate <NSObject>
 
-- (void)candidateController:(BPCandidateViewController*)controller didSelectCandidate:(NSString*)candidate;
+- (void)candidateController:(BLCandidateViewController*)controller didSelectCandidate:(NSString*)candidate;
 
 @end

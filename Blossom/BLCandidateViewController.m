@@ -6,10 +6,10 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
-#import "BPCandidateViewController.h"
-#import "BPCandidateCell.h"
+#import "BLCandidateViewController.h"
+#import "BLCandidateCell.h"
 
-@interface BPCandidateViewController ()
+@interface BLCandidateViewController ()
 {
     //
     AFHTTPClient *_httpClient;
@@ -35,11 +35,11 @@
 
 @end
 
-@implementation BPCandidateViewController
+@implementation BLCandidateViewController
 
-- (id)initWithDelegate:(id<BPCandidateViewControllerDelegate>)delegate
+- (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate
 {
-    self = [super initWithNibName:@"BPCandidateViewController" bundle:[NSBundle mainBundle]];
+    self = [super initWithNibName:@"BLCandidateViewController" bundle:[NSBundle mainBundle]];
     if (self) {
         // Custom initialization
         _delegate = delegate;
@@ -58,8 +58,8 @@
 {
     [super viewDidLoad];
 
-    [self.horizontalCandidateView registerClass:[BPCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
-    [self.verticalCandidateView registerClass:[BPCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
+    [self.horizontalCandidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
+    [self.verticalCandidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.horizontalCandidateView reloadData];
     [self.horizontalCandidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
     [self.toggleButton addEventHandler:^(id sender) {
@@ -123,7 +123,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellID = @"Cell";
-    BPCandidateCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellID forIndexPath:indexPath];
+    BLCandidateCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellID forIndexPath:indexPath];
     if (_candidates.count > 0) {
         NSString *s = [_candidates objectAtIndex:indexPath.row];
         [cell.textLabel setText:s];
