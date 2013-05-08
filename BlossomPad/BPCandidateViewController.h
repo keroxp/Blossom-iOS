@@ -11,7 +11,7 @@
 @protocol BPCandidateViewControllerDelegate;
 
 @interface BPCandidateViewController : UIViewController
-<UICollectionViewDelegate,UICollectionViewDataSource,SRWebSocketDelegate,SocketIODelegate>
+<UICollectionViewDelegate,UICollectionViewDataSource,SocketIODelegate>
 
 - (id)initWithDelegate:(id<BPCandidateViewControllerDelegate>)delegate;
 

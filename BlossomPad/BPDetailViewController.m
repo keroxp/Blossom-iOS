@@ -27,11 +27,10 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setEntry:(Entry *)entry
 {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-        
+    if (_entry != entry) {
+        _entry = entry;
         // Update the view.
         [self configureView];
     }
@@ -45,8 +44,11 @@
 {
     // Update the user interface for the detail item.
 
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+    if (self.entry) {
+        self.textView.text = self.entry.text;
+        self.title = self.entry.title;
+        UITableViewController *tv = [[self.splitViewController.viewControllers objectAtIndex:0] topViewController];
+        [tv.tableView reloadData];
     }
 }
 
@@ -64,12 +66,32 @@
     f.size.height = 55.0f;
     [kvc.view setFrame:f];
     self.textView.inputView = kvc.view;
+    self.textView.userInteractionEnabled = NO;
     self.keyboardViewController = kvc;
     
     BPCandidateViewController *cv = [[BPCandidateViewController alloc] initWithDelegate:kvc];
     self.textView.inputAccessoryView = cv.view;
     self.candidateViewController = cv;
     [self.keyboardViewController setCandidateViewController:cv];
+    
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    [self.textView setUserInteractionEnabled:editing];
+    if (editing) {
+        [self.textView becomeFirstResponder];
+    }else{
+        self.entry.text = self.textView.text;
+        [self.entry.text enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
+            self.entry.title = line;
+            *stop = YES;
+        }];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    }
+    [self configureView];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {

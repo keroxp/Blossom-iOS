@@ -25,7 +25,6 @@
 		A63F16251735385B00ECE693 /* BPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F16241735385B00ECE693 /* BPKey.m */; };
 		A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */; };
 		A63F162D173539DE00ECE693 /* Abstract.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F162C173539DE00ECE693 /* Abstract.m */; };
-		A63F1630173539DE00ECE693 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F162F173539DE00ECE693 /* Entry.m */; };
 		A63F163B17354DD200ECE693 /* BPPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A63F163A17354DD200ECE693 /* BPPieView.m */; };
 		A63F163D1735566300ECE693 /* BPKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63F163C1735566300ECE693 /* BPKeyboardViewController.xib */; };
 		A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63F163E173565CE00ECE693 /* keybg@2x.png */; };
@@ -50,6 +49,7 @@
 		A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8817369B80005F28B8 /* CFNetwork.framework */; };
 		A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8A17369B95005F28B8 /* libicucore.dylib */; };
 		A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8C17369B9D005F28B8 /* Security.framework */; };
+		A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DC58AC173740FE00FF3F46 /* Entry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,8 +80,6 @@
 		A63F1628173538E400ECE693 /* BPModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BPModel.xcdatamodel; sourceTree = "<group>"; };
 		A63F162B173539DE00ECE693 /* Abstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Abstract.h; path = BlossomPad/Abstract.h; sourceTree = "<group>"; };
 		A63F162C173539DE00ECE693 /* Abstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Abstract.m; path = BlossomPad/Abstract.m; sourceTree = "<group>"; };
-		A63F162E173539DE00ECE693 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
-		A63F162F173539DE00ECE693 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
 		A63F163117354B6F00ECE693 /* BLKeyCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLKeyCode.h; sourceTree = "<group>"; };
 		A63F163917354DD200ECE693 /* BPPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPPieView.h; sourceTree = "<group>"; };
 		A63F163A17354DD200ECE693 /* BPPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPPieView.m; sourceTree = "<group>"; };
@@ -112,6 +110,8 @@
 		A6711F8817369B80005F28B8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A6711F8A17369B95005F28B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		A6711F8C17369B9D005F28B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		A6DC58AB173740FE00FF3F46 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
+		A6DC58AC173740FE00FF3F46 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -221,10 +221,10 @@
 			isa = PBXGroup;
 			children = (
 				A63F1627173538E400ECE693 /* BPModel.xcdatamodeld */,
+				A6DC58AB173740FE00FF3F46 /* Entry.h */,
+				A6DC58AC173740FE00FF3F46 /* Entry.m */,
 				A63F162B173539DE00ECE693 /* Abstract.h */,
 				A63F162C173539DE00ECE693 /* Abstract.m */,
-				A63F162E173539DE00ECE693 /* Entry.h */,
-				A63F162F173539DE00ECE693 /* Entry.m */,
 			);
 			name = Models;
 			path = ..;
@@ -382,12 +382,12 @@
 				A63F16251735385B00ECE693 /* BPKey.m in Sources */,
 				A63F1629173538E400ECE693 /* BPModel.xcdatamodeld in Sources */,
 				A63F162D173539DE00ECE693 /* Abstract.m in Sources */,
-				A63F1630173539DE00ECE693 /* Entry.m in Sources */,
 				A63F163B17354DD200ECE693 /* BPPieView.m in Sources */,
 				A63F16471735E5DC00ECE693 /* BPDictionary.m in Sources */,
 				A63F16591736392200ECE693 /* BPCandidateCell.m in Sources */,
 				A6711CBE17364735005F28B8 /* BPCandidateViewController.m in Sources */,
 				A6711CC217367104005F28B8 /* NSString+isKana.m in Sources */,
+				A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

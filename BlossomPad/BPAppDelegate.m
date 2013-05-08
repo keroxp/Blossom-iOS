@@ -18,12 +18,8 @@
     UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
     splitViewController.delegate = (id)navigationController.topViewController;
     
-//    for (NSArray *h in [[BPDictionary sharedDictionary] headList]) {
-//        TFLog(@"%i",h.count);
-//    }
-//    [[[BPDictionary sharedDictionary] connectionList] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-//        TFLog(@"%i : %i", [key integerValue], [(NSArray*)obj count]);
-//    }];
+    // Magical Recordをセットアップ
+    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"BlossomPad.sqlite"];
     
     return YES;
 }
@@ -53,6 +49,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [MagicalRecord cleanUp];
 }
 
 @end

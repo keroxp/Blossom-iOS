@@ -16,4 +16,6 @@
 @property (nonatomic, retain) NSDate * updated;
 @property (nonatomic, retain) NSString * identifier;
 
++ (id)createEntity;
+
 @end

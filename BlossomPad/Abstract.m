@@ -15,4 +15,15 @@
 @dynamic updated;
 @dynamic identifier;
 
++ (id)createEntity
+{
+    Abstract *a = [super createEntity];
+    NSDate *d =  [NSDate date];
+    a.created = d;
+    a.updated = d;
+    a.identifier = [d description];
+    return a;
+}
+
+
 @end

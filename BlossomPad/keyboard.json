@@ -22,7 +22,7 @@
 		{"key":"j","pieces":["じゃ","じ","じゅ","じぇ","じょ"]},
 		{"key":"k","pieces":["か","き","く","け","こ"]},
 		{"key":"l","pieces":["ぁ","ぃ","ぅ","ぇ","ぉ"]},
-		{"key":"enter","isRepeatable":true,"width":134.0,"isFunctional":true}
+		{"key":"enter","label":"確定","isRepeatable":true,"width":134.0,"isFunctional":true}
 	],
 	[
 		{"key":"shift","isStickey":true},
@@ -38,6 +38,7 @@
 		{"key":"hyphen","label":"-"}				
 	],
 	[
+        {"key":"add","label":"＋","isTrigger":true},
         {"key":"number","label":"123","isTrigger":true},
         {"key":"symbol","label":";:@","isTrigger":true},
         {"key":"space","isRepeatable":true,"isFunctional":true,"width":542.0},

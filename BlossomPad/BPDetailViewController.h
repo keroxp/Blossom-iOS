@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Entry.h"
 
 @interface BPDetailViewController : UIViewController <UISplitViewControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) Entry *entry;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 

@@ -44,7 +44,7 @@
         // Custom initialization
         _delegate = delegate;
         // HTTPクライアントを作成
-        _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://192.168.11.23:2342/"]];
+        _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://localhost:2342/"]];
         // ソケットクライアントを作成
         _socketIO = [[SocketIO alloc] initWithDelegate:self];
         //　候補バッファを作成
@@ -118,6 +118,8 @@
     return _candidates.count;
 }
 
+
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellID = @"Cell";
@@ -153,26 +155,19 @@
                 return;
             }
         }
-        // なければソケットで予測変換を取得する
-        [_socketIO sendEvent:@"pushed" withData:hiraBuffer];
+        // なければソケットで予測変換を取得する。バッファが二文字以下の場合はなにもやらない
+        if (hiraBuffer.length > 2) {
+            [_socketIO sendEvent:@"suggest" withData:hiraBuffer];
+        }else if(hiraBuffer.length == 0){
+            [self removeCandidates];
+        }
         _hiraBuffer = hiraBuffer;
     }
 }
 
 - (void)performConversion
 {
-    [_httpClient getPath:@"" parameters:@{@"mode" : @"0", @"hira" : self.hiraBuffer} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *resstr = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSError *e = nil;
-        NSArray *cands = [resstr objectFromJSONStringWithParseOptions:0 error:&e];
-        if (e) {
-            TFLog(@"%@",e);
-            abort();
-        }
-        [self setCandidates:cands];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        TFLog(@"%@",error);
-    }];
+    [_socketIO sendEvent:@"kana" withData:_hiraBuffer];
 }
 
 #pragma mark - WebSocket
@@ -180,17 +175,24 @@
 - (void)socketIO:(SocketIO *)socket onError:(NSError *)error
 {
     TFLog(@"socket error : %@",error);
+    [KGStatusBar showErrorWithStatus:NSLocalizedString(@"WebSocket Error", )];
 }
 
 - (void)socketIODidConnect:(SocketIO *)socket
 {
     TFLog(@"socket io connected");
+    [KGStatusBar showSuccessWithStatus:NSLocalizedString(@"WebSocket Connected", )];
+}
+
+- (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error
+{
+    [KGStatusBar showErrorWithStatus:NSLocalizedString(@"WebSocket Disconnected", )];
 }
 
 - (void)socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet
 {
     if ([packet.name isEqualToString:@"send candidates"]) {
-        TFLog(@"event name : %@, data: %@",packet.name,packet.dataAsJSON);
+//        TFLog(@"event name : %@, data: %@",packet.name,packet.dataAsJSON);
         [self setCandidates:[packet.args objectAtIndex:0]];
     }
 }

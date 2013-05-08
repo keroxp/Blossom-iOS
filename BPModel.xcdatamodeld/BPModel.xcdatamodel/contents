@@ -7,9 +7,10 @@
     </entity>
     <entity name="Entry" representedClassName="Entry" parentEntity="Abstract" syncable="YES">
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Abstract" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="Entry" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="Entry" positionX="160" positionY="192" width="128" height="75"/>
     </elements>
 </model>

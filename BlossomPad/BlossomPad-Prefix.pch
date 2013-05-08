@@ -9,6 +9,7 @@
 #endif
 
 #ifdef __OBJC__
+    #define MR_SHORTHAND
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData+MagicalRecord.h>
@@ -19,6 +20,7 @@
     #import <SRWebSocket.h>
     #import <SocketIO.h>
     #import <SocketIOPacket.h>
+    #import <KGStatusBar.h>
     #import <TestFlight.h>
     #import "NSString+isKana.h"
 #endif

@@ -72,6 +72,9 @@ typedef enum{
 @property (strong, nonatomic) NSMutableString *romaBuffer;
 @property (assign, nonatomic) BPInputMode inputMode;
 
+@property () BPKey *enterKey;
+@property () BPKey *spaceKey;
+
 @end
 
 @implementation BPKeyboardViewController
@@ -143,6 +146,11 @@ typedef enum{
                 [self.view addSubview:key];
                 [[_rows objectAtIndex:i] addObject:key];
                 [_keys addObject:key];
+                if ([key.keystr isEqualToString:@"enter"]) {
+                    _enterKey = key;
+                }else if ([key.keystr isEqualToString:@"space"]){
+                    _spaceKey = key;
+                }
             }];
         }];
     }
@@ -195,7 +203,7 @@ typedef enum{
                 [key.titleLabel setFont:[UIFont systemFontOfSize:20]];
                 f = CGRectMake(x*3/4, y*3/4, w*3/4, h*3/4);
                 // ２段目をずらす
-                if (i == 1) f = CGRectMake(kRow2MarginLeft+x*3/4,y*3/4,w*3/4,h*3/4);
+                if (i == 1) f = CGRectMake(kRow2MarginLeft*3/4+x*3/4,y*3/4,w*3/4,h*3/4);
             }else{
                 [key.titleLabel setFont:[UIFont systemFontOfSize:25]];
                 f = CGRectMake(x, y, w, h);
@@ -281,6 +289,7 @@ typedef enum{
                 // バッファがあればバッファから文字を削除
                 [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
                 [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+                [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
             }else{
                 // なければフィールドから文字を削除
                 [_originalBuffer setString:@""];
@@ -302,6 +311,8 @@ typedef enum{
                     [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
                 }
             }
+        }else if ([s isEqualToString:@"close"]){
+            [self.activeClient resignFirstResponder];
         }
     }    
     [self finishHandling:sender];
@@ -422,6 +433,11 @@ typedef enum{
     if (inputMode != _inputMode) {
         [_romaBuffer setString:@""];
         [_originalBuffer setString:@""];
+        if (inputMode == BPInputModeRomaKana) {
+            [self.spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
+        }else{
+            [self.spaceKey setTitle:@"" forState:UIControlStateNormal];
+        }
         _inputMode = inputMode;
     }
 }

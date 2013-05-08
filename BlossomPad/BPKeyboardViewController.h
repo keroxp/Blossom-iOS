@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "BPCandidateViewController.h"
 @interface BPKeyboardViewController : UIViewController
-<UICollectionViewDelegate,UICollectionViewDataSource,BPCandidateViewControllerDelegate>
+<BPCandidateViewControllerDelegate>
 
 /* 入力先 */
-@property (weak) id<UITextInput,UIKeyInput> activeClient;
+@property (weak) UIResponder<UITextInput,UIKeyInput> *activeClient;
 /* キーボードの行 */
 @property (readonly) NSArray *rows;
 @property (readonly) NSArray *keys;

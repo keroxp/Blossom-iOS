@@ -140,4 +140,9 @@ static NSDictionary *smalls;
     return self;
 }
 
+- (void)searchForEntryForPattern:(NSString *)pattern word:(NSString *)word option:(BPDictionarySearchOption)option progress:(void (^)(BPDictEntry *))progress finish:(void (^)(BOOL))finish
+{
+    return;
+}
+
 @end

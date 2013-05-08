@@ -18,7 +18,6 @@
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _textLabel.textAlignment = NSTextAlignmentCenter;
         [_textLabel setBackgroundColor:[UIColor clearColor]];
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
         [self.contentView addSubview:_textLabel];
         UIImageView *iv =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"candidateseparator"]];
         CGRect f = CGRectMake(CGRectGetWidth(self.bounds)-1, 0, 1, CGRectGetHeight(self.bounds));

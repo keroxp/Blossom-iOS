@@ -55,6 +55,8 @@ static BPPieView *shared;
             UIButton *p = [[UIButton alloc] initWithFrame:frames[i]];
             [p.titleLabel setShadowOffset:CGSizeMake(0, 1)];
             [p setBackgroundImage:[UIImage imageNamed:@"piepiecebg"] forState:UIControlStateHighlighted];
+            [p setTitleColor:[UIColor colorWithRed:(float)85/255 green:(float)85/255 blue:(float)85/255 alpha:1.0f] forState:UIControlStateNormal];
+            [p setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
             [ma addObject:p];
             [self addSubview:p];
         }

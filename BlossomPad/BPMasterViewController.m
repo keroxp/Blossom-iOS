@@ -7,12 +7,13 @@
 //
 
 #import "BPMasterViewController.h"
-
 #import "BPDetailViewController.h"
+#import "Entry.h"
 
-@interface BPMasterViewController () {
-    NSMutableArray *_objects;
-}
+@interface BPMasterViewController ()
+
+@property () NSMutableArray *entries;
+
 @end
 
 @implementation BPMasterViewController
@@ -30,8 +31,19 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    _entries = [[Entry findAllSortedBy:@"updated" ascending:YES] mutableCopy];
+    if (!_entries || _entries.count == 0) {
+        _entries = [[NSMutableArray alloc] init];
+    }
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd handler:^(id sender) {
+        Entry *entry = [Entry createEntity];
+        [_entries insertObject:entry atIndex:0];
+        NSError *e = nil;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+
     self.detailViewController = (BPDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
@@ -41,15 +53,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
-{
-    if (!_objects) {
-        _objects = [[NSMutableArray alloc] init];
-    }
-    [_objects insertObject:[NSDate date] atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
 
 #pragma mark - Table View
 
@@ -60,15 +63,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _objects.count;
+    return _entries.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    Entry *e= _entries[indexPath.row];
+    cell.textLabel.text = e.title;
     return cell;
 }
 
@@ -81,7 +84,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_objects removeObjectAtIndex:indexPath.row];
+        Entry *entry = _entries[indexPath.row];
+        [entry deleteEntity];
+        [_entries removeObjectAtIndex:indexPath.row];
+        NSError *e = nil;
+        [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -106,8 +113,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *object = _objects[indexPath.row];
-    self.detailViewController.detailItem = object;
+    Entry *object = _entries[indexPath.row];
+    self.detailViewController.entry = object;
 }
 
 @end
