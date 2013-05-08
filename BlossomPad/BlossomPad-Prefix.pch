@@ -12,6 +12,7 @@
     #define MR_SHORTHAND
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <AudioToolbox/AudioToolbox.h>
     #import <CoreData+MagicalRecord.h>
     #import <AFNetworking.h>
     #import <BlocksKit.h>

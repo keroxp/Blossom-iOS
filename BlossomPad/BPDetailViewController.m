@@ -58,10 +58,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     
-    BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithNibName:@"BPKeyboardViewController"
-                                                                               bundle:[NSBundle mainBundle]];
-    
-    kvc.activeClient = self.textView;
+    BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithClient:self.textView];
     CGRect f = kvc.view.frame;
     f.size.height = 55.0f;
     [kvc.view setFrame:f];

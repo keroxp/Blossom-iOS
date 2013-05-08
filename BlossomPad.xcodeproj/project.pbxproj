@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0F50DE8E5408B9D2CB69A /* libPods.a */; };
+		A62F9B78173A8E130045A4F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */; };
 		A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15F81735307D00ECE693 /* UIKit.framework */; };
 		A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FA1735307D00ECE693 /* Foundation.framework */; };
 		A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FC1735307D00ECE693 /* CoreGraphics.framework */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		54552EB0DC5440F389C0D877 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A63F15F51735307D00ECE693 /* BlossomPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlossomPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63F15F81735307D00ECE693 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A63F15FA1735307D00ECE693 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -120,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A62F9B78173A8E130045A4F7 /* AudioToolbox.framework in Frameworks */,
 				A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */,
 				A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */,
 				A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */,
@@ -174,6 +177,7 @@
 		A63F15FE1735307D00ECE693 /* BlossomPad */ = {
 			isa = PBXGroup;
 			children = (
+				A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */,
 				A63F16101735307D00ECE693 /* MainStoryboard.storyboard */,
 				A63F164C1735FB3600ECE693 /* Singletons */,
 				A63F162A1735395200ECE693 /* Models */,

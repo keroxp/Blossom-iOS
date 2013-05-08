@@ -57,6 +57,8 @@ typedef enum{
     BLKey *_currentKey;
     // 現在のポップアップ
     UIButton *_currentPopup;
+    // 現在のタッチ方向
+    BLTouchDirection _currentDirection;
     // 現在表示されているPieViewの格納庫
     NSMutableDictionary *_currentPies;
     // 最初のタッチポイント
@@ -102,7 +104,7 @@ typedef enum{
         _originalBuffer = [NSMutableString string];
         _romaBuffer = [NSMutableString string];
         _inputMode = BPInputModeAlphabet;
-        
+        _activeClient = client;
         // キーボードを作成
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
@@ -124,6 +126,10 @@ typedef enum{
                         if (t == _currentTouch) {
                             CGPoint cur = [_currentTouch locationInView:__self.view];
                             BLTouchDirection dir = [self getDirection:cur from:_beginPoint];
+                            // 同じ方向にいる場合は処理を行わない
+                            if (dir == _currentDirection) {
+                                return ;
+                            }
                             BLPieView *pv = [BLPieView sharedView];
                             // 一度全てを非選択に
                             for (UIButton*b in pv.piePieces) {
@@ -131,8 +137,12 @@ typedef enum{
                             }
                             // 指定方向のパイピースをハイライト
                             [pv setHighlited:YES atIndex:dir];
+                            // 音を鳴らす
+                            //AudioServicesPlaySystemSound(1104);
                             //ポップアップを更新
                             [_currentPopup setTitle:[pv.pieces objectAtIndex:dir] forState:UIControlStateNormal];
+                            // 方向を保存
+                            _currentDirection = dir;
                         }
                     }
                 } touchesEndedBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
@@ -243,6 +253,8 @@ typedef enum{
 
 - (void)keyDidTouchDown:(BLKey *)sender
 {
+    // 音を鳴らす
+    AudioServicesPlaySystemSound(1104);
     // 凹ませる
     BLPieView *pv = [BLPieView sharedView];
     if (sender.pieces.count > 0) {
@@ -492,9 +504,9 @@ typedef enum{
     switch (direction) {
         case BLTouchDirectionUP: return 0;
         case BLTouchDirectionUpRight: return 1;
-        case BLTouchDirectionUpLeft: return 2;
-        case BLTouchDirectionDownRight: return 3;
-        case BLTouchDirectionDownLeft: return 4;
+        case BLTouchDirectionDownRight: return 2;
+        case BLTouchDirectionDownLeft: return 3;
+        case BLTouchDirectionUpLeft: return 4;
         default:
             break;
     }
