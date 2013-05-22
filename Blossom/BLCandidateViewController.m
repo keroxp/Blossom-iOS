@@ -8,6 +8,8 @@
 
 #import "BLCandidateViewController.h"
 #import "BLCandidateCell.h"
+#import "BLResource.h"
+#import "BLDictionary.h"
 
 @interface BLCandidateViewController ()
 {
@@ -17,8 +19,7 @@
     NSMutableArray *_candidates;
     //
     NSMutableDictionary *_candidatesStack;
-    // Socket Clien
-    SocketIO *_socketIO;
+
 }
 
 - (void)setCandidates:(NSArray*)candidates;
@@ -46,7 +47,7 @@
         // HTTPクライアントを作成
         _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://localhost:2342/"]];
         // ソケットクライアントを作成
-        _socketIO = [[SocketIO alloc] initWithDelegate:self];
+//        _socketIO = [[SocketIO alloc] initWithDelegate:self];
         //　候補バッファを作成
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
@@ -73,9 +74,6 @@
             
         }];
     } forControlEvents:UIControlEventTouchUpInside];
-    
-    // ソケットを開く
-    [_socketIO connectToHost:@"localhost" onPort:2342];
 }
 
 - (void)didReceiveMemoryWarning
@@ -125,8 +123,8 @@
     static NSString *CellID = @"Cell";
     BLCandidateCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellID forIndexPath:indexPath];
     if (_candidates.count > 0) {
-        NSString *s = [_candidates objectAtIndex:indexPath.row];
-        [cell.textLabel setText:s];
+        BLDictEntry *e = [_candidates objectAtIndex:indexPath.row];
+        [cell.textLabel setText:e.word];
     }else{
         [cell.textLabel setText:nil];
     }
@@ -138,7 +136,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row <= _candidates.count - 1) {
-        NSString *c = [_candidates objectAtIndex:indexPath.row];
+        BLDictEntry *c = [_candidates objectAtIndex:indexPath.row];
         [_delegate candidateController:self didSelectCandidate:c];
         [self removeCandidates];
     }
@@ -156,8 +154,19 @@
             }
         }
         // なければソケットで予測変換を取得する。バッファが二文字以下の場合はなにもやらない
-        if (hiraBuffer.length > 2) {
-            [_socketIO sendEvent:@"suggest" withData:hiraBuffer];
+        [[BLDictionary sharedDictionary] cancelSearch];
+        NSMutableArray *candidates = [NSMutableArray array];
+        if (hiraBuffer.length > 0) {
+            [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:^(NSString *pattern, BLDictEntry *entry, BOOL complete, BOOL *stop) {
+                [candidates addObject:entry];
+                // 10個見つかったら更新
+                if (candidates.count > 9) {
+                    [self appendCandidates:candidates];
+                    [candidates removeAllObjects];
+                }
+            } notFound:^(NSString *pattern) {
+                NSLog(@"not found : %p",pattern);
+            }];
         }else if(hiraBuffer.length == 0){
             [self removeCandidates];
         }
@@ -165,35 +174,4 @@
     }
 }
 
-- (void)performConversion
-{
-    [_socketIO sendEvent:@"kana" withData:_hiraBuffer];
-}
-
-#pragma mark - WebSocket
-
-- (void)socketIO:(SocketIO *)socket onError:(NSError *)error
-{
-    TFLog(@"socket error : %@",error);
-    [KGStatusBar showErrorWithStatus:NSLocalizedString(@"WebSocket Error", )];
-}
-
-- (void)socketIODidConnect:(SocketIO *)socket
-{
-    TFLog(@"socket io connected");
-    [KGStatusBar showSuccessWithStatus:NSLocalizedString(@"WebSocket Connected", )];
-}
-
-- (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error
-{
-    [KGStatusBar showErrorWithStatus:NSLocalizedString(@"WebSocket Disconnected", )];
-}
-
-- (void)socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet
-{
-    if ([packet.name isEqualToString:@"send candidates"]) {
-//        TFLog(@"event name : %@, data: %@",packet.name,packet.dataAsJSON);
-        [self setCandidates:[packet.args objectAtIndex:0]];
-    }
-}
 @end

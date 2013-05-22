@@ -9,7 +9,8 @@
 #import "BLKeyboardViewController.h"
 #import "BLKey.h"
 #import "BLPieView.h"
-#import "BPDictionary.h"
+#import "BLDictionary.h"
+#import "BLResource.h"
 #import "BLCandidateViewController.h"
 #import "NSString+isKana.h"
 
@@ -69,7 +70,7 @@ typedef enum{
     NSMutableArray *_keys;
     // リピートキーのタイマー
     NSTimer *_repeatTimer;
-    /*  */
+    /* 行列 */
     NSMutableArray *_rows;
 }
 
@@ -105,61 +106,18 @@ typedef enum{
         _romaBuffer = [NSMutableString string];
         _inputMode = BPInputModeAlphabet;
         _activeClient = client;
+        _currentDirection = -1;
         // キーボードを作成
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
                 // Keyをインスタンス化
                 BLKey *key = [[BLKey alloc] initWithJSON:(NSDictionary*)obj2 line:i index:j];
-                __block BLKeyboardViewController *__self = self;
                 [key setTouchesBeganBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
-                    [key_ setHighlighted:YES];
-                    // マルチタッチは検知しない
-                    if (_currentTouch) return;
-                    // リファレンス・アサイン
-                    _currentTouch = [touches anyObject];
-                    _beginPoint = [[touches anyObject] locationInView:__self.view];
-                    // 擬似ハンドラへ
-                    [self keyDidTouchDown:key_];
+                    [self touchesBegan:touches withEvent:event onKey:key_];
                 } touchesMovedBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
-                    for (UITouch *t in touches) {
-                        // 現在のタッチでなければハンドリングしない
-                        if (t == _currentTouch) {
-                            CGPoint cur = [_currentTouch locationInView:__self.view];
-                            BLTouchDirection dir = [self getDirection:cur from:_beginPoint];
-                            // 同じ方向にいる場合は処理を行わない
-                            if (dir == _currentDirection) {
-                                return ;
-                            }
-                            BLPieView *pv = [BLPieView sharedView];
-                            // 一度全てを非選択に
-                            for (UIButton*b in pv.piePieces) {
-                                b.highlighted = NO;
-                            }
-                            // 指定方向のパイピースをハイライト
-                            [pv setHighlited:YES atIndex:dir];
-                            // 音を鳴らす
-                            //AudioServicesPlaySystemSound(1104);
-                            //ポップアップを更新
-                            [_currentPopup setTitle:[pv.pieces objectAtIndex:dir] forState:UIControlStateNormal];
-                            // 方向を保存
-                            _currentDirection = dir;
-                        }
-                    }
+                    [self touchesMoved:touches withEvent:event onKey:key_];
                 } touchesEndedBlock:^(BLKey *key_, NSSet *touches, UIEvent *event) {
-                    [key_ setHighlighted:NO];
-                    for (UITouch*t in touches) {
-                        if (t == _currentTouch) {
-                            _endPoint = [t locationInView:__self.view];
-                            // キーの内部でタッチが終わったか？
-                            BOOL inside = CGRectContainsPoint(key_.frame, [t locationInView:__self.view]);
-                            // それによって擬似ハンドラを振り分け
-                            if (inside) {
-                                [self keyDidTouchUpInside:key_];
-                            }else{
-                                [self keyDidTouchUpOutSide:key_];
-                            }
-                        }
-                    }
+                    [self touchesEnded:touches withEvent:event onKey:key_];
                 }];
                 [self.view addSubview:key];
                 [[_rows objectAtIndex:i] addObject:key];
@@ -191,12 +149,20 @@ typedef enum{
     [self layoutKeysForOrientation:[[UIDevice currentDevice] orientation]];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self finishHandling:_currentKey];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - Rotatation and Layout
 
 - (void)layoutKeysForOrientation:(UIDeviceOrientation)orientation
 {
@@ -249,7 +215,64 @@ typedef enum{
     return _rows[row][column];
 }
 
-#pragma mark - Key Handler
+#pragma mark - Touch Handler
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event onKey:(BLKey*)key
+{
+    [key setHighlighted:YES];
+    // マルチタッチは検知しない
+    if (_currentTouch) return;
+    // 代入
+    _currentTouch = [touches anyObject];
+    _beginPoint = [[touches anyObject] locationInView:self.view];
+    // 擬似ハンドラへ
+    [self keyDidTouchDown:key];
+
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event onKey:(BLKey*)key
+{
+    for (UITouch *t in touches) {
+        // 現在のタッチでなければハンドリングしない
+        if (t == _currentTouch) {
+            CGPoint cur = [_currentTouch locationInView:self.view];
+            BLTouchDirection dir = [self getDirection:cur from:_beginPoint];
+            // 同じ方向にいる場合は処理を行わない
+            if (dir == _currentDirection) {
+                return ;
+            }
+            BLPieView *pv = [BLPieView sharedView];
+            // 一度全てを非選択に
+            for (UIButton*b in pv.piePieces) {
+                b.highlighted = NO;
+            }
+            // 指定方向のパイピースをハイライト
+            [pv setHighlited:YES atIndex:dir];
+            //ポップアップを更新
+            [_currentPopup setTitle:[pv.pieces objectAtIndex:dir] forState:UIControlStateNormal];
+            // 方向を保存
+            _currentDirection = dir;
+        }
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event onKey:(BLKey*)key
+{
+    [key setHighlighted:NO];
+    for (UITouch*t in touches) {
+        if (t == _currentTouch) {
+            _endPoint = [t locationInView:self.view];
+            // キーの内部でタッチが終わったか？
+            BOOL inside = CGRectContainsPoint(key.frame, [t locationInView:self.view]);
+            // それによって擬似ハンドラを振り分け
+            if (inside) {
+                [self keyDidTouchUpInside:key];
+            }else{
+                [self keyDidTouchUpOutSide:key];
+            }
+        }
+    }
+}
 
 - (void)keyDidTouchDown:(BLKey *)sender
 {
@@ -292,52 +315,18 @@ typedef enum{
     }else{
         // 特殊キー
         NSString *s = [sender keystr];
-        if ([s isEqualToString:@"enter"]) { // エンター
-            // バッファを空に
-            if ([self.activeClient textInRange:[self.activeClient markedTextRange]]) {
-                // マークを外す
-                [self.activeClient unmarkText];
-                [self setInputMode:BPInputModeAlphabet];
-            }else{
-                // 改行
-                [self.activeClient insertText:@"\n"];
-            }
+        if ([s isEqualToString:@"enter"]) {
+            // エンター
+            [self handleEnter];
         }else if ([s isEqualToString:@"space"]){
-            if (self.inputMode == BPInputModeRomaKana) {
-                // 変換
-                [self.candidateViewController performConversion];
-            }else{
-                [self.activeClient unmarkText];
-                [self setInputMode:BPInputModeAlphabet];
-                [self.activeClient insertText:@" "];                
-            }
-        }else if ([s isEqualToString:@"delete"]){ // デリート
-            if (_originalBuffer.length > 0) {
-                // バッファがあればバッファから文字を削除
-                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
-                [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-                [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
-            }else{
-                // なければフィールドから文字を削除
-                [_originalBuffer setString:@""];
-                [self.activeClient deleteBackward];
-            }
-            if (_romaBuffer.length > 0) {
-                [_romaBuffer deleteCharactersInRange:NSMakeRange(_romaBuffer.length - 1, 1)];
-            }else{
-                [_romaBuffer setString:@""];
-            }
-        }else if ([s isEqualToString:@"small"]){ // 小文字
-            if (_originalBuffer.length > 0) {
-                //あいうえおやゆよつわ
-                NSString *tail = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 1, 1)];
-                NSString *convert = [[BPDictionary sharedSmalls] objectForKey:tail];
-//                    NSLog(@"tail : %@, concert : %@",tail,convert);
-                if (convert) {
-                    [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1) withString:convert];
-                    [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-                }
-            }
+            // スペース
+            [self handleSpace];
+        }else if ([s isEqualToString:@"delete"]){
+            // デリート
+            [self handleDelete];
+        }else if ([s isEqualToString:@"small"]){
+            // 小文字
+            [self handleSmall];
         }else if ([s isEqualToString:@"close"]){
             [self.activeClient resignFirstResponder];
         }
@@ -377,6 +366,85 @@ typedef enum{
     } repeats:YES];
 }
 
+- (void)finishHandling:(BLKey*)sender
+{
+    // リピート処理を止める
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_repeatTimer invalidate];
+    _repeatTimer = nil;
+    // PieViewを消す
+    BLPieView *pv = [BLPieView sharedView];
+    if (pv) {
+        [pv removeFromSuperview];
+        [_currentPies removeObjectForKey:sender.keystr];
+    }
+    [_currentPopup removeFromSuperview];
+    
+    _currentKey = nil;
+    _currentTouch = nil;
+    _currentPopup = nil;
+}
+
+#pragma mark - Key Handler
+
+- (void)handleSpace
+{
+    if (self.inputMode == BPInputModeRomaKana) {
+        // 変換
+        [self.candidateViewController performConversion];
+    }else{
+        [self.activeClient unmarkText];
+        [self setInputMode:BPInputModeAlphabet];
+        [self.activeClient insertText:@" "];
+    }
+}
+
+- (void)handleDelete
+{
+    if (_originalBuffer.length > 0) {
+        // バッファがあればバッファから文字を削除
+        [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
+        [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+        [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
+    }else{
+        // なければフィールドから文字を削除
+        [_originalBuffer setString:@""];
+        [self.activeClient deleteBackward];
+    }
+    if (_romaBuffer.length > 0) {
+        [_romaBuffer deleteCharactersInRange:NSMakeRange(_romaBuffer.length - 1, 1)];
+    }else{
+        [_romaBuffer setString:@""];
+    }
+}
+
+- (void)handleEnter
+{
+    // バッファを空に
+    if ([self.activeClient textInRange:[self.activeClient markedTextRange]]) {
+        // マークを外す
+        [self.activeClient unmarkText];
+        [self setInputMode:BPInputModeAlphabet];
+    }else{
+        // 改行
+        [self.activeClient insertText:@"\n"];
+    }
+}
+
+- (void)handleSmall
+{
+    if (_originalBuffer.length > 0) {
+        //あいうえおやゆよつわ
+        NSString *tail = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 1, 1)];
+        NSString *convert = [[BLResource sharedSmalls] objectForKey:tail];
+//                    NSLog(@"tail : %@, concert : %@",tail,convert);
+        if (convert) {
+            [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1) withString:convert];
+            [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
+        }
+    }
+}
+
 #pragma mark - Bufferring and Composing
 
 - (void)appendOriginalBuffer:(NSString*)character
@@ -388,7 +456,8 @@ typedef enum{
         if ([character isKana]) {
             [self setInputMode:BPInputModeRomaKana];
             [_originalBuffer setString:add];
-            [self.activeClient setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];
+            [self.candidateViewController setHiraBuffer:add];
+            [self.activeClient setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];            
         }else{
             [self setInputMode:BPInputModeAlphabet];
             [self.activeClient insertText:add];
@@ -414,9 +483,9 @@ typedef enum{
             }
             
             // ローマ字入力
-            if ([[BPDictionary sharedRomaKana] objectForKey:_romaBuffer]){
+            if ([[BLResource sharedRomaKana] objectForKey:_romaBuffer]){
                 // 変換
-                NSString *converted = [[BPDictionary sharedRomaKana] objectForKey:_romaBuffer];
+                NSString *converted = [[BLResource sharedRomaKana] objectForKey:_romaBuffer];
                 [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - _romaBuffer.length, _romaBuffer.length)];
                 [_originalBuffer appendString:converted];
                 [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
@@ -469,30 +538,12 @@ typedef enum{
     }
 }
 
-- (void)finishHandling:(BLKey*)sender
-{
-    // リピート処理を止める
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [_repeatTimer invalidate];
-    _repeatTimer = nil;
-    // PieViewを消す
-    BLPieView *pv = [BLPieView sharedView];
-    if (pv) {
-        [pv removeFromSuperview];
-        [_currentPies removeObjectForKey:sender.keystr];
-    }
-    [_currentPopup removeFromSuperview];
-    
-    _currentKey = nil;
-    _currentTouch = nil;
-    _currentPopup = nil;
-}
 
 #pragma mark - CDDelegate
 
-- (void)candidateController:(BLCandidateViewController *)controller didSelectCandidate:(NSString *)candidate
+- (void)candidateController:(BLCandidateViewController *)controller didSelectCandidate:(BLDictEntry *)candidate
 {
-    [self.activeClient insertText:candidate];
+    [self.activeClient insertText:candidate.word];
     [self setInputMode:BPInputModeAlphabet];
 }
 

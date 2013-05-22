@@ -39,7 +39,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd handler:^(id sender) {
         Entry *entry = [Entry createEntity];
         [_entries insertObject:entry atIndex:0];
-        NSError *e = nil;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
@@ -87,7 +86,6 @@
         Entry *entry = _entries[indexPath.row];
         [entry deleteEntity];
         [_entries removeObjectAtIndex:indexPath.row];
-        NSError *e = nil;
         [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {

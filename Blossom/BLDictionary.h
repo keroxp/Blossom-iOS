@@ -6,34 +6,54 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory. All rights reserved.
 //
 
+/* 
+ アプリケーションで共通で使用するリソースを管理するクラス
+ */
+
 #import <Foundation/Foundation.h>
+
+@class BLDictEntry;
+
+typedef void (^BLSearchFoundBlock)(NSString*pattern, BLDictEntry *entry, BOOL complete, BOOL *stop);
+typedef void (^BLSearchNotFoundBlock)(NSString*pattern);
 
 typedef enum{
     BPDictionarySearchOptionNone = 0,
     BPDictionarySearchOptionOrderedSame,
     BPDictionarySearchOptionContains,
     BPDictionarySearchOptionT9
-}BPDictionarySearchOption;
+}BLDictionarySearchOption;
 
-@interface BPDictionary : NSObject
+@interface BLDictionary : NSObject
 
-+ (BPDictionary*)sharedDictionary;
-+ (NSDictionary*)sharedRomaKana;
-+ (NSDictionary*)sharedSmalls;
+/* Shared Instance */
++ (BLDictionary*)sharedDictionary;
 
+/* 全辞書エントリのリスト */
 @property (readonly) NSArray *entries;
+/* 先頭読みが同じ行に所属するエントリのリスト */
 @property (readonly) NSArray *headList;
+/* 前方接続が同じエントリのリスト */
 @property (readonly) NSDictionary *connectionList;
+/* 新規検索 */
+- (void)searchForEntriesWithPattern:(NSString*)pattern
+                              found:(BLSearchFoundBlock)found
+                           notFound:(BLSearchNotFoundBlock)notFound;
+/* 検索を止める */
+- (void)cancelSearch;
+
 
 @end
 
-@interface BPDictEntry : NSObject
+@interface BLDictEntry : NSObject
 
 /* 読み */
 @property (readonly) NSString *pattern;
 /* 文字 */
 @property (readonly) NSString *word;
+/* 前方接続の番号 */
 @property (readonly) NSUInteger inConnection;
+/* 後方接続の番号 */
 @property (readonly) NSUInteger outConnection;
 /* リンクリストのインデックス */
 @property (readonly) NSUInteger connectionLinkIndex;
@@ -42,15 +62,10 @@ typedef enum{
 /* 読みの先頭が何処の行に所属するか */
 @property () NSUInteger keyIndex;
 
+/* イニシャライザ */
 - (id)initWithPattern:(NSString*)pattern
                  word:(NSString*)word
          inConnection:(NSUInteger)inConnection
         outConnection:(NSUInteger)outConnection;
-
-- (void)searchForEntryForPattern:(NSString*)pattern
-                            word:(NSString*)word
-                          option:(BPDictionarySearchOption)option
-                        progress:(void (^)(BPDictEntry* entry))progress
-                          finish:(void (^)(BOOL found))finish;
 
 @end

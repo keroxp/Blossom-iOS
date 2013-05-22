@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class BLDictEntry;
 @protocol BLCandidateViewControllerDelegate;
 
 @interface BLCandidateViewController : UIViewController
-<UICollectionViewDelegate,UICollectionViewDataSource,SocketIODelegate>
+<UICollectionViewDelegate,UICollectionViewDataSource>
 
 - (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate;
 
@@ -25,6 +26,6 @@
 
 @protocol BLCandidateViewControllerDelegate <NSObject>
 
-- (void)candidateController:(BLCandidateViewController*)controller didSelectCandidate:(NSString*)candidate;
+- (void)candidateController:(BLCandidateViewController*)controller didSelectCandidate:(BLDictEntry*)candidate;
 
 @end

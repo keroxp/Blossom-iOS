@@ -7,7 +7,8 @@
 //
 
 #import "BPAppDelegate.h"
-#import "BPDictionary.h"
+#import "BLDictionary.h"
+#import "BLResource.h"
 
 @implementation BPAppDelegate
 
@@ -17,6 +18,11 @@
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
     UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
     splitViewController.delegate = (id)navigationController.topViewController;
+    
+    // リソースを初期化
+    [BLDictionary sharedDictionary];
+    [BLResource sharedRomaKana];
+    [BLResource sharedSmalls];
     
     // Magical Recordをセットアップ
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"BlossomPad.sqlite"];

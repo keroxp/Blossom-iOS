@@ -18,11 +18,9 @@
     #import <BlocksKit.h>
     #import <JSONKit.h>
     #import <BLKeyCode.h>
-    #import <SRWebSocket.h>
-    #import <SocketIO.h>
-    #import <SocketIOPacket.h>
     #import <KGStatusBar.h>
     #import <TestFlight.h>
+    #import <RegexKitLite.h>
     #import "NSString+isKana.h"
 #endif
 
