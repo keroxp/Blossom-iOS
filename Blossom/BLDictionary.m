@@ -19,9 +19,7 @@ static BLDictionary *shared;
     NSString *_currentPattern;
     NSMutableArray *_candidates;
     BLSearchFoundBlock _foundBlock;
-    BLSearchNotFoundBlock _notFoundBlock;
-    NSOperation *_currentOperation;
-    NSOperationQueue *_operationQueue;
+    BLSearchCompleteBlock _completeBlock;
 }
 @end
 
@@ -46,7 +44,6 @@ static BLDictionary *shared;
         _candidates = [NSMutableArray arrayWithCapacity:22160];
         _headList = [NSMutableArray arrayWithCapacity:10];
         _connectionList = [NSMutableDictionary dictionary];
-        _operationQueue = [[NSOperationQueue alloc] init];
         for (int  i = 0; i < 10; i++) {
             [_headList addObject:@[].mutableCopy];
         }
@@ -145,60 +142,58 @@ static BLDictionary *shared;
 
 - (void)searchForEntriesWithPattern:(NSString *)pattern
                               found:(BLSearchFoundBlock)found
-                           notFound:(BLSearchNotFoundBlock)notFound
+                           complete:(BLSearchCompleteBlock)complete
+
 {
     if (pattern.length == 0) {
         return;
     }
     _currentPattern = pattern;
-    _foundBlock = found;
-    _notFoundBlock = notFound;
-    // 検索を止める
-    if ([_operationQueue operationCount] > 0) {
-        [_operationQueue cancelAllOperations];
-    }
-    // デフォルトの検索はすべてで、以後の検索はマッチしたものに限る
+    _foundBlock = [found copy];
+    _completeBlock = [complete copy];
+
     NSArray *array = nil;
-    __block NSString *__pattern = pattern;
     if (pattern.length == 1) {
+        // 最初の一文字の検索のみ、平仮名の行で振り分ける
         array = [_headList objectAtIndex:[self headIndexWithPattern:pattern]];
     }else{
+        // 以降はそれ以前の検索で見つかった結果から探す
         if (_candidates.count > 0) {
             array = [_candidates mutableCopy];
             [_candidates removeAllObjects];
+        }else{
+            // ここには来ないはず
+            NSAssert(NO, nil);
         }
     }
     dispatch_queue_t main_queue = dispatch_get_main_queue();
-    [_operationQueue addOperationWithBlock:^{
+    dispatch_queue_t async_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+    dispatch_async(async_queue, ^{
         NSString *regexp = [NSString stringWithFormat:@"^%@.*?$",pattern];
         // 走査
-        [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        for (BLDictEntry *e in array) {
             // 検索
-            BLDictEntry *e = (BLDictEntry*)obj;
             NSRange r = [e.pattern rangeOfRegex:regexp];
-            BOOL complete = (idx == array.count - 1) ? YES : NO;
             // 見つかったら
             if (r.location != NSNotFound) {
-                dispatch_async(main_queue, ^{
-                    found(pattern, e, complete, stop);
-                });
+                if (found) {
+                    dispatch_async(main_queue, ^{
+                        found(pattern,e);
+                    });
+                }
                 [_candidates addObject:e];
             }
-            // 終了して見つからなかったら
-            if (complete && _candidates.count == 0){
-                dispatch_async(main_queue, ^{
-                    notFound(pattern);
-                });
-            }
-        }];
-    }];
+        }
+        // 終了して見つからなかったら
+        if (complete) {
+            NSLog(@"%i entries found for %@",_candidates.count,pattern);
+            dispatch_async(main_queue, ^{
+                complete(pattern, [_candidates copy]);
+            });
+        }
+    });
 }
 
-- (void)cancelSearch
-{
-    [_operationQueue cancelAllOperations];
-    [_candidates removeAllObjects];
-}
 
 @end
 

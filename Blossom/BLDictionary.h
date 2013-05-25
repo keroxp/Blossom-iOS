@@ -14,8 +14,8 @@
 
 @class BLDictEntry;
 
-typedef void (^BLSearchFoundBlock)(NSString*pattern, BLDictEntry *entry, BOOL complete, BOOL *stop);
-typedef void (^BLSearchNotFoundBlock)(NSString*pattern);
+typedef void (^BLSearchFoundBlock)(NSString *pattern, BLDictEntry *entry);
+typedef void (^BLSearchCompleteBlock)(NSString *pattern, NSArray *candidates);
 
 typedef enum{
     BPDictionarySearchOptionNone = 0,
@@ -38,10 +38,7 @@ typedef enum{
 /* 新規検索 */
 - (void)searchForEntriesWithPattern:(NSString*)pattern
                               found:(BLSearchFoundBlock)found
-                           notFound:(BLSearchNotFoundBlock)notFound;
-/* 検索を止める */
-- (void)cancelSearch;
-
+                           complete:(BLSearchCompleteBlock)complete;
 
 @end
 

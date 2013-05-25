@@ -142,6 +142,8 @@
     }
 }
 
+#pragma makr - Accessors
+
 - (void)setHiraBuffer:(NSString *)hiraBuffer
 {
     if (![_hiraBuffer isEqualToString:hiraBuffer]) {
@@ -153,19 +155,10 @@
                 return;
             }
         }
-        // なければソケットで予測変換を取得する。バッファが二文字以下の場合はなにもやらない
-        [[BLDictionary sharedDictionary] cancelSearch];
         NSMutableArray *candidates = [NSMutableArray array];
         if (hiraBuffer.length > 0) {
-            [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:^(NSString *pattern, BLDictEntry *entry, BOOL complete, BOOL *stop) {
-                [candidates addObject:entry];
-                // 10個見つかったら更新
-                if (candidates.count > 9) {
-                    [self appendCandidates:candidates];
-                    [candidates removeAllObjects];
-                }
-            } notFound:^(NSString *pattern) {
-                NSLog(@"not found : %p",pattern);
+            [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:NULL complete:^(NSString *pattern, NSArray *candidates) {
+                [self setCandidates:candidates];
             }];
         }else if(hiraBuffer.length == 0){
             [self removeCandidates];

@@ -45,9 +45,9 @@ typedef enum{
 
 /* 入力モード */
 typedef enum{
-    BPInputModeAlphabet = 0,
-    BPInputModeRomaKana
-}BPInputMode;
+    BLInputModeAlphabet = 0,
+    BLInputModeRomaKana
+}BLInputMode;
 
 
 @interface BLKeyboardViewController ()
@@ -81,7 +81,7 @@ typedef enum{
 /* ローマ字入力モードの際のアルファベット文字列 */
 @property (strong, nonatomic) NSMutableString *romaBuffer;
 /* 入力モード */
-@property (assign, nonatomic) BPInputMode inputMode;
+@property (assign, nonatomic) BLInputMode inputMode;
 /* エンターキー */
 @property () BLKey *enterKey;
 /* スペースキー */
@@ -104,7 +104,7 @@ typedef enum{
         _keys = @[].mutableCopy;
         _originalBuffer = [NSMutableString string];
         _romaBuffer = [NSMutableString string];
-        _inputMode = BPInputModeAlphabet;
+        _inputMode = BLInputModeAlphabet;
         _activeClient = client;
         _currentDirection = -1;
         // キーボードを作成
@@ -309,7 +309,7 @@ typedef enum{
     NSString *add = [sender.keystr lowercaseString];    
     // 通常入力
     if (!sender.isFunctional && !sender.isModifier) {
-        if (self.inputMode == BPInputModeRomaKana) {
+        if (self.inputMode == BLInputModeRomaKana) {
         }
         [self appendOriginalBuffer:add];
     }else{
@@ -342,8 +342,8 @@ typedef enum{
     
     // フリック入力
     if (pv.pieces.count > 0){
-        if (self.inputMode == BPInputModeAlphabet) {
-            [self setInputMode:BPInputModeAlphabet];
+        if (self.inputMode == BLInputModeAlphabet) {
+            [self setInputMode:BLInputModeAlphabet];
         }
         NSString *add = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
         [self appendOriginalBuffer:add];
@@ -389,12 +389,12 @@ typedef enum{
 
 - (void)handleSpace
 {
-    if (self.inputMode == BPInputModeRomaKana) {
+    if (self.inputMode == BLInputModeRomaKana) {
         // 変換
         [self.candidateViewController performConversion];
     }else{
         [self.activeClient unmarkText];
-        [self setInputMode:BPInputModeAlphabet];
+        [self setInputMode:BLInputModeAlphabet];
         [self.activeClient insertText:@" "];
     }
 }
@@ -424,7 +424,7 @@ typedef enum{
     if ([self.activeClient textInRange:[self.activeClient markedTextRange]]) {
         // マークを外す
         [self.activeClient unmarkText];
-        [self setInputMode:BPInputModeAlphabet];
+        [self setInputMode:BLInputModeAlphabet];
     }else{
         // 改行
         [self.activeClient insertText:@"\n"];
@@ -454,19 +454,19 @@ typedef enum{
     if (_originalBuffer.length == 0) {
         // インプットモードの変更
         if ([character isKana]) {
-            [self setInputMode:BPInputModeRomaKana];
+            [self setInputMode:BLInputModeRomaKana];
             [_originalBuffer setString:add];
             [self.candidateViewController setHiraBuffer:add];
             [self.activeClient setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];            
         }else{
-            [self setInputMode:BPInputModeAlphabet];
+            [self setInputMode:BLInputModeAlphabet];
             [self.activeClient insertText:add];
         }
     }else if (_originalBuffer.length > 0) {
         // バッファに格納        
-        if (self.inputMode == BPInputModeAlphabet) { // 英字入力モード
+        if (self.inputMode == BLInputModeAlphabet) { // 英字入力モード
             [self.activeClient insertText:character];
-        }else if (self.inputMode == BPInputModeRomaKana) {  // ローマ字入力モード            
+        }else if (self.inputMode == BLInputModeRomaKana) {  // ローマ字入力モード            
             [_originalBuffer appendString:add];
             
             NSString *ms = [add mutableCopy];
@@ -524,12 +524,12 @@ typedef enum{
     }
 }
 
-- (void)setInputMode:(BPInputMode)inputMode
+- (void)setInputMode:(BLInputMode)inputMode
 {
     if (inputMode != _inputMode) {
         [_romaBuffer setString:@""];
         [_originalBuffer setString:@""];
-        if (inputMode == BPInputModeRomaKana) {
+        if (inputMode == BLInputModeRomaKana) {
             [self.spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
         }else{
             [self.spaceKey setTitle:@"" forState:UIControlStateNormal];
@@ -544,7 +544,7 @@ typedef enum{
 - (void)candidateController:(BLCandidateViewController *)controller didSelectCandidate:(BLDictEntry *)candidate
 {
     [self.activeClient insertText:candidate.word];
-    [self setInputMode:BPInputModeAlphabet];
+    [self setInputMode:BLInputModeAlphabet];
 }
 
 
@@ -569,11 +569,7 @@ typedef enum{
     CGFloat dx = current.x - previous.x;
     CGFloat dy = current.y - previous.y;
     CGFloat angle = -atan2(dy, dx);
-    
-    //    NSLog(@"current %f, %f",current.x,current.y);
-    //    NSLog(@"prev %f, %f",previous.x,previous.y);
-    //    NSLog(@"angle : %f",angle*180/PI);
-    
+
     if (angle < 0) angle += PI*2;
     
     if((0 <= angle && angle < PI*3/10) || (PI*19/10 <= angle && angle <= PI*2)){
