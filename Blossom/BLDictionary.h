@@ -41,28 +41,3 @@ typedef enum{
                            complete:(BLSearchCompleteBlock)complete;
 
 @end
-
-@interface BLDictEntry : NSObject
-
-/* 読み */
-@property (readonly) NSString *pattern;
-/* 文字 */
-@property (readonly) NSString *word;
-/* 前方接続の番号 */
-@property (readonly) NSUInteger inConnection;
-/* 後方接続の番号 */
-@property (readonly) NSUInteger outConnection;
-/* リンクリストのインデックス */
-@property (readonly) NSUInteger connectionLinkIndex;
-/* 先頭読みリストのインデックス*/
-@property (readonly) NSUInteger keyLinkIndex;
-/* 読みの先頭が何処の行に所属するか */
-@property () NSUInteger keyIndex;
-
-/* イニシャライザ */
-- (id)initWithPattern:(NSString*)pattern
-                 word:(NSString*)word
-         inConnection:(NSUInteger)inConnection
-        outConnection:(NSUInteger)outConnection;
-
-@end

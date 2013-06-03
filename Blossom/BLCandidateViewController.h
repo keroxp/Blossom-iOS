@@ -14,11 +14,11 @@
 @interface BLCandidateViewController : UIViewController
 <UICollectionViewDelegate,UICollectionViewDataSource>
 
-- (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate;
-
 @property (weak) id<BLCandidateViewControllerDelegate> delegate;
 @property (nonatomic) NSString *hiraBuffer;
+@property (readonly) BOOL opened;
 
+- (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate;
 /* 連文節変換 */
 - (void)performConversion;
 
@@ -27,5 +27,6 @@
 @protocol BLCandidateViewControllerDelegate <NSObject>
 
 - (void)candidateController:(BLCandidateViewController*)controller didSelectCandidate:(BLDictEntry*)candidate;
+- (void)candidateController:(BLCandidateViewController *)controller toggleButtonDidTap:(UIButton *)sender open:(BOOL)open;
 
 @end

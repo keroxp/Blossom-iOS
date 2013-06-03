@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0F50DE8E5408B9D2CB69A /* libPods.a */; };
+		A60F724C17510F130032C78C /* BLDictEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = A60F724B17510F130032C78C /* BLDictEntry.m */; };
 		A62F9B78173A8E130045A4F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */; };
 		A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15F81735307D00ECE693 /* UIKit.framework */; };
 		A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FA1735307D00ECE693 /* Foundation.framework */; };
@@ -38,10 +39,11 @@
 		A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531189173A218D00FAC864 /* BLCandidateViewController.m */; };
 		A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118A173A218D00FAC864 /* BLCandidateViewController.xib */; };
 		A6531195173A218D00FAC864 /* BLKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118C173A218D00FAC864 /* BLKey.m */; };
-		A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118E173A218D00FAC864 /* BLKeyboardViewController.m */; };
-		A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */; };
+		A6531196173A218D00FAC864 /* BLMainKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */; };
+		A6531197173A218D00FAC864 /* BLMainKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */; };
 		A6531198173A218D00FAC864 /* BLPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531191173A218D00FAC864 /* BLPieView.m */; };
 		A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */ = {isa = PBXBuildFile; fileRef = A653119A173A21E500FAC864 /* NSString+isKana.m */; };
+		A66EF07C1754736600E08187 /* UIView+FrameChange.m in Sources */ = {isa = PBXBuildFile; fileRef = A66EF07B1754736600E08187 /* UIView+FrameChange.m */; };
 		A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB7173643A3005F28B8 /* togglebutton@2x.png */; };
 		A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CB917364455005F28B8 /* candidateseparator@2x.png */; };
 		A6711CC5173671F3005F28B8 /* romakana.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC3173671F3005F28B8 /* romakana.json */; };
@@ -52,11 +54,14 @@
 		A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8817369B80005F28B8 /* CFNetwork.framework */; };
 		A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8A17369B95005F28B8 /* libicucore.dylib */; };
 		A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8C17369B9D005F28B8 /* Security.framework */; };
+		A699F58E1752F26D00920209 /* BLKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A699F58D1752F26D00920209 /* BLKeyboardViewController.m */; };
 		A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DC58AC173740FE00FF3F46 /* Entry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		54552EB0DC5440F389C0D877 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A60F724A17510F130032C78C /* BLDictEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLDictEntry.h; sourceTree = "<group>"; };
+		A60F724B17510F130032C78C /* BLDictEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDictEntry.m; sourceTree = "<group>"; };
 		A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A63F15F51735307D00ECE693 /* BlossomPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlossomPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63F15F81735307D00ECE693 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -101,13 +106,15 @@
 		A653118A173A218D00FAC864 /* BLCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCandidateViewController.xib; sourceTree = "<group>"; };
 		A653118B173A218D00FAC864 /* BLKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKey.h; sourceTree = "<group>"; };
 		A653118C173A218D00FAC864 /* BLKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKey.m; sourceTree = "<group>"; };
-		A653118D173A218D00FAC864 /* BLKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboardViewController.h; sourceTree = "<group>"; };
-		A653118E173A218D00FAC864 /* BLKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboardViewController.m; sourceTree = "<group>"; };
-		A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLKeyboardViewController.xib; sourceTree = "<group>"; };
+		A653118D173A218D00FAC864 /* BLMainKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMainKeyboardViewController.h; sourceTree = "<group>"; };
+		A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMainKeyboardViewController.m; sourceTree = "<group>"; };
+		A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLMainKeyboardViewController.xib; sourceTree = "<group>"; };
 		A6531190173A218D00FAC864 /* BLPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPieView.h; sourceTree = "<group>"; };
 		A6531191173A218D00FAC864 /* BLPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPieView.m; sourceTree = "<group>"; };
 		A6531199173A21E500FAC864 /* NSString+isKana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isKana.h"; sourceTree = "<group>"; };
 		A653119A173A21E500FAC864 /* NSString+isKana.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isKana.m"; sourceTree = "<group>"; };
+		A66EF07A1754736600E08187 /* UIView+FrameChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FrameChange.h"; sourceTree = "<group>"; };
+		A66EF07B1754736600E08187 /* UIView+FrameChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FrameChange.m"; sourceTree = "<group>"; };
 		A6711CB7173643A3005F28B8 /* togglebutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "togglebutton@2x.png"; path = "BlossomPad/togglebutton@2x.png"; sourceTree = "<group>"; };
 		A6711CB917364455005F28B8 /* candidateseparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidateseparator@2x.png"; path = "BlossomPad/candidateseparator@2x.png"; sourceTree = "<group>"; };
 		A6711CC3173671F3005F28B8 /* romakana.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = romakana.json; path = BlossomPad/romakana.json; sourceTree = "<group>"; };
@@ -118,6 +125,8 @@
 		A6711F8817369B80005F28B8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A6711F8A17369B95005F28B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		A6711F8C17369B9D005F28B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		A699F58C1752F26D00920209 /* BLKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboardViewController.h; sourceTree = "<group>"; };
+		A699F58D1752F26D00920209 /* BLKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboardViewController.m; sourceTree = "<group>"; };
 		A6DC58AB173740FE00FF3F46 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
 		A6DC58AC173740FE00FF3F46 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -276,12 +285,14 @@
 		A64BD44B174A1118007CA4D4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A699F58C1752F26D00920209 /* BLKeyboardViewController.h */,
+				A699F58D1752F26D00920209 /* BLKeyboardViewController.m */,
 				A6531188173A218D00FAC864 /* BLCandidateViewController.h */,
 				A6531189173A218D00FAC864 /* BLCandidateViewController.m */,
 				A653118A173A218D00FAC864 /* BLCandidateViewController.xib */,
-				A653118D173A218D00FAC864 /* BLKeyboardViewController.h */,
-				A653118E173A218D00FAC864 /* BLKeyboardViewController.m */,
-				A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */,
+				A653118D173A218D00FAC864 /* BLMainKeyboardViewController.h */,
+				A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */,
+				A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -289,6 +300,8 @@
 		A64BD44C174A111E007CA4D4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				A66EF07A1754736600E08187 /* UIView+FrameChange.h */,
+				A66EF07B1754736600E08187 /* UIView+FrameChange.m */,
 				A6531199173A21E500FAC864 /* NSString+isKana.h */,
 				A653119A173A21E500FAC864 /* NSString+isKana.m */,
 			);
@@ -311,6 +324,8 @@
 			children = (
 				A64BD440174A09BC007CA4D4 /* BLDictionary.h */,
 				A64BD441174A09BC007CA4D4 /* BLDictionary.m */,
+				A60F724A17510F130032C78C /* BLDictEntry.h */,
+				A60F724B17510F130032C78C /* BLDictEntry.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -400,7 +415,7 @@
 				A6711F8317368654005F28B8 /* Icon-72.png in Resources */,
 				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
 				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
-				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
+				A6531197173A218D00FAC864 /* BLMainKeyboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,12 +453,15 @@
 				A6531192173A218D00FAC864 /* BLCandidateCell.m in Sources */,
 				A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */,
 				A6531195173A218D00FAC864 /* BLKey.m in Sources */,
-				A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */,
+				A6531196173A218D00FAC864 /* BLMainKeyboardViewController.m in Sources */,
 				A6531198173A218D00FAC864 /* BLPieView.m in Sources */,
 				A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */,
 				A64BD442174A09BC007CA4D4 /* BLDictionary.m in Sources */,
 				A64BD445174A0DD3007CA4D4 /* BLConversion.m in Sources */,
 				A64BD448174A0E94007CA4D4 /* BLResource.m in Sources */,
+				A60F724C17510F130032C78C /* BLDictEntry.m in Sources */,
+				A699F58E1752F26D00920209 /* BLKeyboardViewController.m in Sources */,
+				A66EF07C1754736600E08187 /* UIView+FrameChange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

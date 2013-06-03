@@ -7,6 +7,7 @@
 //
 
 #import "BLDictionary.h"
+#import "BLDictEntry.h"
 
 static BLDictionary *shared;
 
@@ -176,6 +177,14 @@ static BLDictionary *shared;
             NSRange r = [e.pattern rangeOfRegex:regexp];
             // 見つかったら
             if (r.location != NSNotFound) {
+                // 接続辞書を検索
+                if (e.outConnection) {
+//                    [e searchForConnectionsOnFround:^(NSString *connected) {
+//                        NSLog(@"%@",connected);
+//                    } complete:^(NSUInteger total) {
+//                        NSLog(@"%d connection found for : %@",total,e.word);
+//                    }];
+                }
                 if (found) {
                     dispatch_async(main_queue, ^{
                         found(pattern,e);
@@ -197,20 +206,3 @@ static BLDictionary *shared;
 
 @end
 
-@implementation BLDictEntry
-
-- (id)initWithPattern:(NSString *)pattern
-                 word:(NSString *)word
-         inConnection:(NSUInteger)inConnection
-        outConnection:(NSUInteger)outConnection
-{
-    if (self = [super init]) {
-        _word = word;
-        _pattern = pattern;
-        _inConnection = inConnection;
-        _outConnection = outConnection;
-    }
-    return self;
-}
-
-@end

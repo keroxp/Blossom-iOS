@@ -7,32 +7,28 @@
 //
 
 #import "BLCandidateViewController.h"
+#import "BLMainKeyboardViewController.h"
 #import "BLCandidateCell.h"
 #import "BLResource.h"
 #import "BLDictionary.h"
+#import "BLDictEntry.h"
 
 @interface BLCandidateViewController ()
 {
-    //
-    AFHTTPClient *_httpClient;
-    //
+    // 現在表示している候補
     NSMutableArray *_candidates;
-    //
+    // バッファの追加・削除毎に結果を保持しておくKVS
     NSMutableDictionary *_candidatesStack;
-
 }
 
 - (void)setCandidates:(NSArray*)candidates;
 - (void)appendCandidates:(NSArray*)candidates;
 - (void)removeCandidates;
+- (BLMainKeyboardViewController*)keyboardViewController;
 
-@property (strong, nonatomic) IBOutlet UIView *openedView;
-@property (weak, nonatomic) IBOutlet UICollectionView *verticalCandidateView;
-
-@property (weak, nonatomic) IBOutlet UICollectionView *horizontalCandidateView;
+- (IBAction)toggleButtonDidTap:(id)sender;
+@property (weak, nonatomic) IBOutlet UICollectionView *candidateView;
 @property (weak, nonatomic) IBOutlet UIButton *toggleButton;
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-
 
 @end
 
@@ -44,10 +40,6 @@
     if (self) {
         // Custom initialization
         _delegate = delegate;
-        // HTTPクライアントを作成
-        _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://localhost:2342/"]];
-        // ソケットクライアントを作成
-//        _socketIO = [[SocketIO alloc] initWithDelegate:self];
         //　候補バッファを作成
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
@@ -59,27 +51,24 @@
 {
     [super viewDidLoad];
 
-    [self.horizontalCandidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
-    [self.verticalCandidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
-    [self.horizontalCandidateView reloadData];
-    [self.horizontalCandidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
-    [self.toggleButton addEventHandler:^(id sender) {
-        TFLog(@"toggle");
-        CGRect f = self.view.frame;
-        f.size.height = self.openedView.bounds.size.height;
-        [self.view addSubview:self.openedView];
-        [UIView animateWithDuration:1 animations:^{
-            [self.view setFrame:f];
-        } completion:^(BOOL finished) {
-            
-        }];
-    } forControlEvents:UIControlEventTouchUpInside];
+    [self.candidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
+    [self.candidateView reloadData];
+    [self.candidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceDidRotate:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Candidates
@@ -91,7 +80,7 @@
     }else{
         [_candidates setArray:candidates];
     }
-    [self.horizontalCandidateView reloadData];
+    [self.candidateView reloadData];
 }
 
 - (void)appendCandidates:(NSArray *)candidates
@@ -102,6 +91,24 @@
 - (void)removeCandidates
 {
     [self setCandidates:nil];
+}
+
+- (IBAction)toggleButtonDidTap:(id)sender {
+    if (_opened) {
+        _opened = NO;
+    }else{
+        _opened = YES;
+    }
+    [self.delegate candidateController:self toggleButtonDidTap:sender open:_opened];
+}
+
+- (void)deviceDidRotate:(NSNotification*)notification
+{
+//      [self.view updateConstraints];
+}
+- (BLMainKeyboardViewController *)keyboardViewController
+{
+    return (BLMainKeyboardViewController*)self.delegate;
 }
 
 #pragma mark - Collection
@@ -138,7 +145,8 @@
     if (indexPath.row <= _candidates.count - 1) {
         BLDictEntry *c = [_candidates objectAtIndex:indexPath.row];
         [_delegate candidateController:self didSelectCandidate:c];
-        [self removeCandidates];
+        [self setCandidates:[[[BLDictionary sharedDictionary] connectionList] objectForKey:@(c.outConnection)]];
+//        [self removeCandidates];
     }
 }
 
@@ -155,7 +163,6 @@
                 return;
             }
         }
-        NSMutableArray *candidates = [NSMutableArray array];
         if (hiraBuffer.length > 0) {
             [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:NULL complete:^(NSString *pattern, NSArray *candidates) {
                 [self setCandidates:candidates];

@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BLKeyboardViewController.h"
 #import "Entry.h"
 
 @interface BPDetailViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) Entry *entry;
+@property (nonatomic) BLKeyboardViewController *keyboardViewController;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 

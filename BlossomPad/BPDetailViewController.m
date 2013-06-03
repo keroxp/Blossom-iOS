@@ -7,13 +7,8 @@
 //
 
 #import "BPDetailViewController.h"
-#import "BLKeyboardViewController.h"
-#import "BLCandidateViewController.h"
 
 @interface BPDetailViewController ()
-
-@property () BLKeyboardViewController *keyboardViewController;
-@property () BLCandidateViewController *candidateViewController;
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -57,19 +52,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
-    
+
     BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithClient:self.textView];
-    CGRect f = kvc.view.frame;
-    f.size.height = 55.0f;
-    [kvc.view setFrame:f];
     self.textView.inputView = kvc.view;
     self.textView.userInteractionEnabled = NO;
     self.keyboardViewController = kvc;
-    
-    BLCandidateViewController *cv = [[BLCandidateViewController alloc] initWithDelegate:kvc];
-    self.textView.inputAccessoryView = cv.view;
-    self.candidateViewController = cv;
-    [self.keyboardViewController setCandidateViewController:cv];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
