@@ -53,8 +53,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
 
-    BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithClient:self.textView];
-    self.textView.inputView = kvc.view;
+    BLKeyboard *kvc = [[BLKeyboard alloc] initWithClient:self.textView];
+    self.textView.inputView = kvc.mainKeyboardViewController.view;
+    self.textView.inputAccessoryView = kvc.candidateViewController.view;
     self.textView.userInteractionEnabled = NO;
     self.keyboardViewController = kvc;
     

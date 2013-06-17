@@ -19,6 +19,8 @@
     NSMutableArray *_candidates;
     // バッファの追加・削除毎に結果を保持しておくKVS
     NSMutableDictionary *_candidatesStack;
+    //
+    UIButton *_toggleButton;
 }
 
 - (void)setCandidates:(NSArray*)candidates;
@@ -26,9 +28,8 @@
 - (void)removeCandidates;
 - (BLMainKeyboardViewController*)keyboardViewController;
 
-- (IBAction)toggleButtonDidTap:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *tb;
 @property (weak, nonatomic) IBOutlet UICollectionView *candidateView;
-@property (weak, nonatomic) IBOutlet UIButton *toggleButton;
 
 @end
 
@@ -43,6 +44,18 @@
         //　候補バッファを作成
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
+        // 開閉ボタンを設定
+        CGRect f = self.view.frame;
+        _toggleButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(f) - 62, 0, 62, 55)];
+        [_toggleButton setImage:[UIImage imageNamed:@"togglebutton"] forState:UIControlStateNormal];
+//        [self.view addSubview:_toggleButton];
+//        NSDictionary *d = NSDictionaryOfVariableBindings(_toggleButton);
+//        NSString *formv = @"V:|[_toggleButton(==55@1000)]|";
+//        NSString *formh = @"H:[_toggleButton]";
+//        NSArray *csv = [NSLayoutConstraint constraintsWithVisualFormat:formv options:0 metrics:nil views:d];
+//        NSArray *csh  = [NSLayoutConstraint constraintsWithVisualFormat:formh options:0 metrics:nil views:d];
+//        [self.view addConstraints:csh];
+//        [self.view addConstraints:csv];
     }
     return self;
 }
@@ -59,9 +72,6 @@
                                              selector:@selector(deviceDidRotate:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-    
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
-
 }
 
 - (void)didReceiveMemoryWarning

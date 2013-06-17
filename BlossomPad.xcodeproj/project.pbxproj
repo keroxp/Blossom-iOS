@@ -54,7 +54,7 @@
 		A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8817369B80005F28B8 /* CFNetwork.framework */; };
 		A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8A17369B95005F28B8 /* libicucore.dylib */; };
 		A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8C17369B9D005F28B8 /* Security.framework */; };
-		A699F58E1752F26D00920209 /* BLKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A699F58D1752F26D00920209 /* BLKeyboardViewController.m */; };
+		A699F58E1752F26D00920209 /* BLKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A699F58D1752F26D00920209 /* BLKeyboard.m */; };
 		A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DC58AC173740FE00FF3F46 /* Entry.m */; };
 /* End PBXBuildFile section */
 
@@ -125,8 +125,8 @@
 		A6711F8817369B80005F28B8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A6711F8A17369B95005F28B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		A6711F8C17369B9D005F28B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		A699F58C1752F26D00920209 /* BLKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboardViewController.h; sourceTree = "<group>"; };
-		A699F58D1752F26D00920209 /* BLKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboardViewController.m; sourceTree = "<group>"; };
+		A699F58C1752F26D00920209 /* BLKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboard.h; sourceTree = "<group>"; };
+		A699F58D1752F26D00920209 /* BLKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboard.m; sourceTree = "<group>"; };
 		A6DC58AB173740FE00FF3F46 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
 		A6DC58AC173740FE00FF3F46 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,12 +139,12 @@
 			files = (
 				A62F9B78173A8E130045A4F7 /* AudioToolbox.framework in Frameworks */,
 				A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */,
-				A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */,
 				A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */,
 				A63F161F1735309C00ECE693 /* CoreData.framework in Frameworks */,
 				A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */,
 				A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */,
 				A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */,
+				A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */,
 				6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,8 +285,8 @@
 		A64BD44B174A1118007CA4D4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A699F58C1752F26D00920209 /* BLKeyboardViewController.h */,
-				A699F58D1752F26D00920209 /* BLKeyboardViewController.m */,
+				A699F58C1752F26D00920209 /* BLKeyboard.h */,
+				A699F58D1752F26D00920209 /* BLKeyboard.m */,
 				A6531188173A218D00FAC864 /* BLCandidateViewController.h */,
 				A6531189173A218D00FAC864 /* BLCandidateViewController.m */,
 				A653118A173A218D00FAC864 /* BLCandidateViewController.xib */,
@@ -460,7 +460,7 @@
 				A64BD445174A0DD3007CA4D4 /* BLConversion.m in Sources */,
 				A64BD448174A0E94007CA4D4 /* BLResource.m in Sources */,
 				A60F724C17510F130032C78C /* BLDictEntry.m in Sources */,
-				A699F58E1752F26D00920209 /* BLKeyboardViewController.m in Sources */,
+				A699F58E1752F26D00920209 /* BLKeyboard.m in Sources */,
 				A66EF07C1754736600E08187 /* UIView+FrameChange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

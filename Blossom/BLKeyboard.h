@@ -10,13 +10,13 @@
 #import "BLMainKeyboardViewController.h"
 #import "BLCandidateViewController.h"
 
-@interface BLKeyboardViewController : UIViewController
+@interface BLKeyboard : NSObject
 <BLCandidateViewControllerDelegate>
 
 @property (nonatomic, readonly) BLMainKeyboardViewController *mainKeyboardViewController;
 @property (nonatomic, readonly) BLCandidateViewController *candidateViewController;
-@property (weak,nonatomic) UIResponder<UITextInput,UIKeyInput>*client;
+@property (weak,nonatomic) UITextView *client;
 
-- (id)initWithClient:(UIResponder<UITextInput,UIKeyInput>*)client;
+- (id)initWithClient:(UITextView*)client;
 
 @end
