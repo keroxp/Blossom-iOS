@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BLMainKeyboardViewController.h"
+#import "BLKeyboardViewController.h"
 #import "BLCandidateViewController.h"
 
-@interface BLKeyboard : NSObject
-<BLCandidateViewControllerDelegate>
 
-@property (nonatomic, readonly) BLMainKeyboardViewController *mainKeyboardViewController;
+@interface BLKeyboard : NSObject
+<BLKeyboardViewControllerDelegate
+,BLCandidateViewControllerDelegate>
+
+@property (nonatomic, readonly) BLKeyboardViewController *mainKeyboardViewController;
 @property (nonatomic, readonly) BLCandidateViewController *candidateViewController;
 @property (weak,nonatomic) UITextView *client;
 

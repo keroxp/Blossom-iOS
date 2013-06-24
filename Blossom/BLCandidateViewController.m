@@ -7,7 +7,7 @@
 //
 
 #import "BLCandidateViewController.h"
-#import "BLMainKeyboardViewController.h"
+#import "BLKeyboardViewController.h"
 #import "BLCandidateCell.h"
 #import "BLResource.h"
 #import "BLDictionary.h"
@@ -26,7 +26,6 @@
 - (void)setCandidates:(NSArray*)candidates;
 - (void)appendCandidates:(NSArray*)candidates;
 - (void)removeCandidates;
-- (BLMainKeyboardViewController*)keyboardViewController;
 
 @property (weak, nonatomic) IBOutlet UIButton *tb;
 @property (weak, nonatomic) IBOutlet UICollectionView *candidateView;
@@ -116,9 +115,9 @@
 {
 //      [self.view updateConstraints];
 }
-- (BLMainKeyboardViewController *)keyboardViewController
+- (BLKeyboardViewController *)keyboardViewController
 {
-    return (BLMainKeyboardViewController*)self.delegate;
+    return (BLKeyboardViewController*)self.delegate;
 }
 
 #pragma mark - Collection
@@ -154,9 +153,10 @@
 {
     if (indexPath.row <= _candidates.count - 1) {
         BLDictEntry *c = [_candidates objectAtIndex:indexPath.row];
+        // デリゲートに通知
         [_delegate candidateController:self didSelectCandidate:c];
+        // 接続文字を出す
         [self setCandidates:[[[BLDictionary sharedDictionary] connectionList] objectForKey:@(c.outConnection)]];
-//        [self removeCandidates];
     }
 }
 
@@ -176,6 +176,7 @@
         if (hiraBuffer.length > 0) {
             [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:NULL complete:^(NSString *pattern, NSArray *candidates) {
                 [self setCandidates:candidates];
+                [_candidatesStack setObject:candidates forKey:pattern];
             }];
         }else if(hiraBuffer.length == 0){
             [self removeCandidates];

@@ -6,14 +6,10 @@
 //  Copyright (c) 2013年 Yusuke Sakurai / Keio University Masui Toshiyuki Laboratory All rights reserved.
 //
 
-#import "BLMainKeyboardViewController.h"
-#import "BLKey.h"
+#import "BLKeyboardViewController.h"
 #import "BLPieView.h"
-#import "BLDictionary.h"
-#import "BLDictEntry.h"
-#import "BLResource.h"
-#import "BLCandidateViewController.h"
-#import "NSString+isKana.h"
+#import "BLKey.h"
+
 
 #define kKeyboardWidth 1024.f
 #define kKeyboardHeight 352.0f
@@ -44,14 +40,7 @@ typedef enum{
     BLTouchDirectionUpLeft
 }BLTouchDirection;
 
-/* 入力モード */
-typedef enum{
-    BLInputModeAlphabet = 0,
-    BLInputModeRomaKana
-}BLInputMode;
-
-
-@interface BLMainKeyboardViewController ()
+@interface BLKeyboardViewController ()
 {
     // 現在のタッチ
     UITouch *_currentTouch;
@@ -73,47 +62,32 @@ typedef enum{
     NSTimer *_repeatTimer;
     /* 行列 */
     NSMutableArray *_rows;
-    /*  */
-    UIPanGestureRecognizer *_panGestureRecognizer;
 }
 
-/* キーから入力された文字列バッファ */
-@property (strong, nonatomic) NSMutableString *originalBuffer;
-/* 内部的な変換処理が施されたひらがな文字列 */
-@property (strong, nonatomic) NSMutableString *composedBuffer;
-/* ローマ字入力モードの際のアルファベット文字列 */
-@property (strong, nonatomic) NSMutableString *romaBuffer;
-/* 入力モード */
-@property (assign, nonatomic) BLInputMode inputMode;
 /* エンターキー */
 @property () BLKey *enterKey;
 /* スペースキー */
 @property () BLKey *spaceKey;
 
-@property (weak, nonatomic) IBOutlet UIButton *toggleButton;
-
 @end
 
-@implementation BLMainKeyboardViewController
+@implementation BLKeyboardViewController
 
 @synthesize keys = _keys;
 
-- (id)initWithClient:(UIResponder<UITextInput,UIKeyInput> *)client
+- (id)initWithDelegate:(id<BLKeyboardViewControllerDelegate>)delegate
 {
-    if (self = [super initWithNibName:@"BLMainKeyboardViewController" bundle:[NSBundle mainBundle]]) {
+    if (self = [super initWithNibName:@"BLKeyboardViewController" bundle:[NSBundle mainBundle]]) {
+        // デリゲート
+        self.delegate = delegate;
+        // キーボードデータを読み込み
         NSString *path = [[NSBundle mainBundle] pathForResource:@"keyboard" ofType:@"json"];
         NSString *jsonstr = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         NSError *e = nil;
         NSArray *rows = [jsonstr objectFromJSONStringWithParseOptions:JKParseOptionNone error:&e];
         _rows = @[@[].mutableCopy,@[].mutableCopy,@[].mutableCopy,@[].mutableCopy].mutableCopy;
         _keys = @[].mutableCopy;
-        _originalBuffer = [NSMutableString string];
-        _romaBuffer = [NSMutableString string];
-        _inputMode = BLInputModeAlphabet;
-        _activeClient = client;
         _currentDirection = -1;
-        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-        [self.toggleButton addGestureRecognizer:_panGestureRecognizer];
         // キーボードを作成
         [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
             [(NSArray*)obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger j, BOOL *stop2) {
@@ -215,26 +189,16 @@ typedef enum{
     [self layoutKeysForOrientation:orientation];
 }
 
-- (void)handlePan:(UIPanGestureRecognizer*)sender
+- (void)setInputMode:(BLInputMode)inputMode
 {
-    switch (sender.state) {
-        case UIGestureRecognizerStateBegan:{
-            
+    if (inputMode != _inputMode) {
+        if (inputMode == BLInputModeRomaKana) {
+            [self.spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
+        }else{
+            [self.spaceKey setTitle:@"" forState:UIControlStateNormal];
         }
-            break;
-        case UIGestureRecognizerStateChanged:{
-            CGPoint p = [sender locationInView:self.view];
-            CGRect f = self.view.frame;
-            f.origin = p;
-            self.view.frame = f;
-        }
-            break;
-        case UIGestureRecognizerStateEnded:{
-            
-        }
-            break;
-        default:
-            break;
+        [self.delegate keyboardViewController:self didChangeInputMode:inputMode];
+        _inputMode = inputMode;
     }
 }
 
@@ -339,27 +303,25 @@ typedef enum{
     NSString *add = [sender.keystr lowercaseString];    
     // 通常入力
     if (!sender.isFunctional && !sender.isModifier) {
-        if (self.inputMode == BLInputModeRomaKana) {
-        }
-        [self appendOriginalBuffer:add];
+        [self.delegate keyboardViewController:self didInputText:add inputMode:_inputMode];
     }else{
         // 特殊キー
         NSString *s = [sender keystr];
         if ([s isEqualToString:@"enter"]) {
             // エンター
-            [self handleEnter];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter inputMode:_inputMode];
         }else if ([s isEqualToString:@"space"]){
             // スペース
-            [self handleSpace];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace inputMode:_inputMode];
         }else if ([s isEqualToString:@"delete"]){
             // デリート
-            [self handleDelete];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete inputMode:_inputMode];
         }else if ([s isEqualToString:@"small"]){
             // 小文字
-            [self handleSmall];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSmall inputMode:_inputMode];
         }else if ([s isEqualToString:@"close"]){
             // 閉じる
-            [self.activeClient resignFirstResponder];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandClose inputMode:_inputMode];
         }
     }    
     [self finishHandling:sender];
@@ -373,11 +335,9 @@ typedef enum{
     
     // フリック入力
     if (pv.pieces.count > 0){
-        if (self.inputMode == BLInputModeAlphabet) {
-            [self setInputMode:BLInputModeAlphabet];
-        }
         NSString *add = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
-        [self appendOriginalBuffer:add];
+        // 移譲
+        [self.delegate keyboardViewController:self didInputText:add inputMode:_inputMode];
     }
     
     [self finishHandling:sender];
@@ -388,11 +348,11 @@ typedef enum{
     _repeatTimer = [NSTimer scheduledTimerWithTimeInterval:kKeyRepeatWait block:^(NSTimeInterval time) {
         NSString *k = key.keystr;
         if ([k isEqualToString:@"enter"]) {
-            [self.activeClient insertText:@"\n"];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter inputMode:_inputMode];
         }else if ([k isEqualToString:@"space"]){
-            [self.activeClient insertText:@" "];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace inputMode:_inputMode];
         }else if ([k isEqualToString:@"delete"]){
-            [self.activeClient deleteBackward];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete inputMode:_inputMode];
         }
     } repeats:YES];
 }
@@ -415,169 +375,6 @@ typedef enum{
     _currentTouch = nil;
     _currentPopup = nil;
 }
-
-#pragma mark - Key Handler
-
-- (void)handleSpace
-{
-    if (self.inputMode == BLInputModeRomaKana) {
-        // 変換
-        [self.candidateViewController performConversion];        
-    }else{
-        [self.activeClient unmarkText];
-        [self setInputMode:BLInputModeAlphabet];
-        [self.activeClient insertText:@" "];
-    }
-}
-
-- (void)handleDelete
-{
-    if (_originalBuffer.length > 0) {
-        // バッファがあればバッファから文字を削除
-        [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
-        [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-        [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
-    }else{
-        // なければフィールドから文字を削除
-        [_originalBuffer setString:@""];
-        [self.activeClient deleteBackward];
-    }
-    if (_romaBuffer.length > 0) {
-        [_romaBuffer deleteCharactersInRange:NSMakeRange(_romaBuffer.length - 1, 1)];
-    }else{
-        [_romaBuffer setString:@""];
-    }
-}
-
-- (void)handleEnter
-{
-    // バッファを空に
-    if ([self.activeClient textInRange:[self.activeClient markedTextRange]]) {
-        // マークを外す
-        [self.activeClient unmarkText];
-        [self setInputMode:BLInputModeAlphabet];
-    }else{
-        // 改行
-        [self.activeClient insertText:@"\n"];
-    }
-}
-
-- (void)handleSmall
-{
-    if (_originalBuffer.length > 0) {
-        //あいうえおやゆよつわ
-        NSString *tail = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 1, 1)];
-        NSString *convert = [[BLResource sharedSmalls] objectForKey:tail];
-//                    NSLog(@"tail : %@, concert : %@",tail,convert);
-        if (convert) {
-            [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1) withString:convert];
-            [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-        }
-    }
-}
-
-#pragma mark - Bufferring and Composing
-
-- (void)appendOriginalBuffer:(NSString*)character
-{
-    NSString *add = character;    
-    // コレクト処理
-    if (_originalBuffer.length == 0) {
-        // インプットモードの変更
-        if ([character isKana]) {
-            [self setInputMode:BLInputModeRomaKana];
-            [_originalBuffer setString:add];
-            [self.candidateViewController setHiraBuffer:add];
-            [self.activeClient setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];            
-        }else{
-            [self setInputMode:BLInputModeAlphabet];
-            [self.activeClient insertText:add];
-        }
-    }else if (_originalBuffer.length > 0) {
-        // バッファに格納        
-        if (self.inputMode == BLInputModeAlphabet) { // 英字入力モード
-            [self.activeClient insertText:character];
-        }else if (self.inputMode == BLInputModeRomaKana) {  // ローマ字入力モード            
-            [_originalBuffer appendString:add];
-            
-            NSString *ms = [add mutableCopy];
-            // 半角に戻す
-            CFStringTransform((CFMutableStringRef)ms, NULL, kCFStringTransformFullwidthHalfwidth, false);
-            
-            // ローマ字バッファに格納
-            if ([ms isLetter]) {
-                TFLog(@"ms:ｙｔｋ%@",ms);
-                // 半角に戻す
-                [_romaBuffer appendString:ms];
-            }else{
-                [_romaBuffer setString:@""];
-            }
-            
-            // ローマ字入力
-            if ([[BLResource sharedRomaKana] objectForKey:_romaBuffer]){
-                // 変換
-                NSString *converted = [[BLResource sharedRomaKana] objectForKey:_romaBuffer];
-                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - _romaBuffer.length, _romaBuffer.length)];
-                [_originalBuffer appendString:converted];
-                [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-                [_romaBuffer setString:@""];
-                TFLog(@"rome converted");
-                [self.candidateViewController setHiraBuffer:_originalBuffer];
-                return;
-            }
-            
-            NSString *before = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 2, 1)];
-            
-            // 連続文字の処理
-            if ([character isLetter] && [before isEqualToString:character]) {
-                // 「っ」
-                [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 2)];
-                [_originalBuffer appendString:@"っ"];
-            }
-            
-            // はさみうちの処理
-            if (_originalBuffer.length > 2) {
-                NSString *head = [_originalBuffer substringWithRange:NSMakeRange(_originalBuffer.length - 3, 1)];
-                TFLog(@"head is %@, body is %@, tail is %@ ",head,before,add);
-                if ([head isKana] && [before isLetter] && [add isKana]) {
-                    if ([before isEqualToString:@"n"]) {
-                        [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 1) withString:@"ん"];
-                    }else{
-                        [_originalBuffer replaceCharactersInRange:NSMakeRange(_originalBuffer.length - 2, 1) withString:@"っ"];
-                    }
-                }
-            }
-            // 文字をセット
-            [self.activeClient setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-            // 候補の作成
-            [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
-        }
-    }
-}
-
-- (void)setInputMode:(BLInputMode)inputMode
-{
-    if (inputMode != _inputMode) {
-        [_romaBuffer setString:@""];
-        [_originalBuffer setString:@""];
-        if (inputMode == BLInputModeRomaKana) {
-            [self.spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
-        }else{
-            [self.spaceKey setTitle:@"" forState:UIControlStateNormal];
-        }
-        _inputMode = inputMode;
-    }
-}
-
-
-#pragma mark - CDDelegate
-
-- (void)candidateController:(BLCandidateViewController *)controller didSelectCandidate:(BLDictEntry *)candidate
-{
-    [self.activeClient insertText:candidate.word];
-    [self setInputMode:BLInputModeAlphabet];
-}
-
 
 #pragma mark - Utility
 

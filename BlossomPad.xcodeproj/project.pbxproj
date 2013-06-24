@@ -39,8 +39,8 @@
 		A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531189173A218D00FAC864 /* BLCandidateViewController.m */; };
 		A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118A173A218D00FAC864 /* BLCandidateViewController.xib */; };
 		A6531195173A218D00FAC864 /* BLKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118C173A218D00FAC864 /* BLKey.m */; };
-		A6531196173A218D00FAC864 /* BLMainKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */; };
-		A6531197173A218D00FAC864 /* BLMainKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */; };
+		A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A653118E173A218D00FAC864 /* BLKeyboardViewController.m */; };
+		A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */; };
 		A6531198173A218D00FAC864 /* BLPieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6531191173A218D00FAC864 /* BLPieView.m */; };
 		A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */ = {isa = PBXBuildFile; fileRef = A653119A173A21E500FAC864 /* NSString+isKana.m */; };
 		A66EF07C1754736600E08187 /* UIView+FrameChange.m in Sources */ = {isa = PBXBuildFile; fileRef = A66EF07B1754736600E08187 /* UIView+FrameChange.m */; };
@@ -106,9 +106,9 @@
 		A653118A173A218D00FAC864 /* BLCandidateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCandidateViewController.xib; sourceTree = "<group>"; };
 		A653118B173A218D00FAC864 /* BLKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKey.h; sourceTree = "<group>"; };
 		A653118C173A218D00FAC864 /* BLKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKey.m; sourceTree = "<group>"; };
-		A653118D173A218D00FAC864 /* BLMainKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMainKeyboardViewController.h; sourceTree = "<group>"; };
-		A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMainKeyboardViewController.m; sourceTree = "<group>"; };
-		A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLMainKeyboardViewController.xib; sourceTree = "<group>"; };
+		A653118D173A218D00FAC864 /* BLKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLKeyboardViewController.h; sourceTree = "<group>"; };
+		A653118E173A218D00FAC864 /* BLKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboardViewController.m; sourceTree = "<group>"; };
+		A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLKeyboardViewController.xib; sourceTree = "<group>"; };
 		A6531190173A218D00FAC864 /* BLPieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPieView.h; sourceTree = "<group>"; };
 		A6531191173A218D00FAC864 /* BLPieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPieView.m; sourceTree = "<group>"; };
 		A6531199173A21E500FAC864 /* NSString+isKana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isKana.h"; sourceTree = "<group>"; };
@@ -290,9 +290,9 @@
 				A6531188173A218D00FAC864 /* BLCandidateViewController.h */,
 				A6531189173A218D00FAC864 /* BLCandidateViewController.m */,
 				A653118A173A218D00FAC864 /* BLCandidateViewController.xib */,
-				A653118D173A218D00FAC864 /* BLMainKeyboardViewController.h */,
-				A653118E173A218D00FAC864 /* BLMainKeyboardViewController.m */,
-				A653118F173A218D00FAC864 /* BLMainKeyboardViewController.xib */,
+				A653118D173A218D00FAC864 /* BLKeyboardViewController.h */,
+				A653118E173A218D00FAC864 /* BLKeyboardViewController.m */,
+				A653118F173A218D00FAC864 /* BLKeyboardViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -415,7 +415,7 @@
 				A6711F8317368654005F28B8 /* Icon-72.png in Resources */,
 				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
 				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
-				A6531197173A218D00FAC864 /* BLMainKeyboardViewController.xib in Resources */,
+				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,7 +453,7 @@
 				A6531192173A218D00FAC864 /* BLCandidateCell.m in Sources */,
 				A6531193173A218D00FAC864 /* BLCandidateViewController.m in Sources */,
 				A6531195173A218D00FAC864 /* BLKey.m in Sources */,
-				A6531196173A218D00FAC864 /* BLMainKeyboardViewController.m in Sources */,
+				A6531196173A218D00FAC864 /* BLKeyboardViewController.m in Sources */,
 				A6531198173A218D00FAC864 /* BLPieView.m in Sources */,
 				A653119B173A21E500FAC864 /* NSString+isKana.m in Sources */,
 				A64BD442174A09BC007CA4D4 /* BLDictionary.m in Sources */,
