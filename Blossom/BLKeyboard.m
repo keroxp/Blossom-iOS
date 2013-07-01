@@ -12,35 +12,52 @@
 #import "BLResource.h"
 #import "UIView+FrameChange.h"
 
+NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputModeDidChangeNotification";
+
 @interface BLKeyboard (){
     // 入力された文字列
     NSMutableString *_originalBuffer;
     // 入力から修正もしくは変換された文字列
     NSMutableString *_compoesdBuffer;
     NSMutableString *_romaBuffer;
+    
 }
 
-@property BLInputMode inputMode;
 
 - (void)appendOriginalBuffer:(NSString*)text;
-- (void)deleteOriginalBuffer:(NSString*)text;
+- (void)deleteOriginalBuffer;
+
+- (void)appendComposedBuffer:(NSString*)text;
+- (void)deleteComposedBuffer;
+
+- (void)handleSpace;
+- (void)handleDelete;
+- (void)handleEnter;
+- (void)handleSmall;
 
 @end
 
 @implementation BLKeyboard
 
-- (id)initWithClient:(UITextView *)client
+- (id)init
 {
     if (self = [super init]) {
-        
         BLKeyboardViewController *kvc = [[BLKeyboardViewController alloc] initWithDelegate:self];
         BLCandidateViewController *cvc = [[BLCandidateViewController alloc] initWithDelegate:self];
-        _client = client;
         _candidateViewController = cvc;
         _mainKeyboardViewController = kvc;
+        _inputMode = BLInputModeAlphabet;
         _originalBuffer = [[NSMutableString alloc] init];
         _compoesdBuffer = [[NSMutableString alloc] init];
         _romaBuffer = [[NSMutableString alloc] init];
+    }
+    return self;
+}
+
+- (id)initWithClient:(UITextView *)client
+{
+    if (self = [self init]) {
+        _client = client;
     }
     return self;
 }
@@ -88,14 +105,17 @@
 
 - (void)keyboardViewController:(BLKeyboardViewController *)controller
                   didInputText:(NSString *)text
-                     inputMode:(BLInputMode)inputMode
 {
+//    if ([text isKana]) {
+//        [self appendComposedBuffer:text];
+//    }else{
+//        [self appendOriginalBuffer:text];
+//    }
     [self appendOriginalBuffer:text];
 }
 
 - (void)keyboardViewController:(BLKeyboardViewController *)controller
                didInputCommand:(BLKeyboardCommand)command
-                     inputMode:(BLInputMode)inputMode
 {
     switch (command) {
         case BLKeyboardCommandClose:
@@ -120,11 +140,20 @@
 
 #pragma mark - Key Handler
 
+
+- (void)setInputMode:(BLInputMode)inputMode
+{
+    if (inputMode != _inputMode) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:BLKeyboardInputModeDidChangeNotification object:@(inputMode)];
+        _inputMode = inputMode;
+    }
+}
+
 - (void)handleSpace
 {
     if (self.inputMode == BLInputModeRomaKana) {
         // 変換
-        [self.candidateViewController performConversion];
+        [self.candidateViewController convertBuffer];
     }else{
         [self.client unmarkText];
         [self setInputMode:BLInputModeAlphabet];
@@ -138,7 +167,7 @@
         // バッファがあればバッファから文字を削除
         [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
         [self.client setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-        [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
+        [self.candidateViewController presentSuggestion:_originalBuffer];
     }else{
         // なければフィールドから文字を削除
         [_originalBuffer setString:@""];
@@ -164,7 +193,7 @@
     }
 }
 
-- (void)handleSmall
+- (void)handleSmall3
 {
     if (_originalBuffer.length > 0) {
         //あいうえおやゆよつわ
@@ -189,7 +218,7 @@
         if ([text isKana]) {
             [self setInputMode:BLInputModeRomaKana];
             [_originalBuffer setString:add];
-            [self.candidateViewController setHiraBuffer:add];
+            [self.candidateViewController presentSuggestion:_originalBuffer];
             [self.client setMarkedText:add selectedRange:NSMakeRange(add.length, 0)];
         }else{
             [self setInputMode:BLInputModeAlphabet];
@@ -224,7 +253,7 @@
                 [self.client setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
                 [_romaBuffer setString:@""];
                 TFLog(@"rome converted");
-                [self.candidateViewController setHiraBuffer:_originalBuffer];
+                [self.candidateViewController presentSuggestion:_originalBuffer];
                 return;
             }
             
@@ -251,11 +280,22 @@
             }
             // 文字をセット
             [self.client setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
-            // 候補の作成
-            [self.candidateViewController setHiraBuffer:[_originalBuffer copy]];
+            if(text.isKana){
+                // 候補の作成
+                [self.candidateViewController presentSuggestion:_originalBuffer];
+            }
         }
     }
 }
 
+- (void)deleteOriginalBuffer
+{
+    
+}
+
+- (void)deleteComposedBuffer
+{
+    
+}
 
 @end

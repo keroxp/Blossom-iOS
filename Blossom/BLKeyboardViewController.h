@@ -12,12 +12,6 @@
 
 @protocol BLKeyboardViewControllerDelegate;
 
-/* 入力モード */
-typedef enum{
-    BLInputModeAlphabet = 0,
-    BLInputModeRomaKana
-}BLInputMode;
-
 /* コマンド */
 typedef enum{
     BLKeyboardCommandSpace,
@@ -31,8 +25,6 @@ typedef enum{
 
 /* デリゲート */
 @property (weak) id<BLKeyboardViewControllerDelegate> delegate;
-/* モード */
-@property (readonly) BLInputMode inputMode;
 /* すべてのキー */
 @property (readonly) NSArray *keys;
 /* キーを取得 */
@@ -45,7 +37,7 @@ typedef enum{
 
 @protocol BLKeyboardViewControllerDelegate <NSObject>
 
-- (void)keyboardViewController:(BLKeyboardViewController*)controller didInputText:(NSString*)text inputMode:(BLInputMode)inputMode;
-- (void)keyboardViewController:(BLKeyboardViewController *)controller didInputCommand:(BLKeyboardCommand)command inputMode:(BLInputMode)inputMode;
-- (void)keyboardViewController:(BLKeyboardViewController *)controller didChangeInputMode:(BLInputMode)inputMode;
+- (void)keyboardViewController:(BLKeyboardViewController*)controller didInputText:(NSString*)text;
+- (void)keyboardViewController:(BLKeyboardViewController *)controller didInputCommand:(BLKeyboardCommand)command;
+
 @end

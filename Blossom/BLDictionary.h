@@ -39,5 +39,9 @@ typedef enum{
 - (void)searchForEntriesWithPattern:(NSString*)pattern
                               found:(BLSearchFoundBlock)found
                            complete:(BLSearchCompleteBlock)complete;
+/* 変換 */
+- (void)convertText:(NSString*)text
+            success:(void (^)(id candidates))success
+            failure:(void (^)(NSError* e))failure;
 
 @end

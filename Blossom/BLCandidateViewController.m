@@ -20,7 +20,8 @@
     // バッファの追加・削除毎に結果を保持しておくKVS
     NSMutableDictionary *_candidatesStack;
     //
-    UIButton *_toggleButton;
+    NSMutableString *_buffer;
+    BOOL _found;
 }
 
 - (void)setCandidates:(NSArray*)candidates;
@@ -43,18 +44,7 @@
         //　候補バッファを作成
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
-        // 開閉ボタンを設定
-        CGRect f = self.view.frame;
-        _toggleButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(f) - 62, 0, 62, 55)];
-        [_toggleButton setImage:[UIImage imageNamed:@"togglebutton"] forState:UIControlStateNormal];
-//        [self.view addSubview:_toggleButton];
-//        NSDictionary *d = NSDictionaryOfVariableBindings(_toggleButton);
-//        NSString *formv = @"V:|[_toggleButton(==55@1000)]|";
-//        NSString *formh = @"H:[_toggleButton]";
-//        NSArray *csv = [NSLayoutConstraint constraintsWithVisualFormat:formv options:0 metrics:nil views:d];
-//        NSArray *csh  = [NSLayoutConstraint constraintsWithVisualFormat:formh options:0 metrics:nil views:d];
-//        [self.view addConstraints:csh];
-//        [self.view addConstraints:csv];
+        _buffer = [NSMutableString string];
     }
     return self;
 }
@@ -66,11 +56,6 @@
     [self.candidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.candidateView reloadData];
     [self.candidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deviceDidRotate:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,6 +87,54 @@
     [self setCandidates:nil];
 }
 
+- (void)finishSelection
+{
+    [_candidatesStack removeAllObjects];
+}
+
+#pragma mark -
+
+- (void)presentSuggestion:(NSString *)text
+{
+    if (![_buffer isEqualToString:text]) {
+        if (_buffer.length > text.length) {
+            // 後ろへの削除でかつバッファされた予測変換候補があればそれを出す
+            NSArray *cands = [_candidatesStack objectForKey:text];
+            if (cands) {
+                _found = YES;
+                [self setCandidates:cands];
+            }
+        }else if (text.length == 1 || (text.length > 1 && _found)) {
+            [[BLDictionary sharedDictionary] searchForEntriesWithPattern:text found:NULL complete:^(NSString *pattern, NSArray *candidates) {
+                BOOL f = (candidates.count > 0);
+                _found = f;
+                [self setCandidates:candidates];
+                if (candidates.count > 0) {
+                    [_candidatesStack setObject:candidates forKey:pattern];
+                }
+            }];
+        }else{
+            [self removeCandidates];
+        }
+        [_buffer setString:text];
+    }
+}
+
+- (void)convertBuffer
+{
+    NSAssert(_buffer.length != 0, @"");
+    [[BLDictionary sharedDictionary] convertText:_buffer success:^(id candidates) {
+        if ([candidates isKindOfClass:[NSArray class]]) {
+            NSArray *r = (NSArray*)candidates;
+            for (id obj in r) {
+                TFLog(@"%@",obj);
+            }
+        }
+    } failure:^(NSError *e) {
+        
+    }];
+}
+
 - (IBAction)toggleButtonDidTap:(id)sender {
     if (_opened) {
         _opened = NO;
@@ -109,15 +142,6 @@
         _opened = YES;
     }
     [self.delegate candidateController:self toggleButtonDidTap:sender open:_opened];
-}
-
-- (void)deviceDidRotate:(NSNotification*)notification
-{
-//      [self.view updateConstraints];
-}
-- (BLKeyboardViewController *)keyboardViewController
-{
-    return (BLKeyboardViewController*)self.delegate;
 }
 
 #pragma mark - Collection
@@ -131,8 +155,6 @@
 {
     return _candidates.count;
 }
-
-
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -157,32 +179,12 @@
         [_delegate candidateController:self didSelectCandidate:c];
         // 接続文字を出す
         [self setCandidates:[[[BLDictionary sharedDictionary] connectionList] objectForKey:@(c.outConnection)]];
+        // スタックを空に
+        [_candidatesStack removeAllObjects];
+        // バッファを空に
+        [_buffer setString:@""];
     }
 }
 
-#pragma makr - Accessors
-
-- (void)setHiraBuffer:(NSString *)hiraBuffer
-{
-    if (![_hiraBuffer isEqualToString:hiraBuffer]) {
-        if (_hiraBuffer.length > hiraBuffer.length) {
-            // 後ろへの削除でかつバッファされた予測変換候補があればそれを出す
-            NSArray *cands = [_candidatesStack objectForKey:hiraBuffer];
-            if (cands) {
-                [self setCandidates:cands];
-                return;
-            }
-        }
-        if (hiraBuffer.length > 0) {
-            [[BLDictionary sharedDictionary] searchForEntriesWithPattern:hiraBuffer found:NULL complete:^(NSString *pattern, NSArray *candidates) {
-                [self setCandidates:candidates];
-                [_candidatesStack setObject:candidates forKey:pattern];
-            }];
-        }else if(hiraBuffer.length == 0){
-            [self removeCandidates];
-        }
-        _hiraBuffer = hiraBuffer;
-    }
-}
 
 @end

@@ -15,12 +15,17 @@
 <UICollectionViewDelegate,UICollectionViewDataSource>
 
 @property (weak) id<BLCandidateViewControllerDelegate> delegate;
-@property (nonatomic) NSString *hiraBuffer;
+//@property (nonatomic) NSString *hiraBuffer;
+@property (readonly) NSMutableArray *candidates;
 @property (readonly) BOOL opened;
 
 - (id)initWithDelegate:(id<BLCandidateViewControllerDelegate>)delegate;
+
+/* 予測変換 */
+- (void)presentSuggestion:(NSString*)text;
 /* 連文節変換 */
-- (void)performConversion;
+- (void)convertBuffer;
+
 
 @end
 

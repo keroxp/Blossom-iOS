@@ -10,6 +10,13 @@
 #import "BLKeyboardViewController.h"
 #import "BLCandidateViewController.h"
 
+extern NSString *const BLKeyboardInputModeDidChangeNotification;
+
+/* 入力モード */
+typedef enum{
+    BLInputModeAlphabet = 0,
+    BLInputModeRomaKana
+}BLInputMode;
 
 @interface BLKeyboard : NSObject
 <BLKeyboardViewControllerDelegate
@@ -18,6 +25,7 @@
 @property (nonatomic, readonly) BLKeyboardViewController *mainKeyboardViewController;
 @property (nonatomic, readonly) BLCandidateViewController *candidateViewController;
 @property (weak,nonatomic) UITextView *client;
+@property (readonly) BLInputMode inputMode;
 
 - (id)initWithClient:(UITextView*)client;
 

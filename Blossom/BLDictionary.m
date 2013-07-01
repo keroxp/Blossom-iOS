@@ -21,6 +21,7 @@ static BLDictionary *shared;
     NSMutableArray *_candidates;
     BLSearchFoundBlock _foundBlock;
     BLSearchCompleteBlock _completeBlock;
+    AFHTTPClient *_httpClient;
 }
 @end
 
@@ -45,6 +46,7 @@ static BLDictionary *shared;
         _candidates = [NSMutableArray arrayWithCapacity:22160];
         _headList = [NSMutableArray arrayWithCapacity:10];
         _connectionList = [NSMutableDictionary dictionary];
+        _httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://www.google.co.jp"]];
         for (int  i = 0; i < 10; i++) {
             [_headList addObject:@[].mutableCopy];
         }
@@ -141,6 +143,27 @@ static BLDictionary *shared;
     return -1;
 }
 
+- (void)convertText:(NSString *)text
+            success:(void (^)(id ))success
+            failure:(void (^)(NSError *))failure
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"ja-Hira|ja" forKey:@"langpair"];
+    [params setObject:text forKey:@"text"];
+    [_httpClient getPath:@"/transliterate" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            NSError *e = nil;
+            id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:&e];
+            TFLog(@"%@",json);
+            success(json);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)searchForEntriesWithPattern:(NSString *)pattern
                               found:(BLSearchFoundBlock)found
                            complete:(BLSearchCompleteBlock)complete
@@ -150,10 +173,10 @@ static BLDictionary *shared;
         return;
     }
     _currentPattern = pattern;
-    _foundBlock = [found copy];
-    _completeBlock = [complete copy];
+    _foundBlock = found;
+    _completeBlock = complete;
 
-    NSArray *array = nil;
+    NSArray *array = _entries;
     if (pattern.length == 1) {
         // 最初の一文字の検索のみ、平仮名の行で振り分ける
         array = [_headList objectAtIndex:[self headIndexWithPattern:pattern]];
@@ -162,9 +185,6 @@ static BLDictionary *shared;
         if (_candidates.count > 0) {
             array = [_candidates mutableCopy];
             [_candidates removeAllObjects];
-        }else{
-            // ここには来ないはず
-            NSAssert(NO, nil);
         }
     }
     dispatch_queue_t main_queue = dispatch_get_main_queue();
@@ -178,13 +198,6 @@ static BLDictionary *shared;
             // 見つかったら
             if (r.location != NSNotFound) {
                 // 接続辞書を検索
-                if (e.outConnection) {
-//                    [e searchForConnectionsOnFround:^(NSString *connected) {
-//                        NSLog(@"%@",connected);
-//                    } complete:^(NSUInteger total) {
-//                        NSLog(@"%d connection found for : %@",total,e.word);
-//                    }];
-                }
                 if (found) {
                     dispatch_async(main_queue, ^{
                         found(pattern,e);

@@ -9,7 +9,7 @@
 #import "BLKeyboardViewController.h"
 #import "BLPieView.h"
 #import "BLKey.h"
-
+#import "BLKeyboard.h"
 
 #define kKeyboardWidth 1024.f
 #define kKeyboardHeight 352.0f
@@ -111,6 +111,7 @@ typedef enum{
             }];
         }];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputModeDidChange:) name:BLKeyboardInputModeDidChangeNotification object:nil];
     return self;
 }
 
@@ -141,6 +142,25 @@ typedef enum{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Notification
+
+- (void)inputModeDidChange:(NSNotification*)notification
+{
+    BLInputMode mode = [[notification object] integerValue];
+    switch (mode) {
+        case BLInputModeAlphabet:{
+            [_spaceKey setTitle:NSLocalizedString(@"", ) forState:UIControlStateNormal];
+        }
+            break;
+        case BLInputModeRomaKana:{
+            [_spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - Rotatation and Layout
@@ -187,19 +207,6 @@ typedef enum{
 {
     UIDeviceOrientation orientation = [notificatoin.object orientation];
     [self layoutKeysForOrientation:orientation];
-}
-
-- (void)setInputMode:(BLInputMode)inputMode
-{
-    if (inputMode != _inputMode) {
-        if (inputMode == BLInputModeRomaKana) {
-            [self.spaceKey setTitle:NSLocalizedString(@"変換", ) forState:UIControlStateNormal];
-        }else{
-            [self.spaceKey setTitle:@"" forState:UIControlStateNormal];
-        }
-        [self.delegate keyboardViewController:self didChangeInputMode:inputMode];
-        _inputMode = inputMode;
-    }
 }
 
 #pragma mark - Public
@@ -303,25 +310,25 @@ typedef enum{
     NSString *add = [sender.keystr lowercaseString];    
     // 通常入力
     if (!sender.isFunctional && !sender.isModifier) {
-        [self.delegate keyboardViewController:self didInputText:add inputMode:_inputMode];
+        [self.delegate keyboardViewController:self didInputText:add];
     }else{
         // 特殊キー
         NSString *s = [sender keystr];
         if ([s isEqualToString:@"enter"]) {
             // エンター
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter];
         }else if ([s isEqualToString:@"space"]){
             // スペース
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace];
         }else if ([s isEqualToString:@"delete"]){
             // デリート
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete];
         }else if ([s isEqualToString:@"small"]){
             // 小文字
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSmall inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSmall];
         }else if ([s isEqualToString:@"close"]){
             // 閉じる
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandClose inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandClose];
         }
     }    
     [self finishHandling:sender];
@@ -337,7 +344,7 @@ typedef enum{
     if (pv.pieces.count > 0){
         NSString *add = [pv.pieces objectAtIndex:[self indexFromDirection:dir]];
         // 移譲
-        [self.delegate keyboardViewController:self didInputText:add inputMode:_inputMode];
+        [self.delegate keyboardViewController:self didInputText:add];
     }
     
     [self finishHandling:sender];
@@ -348,11 +355,11 @@ typedef enum{
     _repeatTimer = [NSTimer scheduledTimerWithTimeInterval:kKeyRepeatWait block:^(NSTimeInterval time) {
         NSString *k = key.keystr;
         if ([k isEqualToString:@"enter"]) {
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandEnter];
         }else if ([k isEqualToString:@"space"]){
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandSpace];
         }else if ([k isEqualToString:@"delete"]){
-            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete inputMode:_inputMode];
+            [self.delegate keyboardViewController:self didInputCommand:BLKeyboardCommandDelete];
         }
     } repeats:YES];
 }
