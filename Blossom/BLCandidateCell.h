@@ -10,6 +10,6 @@
 
 @interface BLCandidateCell : UICollectionViewCell
 
-@property (readonly) UILabel *textLabel;
+@property (weak) IBOutlet UILabel *textLabel;
 
 @end

@@ -144,7 +144,7 @@ static BLDictionary *shared;
 }
 
 - (void)convertText:(NSString *)text
-            success:(void (^)(id ))success
+            success:(void (^)(NSArray *))success
             failure:(void (^)(NSError *))failure
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -153,9 +153,38 @@ static BLDictionary *shared;
     [_httpClient getPath:@"/transliterate" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSError *e = nil;
-            id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:&e];
-            TFLog(@"%@",json);
-            success(json);
+            NSArray *r = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:&e];
+            NSMutableArray *candidates = @[].mutableCopy;
+            int i = 0;
+            while (i < r.count) {
+                if (i == 0) {
+                    for (NSString *s in r[i][1]) {
+                        if (![s isEqualToString:text]) {
+                            [candidates addObject:s];
+                        }
+                    }
+                }else{
+                    NSMutableArray *rep = @[].mutableCopy;
+                    for (NSString *phrase in candidates) {
+                        for (NSString *word in r[i][1]) {
+                            NSString *s = [NSString stringWithFormat:@"%@%@",phrase,word];
+                            if (![s isEqualToString:text]) {
+                                [rep addObject:s];
+                            }
+                        }
+                    }
+                    candidates = rep;
+                }
+                i++;
+            }
+            [candidates insertObject:text atIndex:0];
+            NSMutableArray *res = @[].mutableCopy;
+            for (NSString *s in candidates.copy) {
+                BLDictEntry *de = [[BLDictEntry alloc] initWithPattern:text word:s inConnection:-1 outConnection:-1];
+                [res addObject:de];
+            }
+            TFLog(@"%@",candidates);
+            success(res);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {

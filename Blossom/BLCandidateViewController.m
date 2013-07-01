@@ -13,6 +13,8 @@
 #import "BLDictionary.h"
 #import "BLDictEntry.h"
 
+#define kCellID @"CANDIDATE_CELL"
+
 @interface BLCandidateViewController ()
 {
     // 現在表示している候補
@@ -22,6 +24,7 @@
     //
     NSMutableString *_buffer;
     BOOL _found;
+    UICollectionViewFlowLayout *_flowLayout;
 }
 
 - (void)setCandidates:(NSArray*)candidates;
@@ -45,6 +48,7 @@
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
         _buffer = [NSMutableString string];
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
     }
     return self;
 }
@@ -56,6 +60,7 @@
     [self.candidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.candidateView reloadData];
     [self.candidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
+    [_candidateView registerNib:[UINib nibWithNibName:@"BLCandidateCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
 }
 
 - (void)didReceiveMemoryWarning
@@ -123,25 +128,35 @@
 - (void)convertBuffer
 {
     NSAssert(_buffer.length != 0, @"");
-    [[BLDictionary sharedDictionary] convertText:_buffer success:^(id candidates) {
-        if ([candidates isKindOfClass:[NSArray class]]) {
-            NSArray *r = (NSArray*)candidates;
-            for (id obj in r) {
-                TFLog(@"%@",obj);
-            }
-        }
+    [[BLDictionary sharedDictionary] convertText:_buffer success:^(NSArray *candidates) {
+        [self setCandidates:candidates];
     } failure:^(NSError *e) {
         
     }];
 }
 
 - (IBAction)toggleButtonDidTap:(id)sender {
+    CGRect cf = self.view.frame;
     if (_opened) {
+        [(UICollectionViewFlowLayout*)_candidateView.collectionViewLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
         _opened = NO;
+        // 閉める
+        cf.size.height = 55.0f;
     }else{
+        [(UICollectionViewFlowLayout*)_candidateView.collectionViewLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         _opened = YES;
+        // 開ける
+        UIInterfaceOrientation o = [[UIApplication sharedApplication] statusBarOrientation];
+        if (o == UIInterfaceOrientationLandscapeLeft || o == UIInterfaceOrientationLandscapeRight) {
+            // 横
+            cf.size.height = 396.0f;
+        }else{
+            // 縦
+            cf.size.height = 744.0f;
+        }
     }
-    [self.delegate candidateController:self toggleButtonDidTap:sender open:_opened];
+    self.view.frame = cf;
+//    [self.delegate candidateController:self toggleButtonDidTap:sender open:_opened];
 }
 
 #pragma mark - Collection
@@ -158,8 +173,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellID = @"Cell";
-    BLCandidateCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellID forIndexPath:indexPath];
+    BLCandidateCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
     if (_candidates.count > 0) {
         BLDictEntry *e = [_candidates objectAtIndex:indexPath.row];
         [cell.textLabel setText:e.word];
@@ -186,5 +200,14 @@
     }
 }
 
-
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    BLDictEntry *de = [_candidates objectAtIndex:indexPath.row];
+    CGSize cons = CGSizeMake(1000, 55.0f);
+    CGSize _s = [de.word sizeWithFont:[UIFont systemFontOfSize:17.0f] constrainedToSize:cons];
+    CGSize s = CGSizeZero;
+    s.height = 55.0f;
+    s.width = MAX(128.0f, _s.width);
+    return s;
+}
 @end

@@ -22,6 +22,7 @@
     #import <TestFlight.h>
     #import <RegexKitLite.h>
     #import "NSString+isKana.h"
+    #import "UIView+FrameChange.h"
 #endif
 
 #ifdef DEBUG

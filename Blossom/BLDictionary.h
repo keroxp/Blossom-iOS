@@ -41,7 +41,7 @@ typedef enum{
                            complete:(BLSearchCompleteBlock)complete;
 /* 変換 */
 - (void)convertText:(NSString*)text
-            success:(void (^)(id candidates))success
+            success:(void (^)(NSArray *candidates))success
             failure:(void (^)(NSError* e))failure;
 
 @end

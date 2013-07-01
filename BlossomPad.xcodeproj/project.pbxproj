@@ -56,6 +56,7 @@
 		A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8C17369B9D005F28B8 /* Security.framework */; };
 		A699F58E1752F26D00920209 /* BLKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A699F58D1752F26D00920209 /* BLKeyboard.m */; };
 		A6DC58AD173740FE00FF3F46 /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DC58AC173740FE00FF3F46 /* Entry.m */; };
+		A6F0F10E178158940037CE08 /* BLCandidateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6F0F10D178158940037CE08 /* BLCandidateCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,6 +130,7 @@
 		A699F58D1752F26D00920209 /* BLKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLKeyboard.m; sourceTree = "<group>"; };
 		A6DC58AB173740FE00FF3F46 /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = BlossomPad/Entry.h; sourceTree = "<group>"; };
 		A6DC58AC173740FE00FF3F46 /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = BlossomPad/Entry.m; sourceTree = "<group>"; };
+		A6F0F10D178158940037CE08 /* BLCandidateCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCandidateCell.xib; sourceTree = "<group>"; };
 		B7E0F50DE8E5408B9D2CB69A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -274,6 +276,7 @@
 			children = (
 				A6531186173A218D00FAC864 /* BLCandidateCell.h */,
 				A6531187173A218D00FAC864 /* BLCandidateCell.m */,
+				A6F0F10D178158940037CE08 /* BLCandidateCell.xib */,
 				A653118B173A218D00FAC864 /* BLKey.h */,
 				A653118C173A218D00FAC864 /* BLKey.m */,
 				A6531190173A218D00FAC864 /* BLPieView.h */,
@@ -416,6 +419,7 @@
 				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
 				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
 				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
+				A6F0F10E178158940037CE08 /* BLCandidateCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

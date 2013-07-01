@@ -295,7 +295,7 @@ typedef enum{
         c = pup.center;
         pup.frame = CGRectMake(c.x - 25, c.y - 200, 50, 50);
         // selfではなく、その上のビューに追加
-        [self.view.superview addSubview:pup];
+        [self.view addSubview:pup];
         _currentPopup = pup;
     }
     if (sender.isRepeatable) {

@@ -98,7 +98,7 @@ NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputMode
             cf.size.height = 744.0f;
         }
     }
-    self.client.inputAccessoryView.frame = cf;
+    self.candidateViewController.view.frame = cf;
 }
 
 #pragma mark - Keboard View Delegate

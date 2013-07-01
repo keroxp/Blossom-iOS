@@ -10,22 +10,9 @@
 
 @implementation BLCandidateCell
 
-- (id)initWithFrame:(CGRect)frame
+- (void)awakeFromNib
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        _textLabel.textAlignment = NSTextAlignmentCenter;
-        [_textLabel setBackgroundColor:[UIColor clearColor]];
-        [self.contentView addSubview:_textLabel];
-        UIImageView *iv =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"candidateseparator"]];
-        CGRect f = CGRectMake(CGRectGetWidth(self.bounds)-1, 0, 1, CGRectGetHeight(self.bounds));
-        [iv setFrame:f];
-        [self.contentView addSubview:iv];
-        
-    }
-    return self;
+    [super awakeFromNib];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -34,9 +21,10 @@
     if (highlighted) {
         [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebgselected"]]];
     }else{
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
+        [self setBackgroundColor:[UIColor clearColor]];
     }
 }
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
