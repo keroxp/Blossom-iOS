@@ -1,0 +1,31 @@
+PODS:
+  - AFNetworking (1.2.1)
+  - BlocksKit (1.8.2):
+    - libffi
+  - JSONKit (1.5pre)
+  - KGStatusBar (1.0)
+  - libffi (3.0.11)
+  - MagicalRecord (2.1)
+  - RegexKitLite (4.0)
+  - TestFlightSDK (1.2.4)
+
+DEPENDENCIES:
+  - AFNetworking
+  - BlocksKit
+  - JSONKit
+  - KGStatusBar
+  - MagicalRecord
+  - RegexKitLite
+  - TestFlightSDK (~> 1.2.4)
+
+SPEC CHECKSUMS:
+  AFNetworking: a44069e3c9c89867544f6639482f155c7e5f9b41
+  BlocksKit: 7396526b0816734103f6133fbb1a520c8b04e80c
+  JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
+  KGStatusBar: e47f19745f6aeb0fabe37e8360df26bf87b1e2ff
+  libffi: 8a1d9ba43c0c84b546b42c6f742714e73aa07ae1
+  MagicalRecord: 64e7184c240087a45e9588a722eaf05b0ad837f7
+  RegexKitLite: 293ff6f3cf8f34277989a37802162c6961a2b35a
+  TestFlightSDK: 96d7400f844599dd02677bf8d34f8bdfe3f9b33c
+
+COCOAPODS: 0.19.1
