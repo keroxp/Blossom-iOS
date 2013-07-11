@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreData/CoreData.h>
 @class BPDetailViewController;
 
 @interface BPMasterViewController : UITableViewController
+<NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) BPDetailViewController *detailViewController;
 

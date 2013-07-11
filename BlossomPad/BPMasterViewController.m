@@ -13,7 +13,7 @@
 @interface BPMasterViewController ()
 
 @property () NSMutableArray *entries;
-
+@property () NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation BPMasterViewController
@@ -92,7 +92,6 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
 }
-
 /*
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -113,6 +112,19 @@
 {
     Entry *object = _entries[indexPath.row];
     self.detailViewController.entry = object;
+}
+
+#pragma mark - FRD
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;            
+        default:
+            break;
+    }
 }
 
 @end

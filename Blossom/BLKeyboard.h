@@ -11,6 +11,7 @@
 #import "BLCandidateViewController.h"
 
 extern NSString *const BLKeyboardInputModeDidChangeNotification;
+extern NSString *const BLKeyboardDidSelectCandidateNotification;
 
 /* 入力モード */
 typedef enum{

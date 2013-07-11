@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class  BLKey;
+
 typedef void (^BLKeyTouchHandlingBlock)(BLKey* key, NSSet *touches, UIEvent* event);
 
 @interface BLKey : UIButton
@@ -20,6 +21,8 @@ typedef void (^BLKeyTouchHandlingBlock)(BLKey* key, NSSet *touches, UIEvent* eve
 @property (nonatomic) NSString *keystr;
 /*  */
 @property (nonatomic) NSString *keylabel;
+/*  */
+@property (nonatomic) NSString *kanaKeyLabel;
 /* ピース */
 @property (nonatomic) NSArray *pieces;
 /* モディファイアか */
@@ -49,5 +52,6 @@ typedef void (^BLKeyTouchHandlingBlock)(BLKey* key, NSSet *touches, UIEvent* eve
            touchesMovedBlock:(BLKeyTouchHandlingBlock)moved
            touchesEndedBlock:(BLKeyTouchHandlingBlock)ended;
 
+- (void)setLabelForMode:(NSInteger)mode;
 
 @end

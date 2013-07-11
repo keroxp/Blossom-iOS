@@ -62,12 +62,18 @@ typedef enum{
     NSTimer *_repeatTimer;
     /* 行列 */
     NSMutableArray *_rows;
+    
+    BLInputMode _inputMode;
+    NSMutableSet *_functionalKey;
 }
 
 /* エンターキー */
-@property () BLKey *enterKey;
+@property BLKey *enterKey;
 /* スペースキー */
-@property () BLKey *spaceKey;
+@property BLKey *spaceKey;
+@property BLKey *commaKey;
+@property BLKey *periodKey;
+@property BLKey *hyphenKey;
 
 @end
 
@@ -107,6 +113,12 @@ typedef enum{
                     _enterKey = key;
                 }else if ([key.keystr isEqualToString:@"space"]){
                     _spaceKey = key;
+                }else if ([key.keystr isEqualToString:@"comma"]){
+                    _commaKey = key;
+                }else if ([key.keystr isEqualToString:@"period"]){
+                    _periodKey = key;
+                }else if ([key.keystr isEqualToString:@"hyphen"]){
+                    _hyphenKey = key;
                 }
             }];
         }];
@@ -161,6 +173,10 @@ typedef enum{
         default:
             break;
     }
+    [_periodKey setLabelForMode:mode];
+    [_commaKey setLabelForMode:mode];
+    [_hyphenKey setLabelForMode:mode];
+    _inputMode = mode;
 }
 
 #pragma mark - Rotatation and Layout
@@ -287,7 +303,11 @@ typedef enum{
             [BLPieView hide];
         }
         CGPoint c = sender.center;
-        c.y += 55.0f;
+
+        if (sender.indexPath.section != 3) {
+            // 最下段だったら位置を上げる
+            c.y += 55.0f;
+        }
         [BLPieView showInView:self.view.superview atPoint:c centerChar:sender.keystr pieces:sender.pieces];
         // ポップアップを構築
         UIButton *pup = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -295,7 +315,7 @@ typedef enum{
         c = pup.center;
         pup.frame = CGRectMake(c.x - 25, c.y - 200, 50, 50);
         // selfではなく、その上のビューに追加
-        [self.view addSubview:pup];
+        [self.view.superview addSubview:pup];
         _currentPopup = pup;
     }
     if (sender.isRepeatable) {
@@ -307,7 +327,7 @@ typedef enum{
 - (void)keyDidTouchUpInside:(BLKey *)sender
 {
     [sender setHighlighted:NO];
-    NSString *add = [sender.keystr lowercaseString];    
+    NSString *add = (_inputMode == BLInputModeAlphabet) ? sender.keylabel : sender.kanaKeyLabel;
     // 通常入力
     if (!sender.isFunctional && !sender.isModifier) {
         [self.delegate keyboardViewController:self didInputText:add];

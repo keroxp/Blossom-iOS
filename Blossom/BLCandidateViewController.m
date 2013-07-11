@@ -12,6 +12,7 @@
 #import "BLResource.h"
 #import "BLDictionary.h"
 #import "BLDictEntry.h"
+#import "BLKeyboard.h"
 
 #define kCellID @"CANDIDATE_CELL"
 
@@ -23,8 +24,12 @@
     NSMutableDictionary *_candidatesStack;
     //
     NSMutableString *_buffer;
+    // 前回の辞書検索で結果が見つかったか
     BOOL _found;
-    UICollectionViewFlowLayout *_flowLayout;
+    // 連文節変換変換済みか
+    BOOL _converted;
+    // 選択中の候補
+    NSUInteger _selectionIndex;
 }
 
 - (void)setCandidates:(NSArray*)candidates;
@@ -48,7 +53,6 @@
         _candidates = [NSMutableArray array];
         _candidatesStack = [NSMutableDictionary dictionary];
         _buffer = [NSMutableString string];
-        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
     }
     return self;
 }
@@ -56,7 +60,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self.candidateView registerClass:[BLCandidateCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.candidateView reloadData];
     [self.candidateView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"candidatebg"]]];
@@ -95,6 +98,10 @@
 - (void)finishSelection
 {
     [_candidatesStack removeAllObjects];
+    [_buffer setString:@""];
+    _converted = NO;
+    _found = NO;
+    _selectionIndex = 0;
 }
 
 #pragma mark -
@@ -102,13 +109,10 @@
 - (void)presentSuggestion:(NSString *)text
 {
     if (![_buffer isEqualToString:text]) {
-        if (_buffer.length > text.length) {
+        if (_buffer.length > text.length && _candidatesStack[text]) {
             // 後ろへの削除でかつバッファされた予測変換候補があればそれを出す
-            NSArray *cands = [_candidatesStack objectForKey:text];
-            if (cands) {
-                _found = YES;
-                [self setCandidates:cands];
-            }
+            [self setCandidates:_candidatesStack[text]];
+            _found = YES;
         }else if (text.length == 1 || (text.length > 1 && _found)) {
             [[BLDictionary sharedDictionary] searchForEntriesWithPattern:text found:NULL complete:^(NSString *pattern, NSArray *candidates) {
                 BOOL f = (candidates.count > 0);
@@ -128,11 +132,26 @@
 - (void)convertBuffer
 {
     NSAssert(_buffer.length != 0, @"");
-    [[BLDictionary sharedDictionary] convertText:_buffer success:^(NSArray *candidates) {
-        [self setCandidates:candidates];
-    } failure:^(NSError *e) {
-        
-    }];
+    if (_converted) {
+        // ハイライトを進める
+        [self highlightCell:NO atIndex:_selectionIndex];
+        [self highlightCell:YES atIndex:_selectionIndex+1];
+        _selectionIndex++;
+    }else{
+        _converted = YES;
+        [[BLDictionary sharedDictionary] convertText:_buffer success:^(NSArray *candidates) {
+            [self setCandidates:candidates];
+            [self highlightCell:YES atIndex:0];
+        } failure:^(NSError *e) {
+            
+        }];
+    }
+}
+
+- (void)highlightCell:(BOOL)hilight atIndex:(NSInteger)index
+{
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:index inSection:0];
+    [[_candidateView cellForItemAtIndexPath:ip] setHighlighted:hilight];
 }
 
 - (IBAction)toggleButtonDidTap:(id)sender {
@@ -194,9 +213,7 @@
         // 接続文字を出す
         [self setCandidates:[[[BLDictionary sharedDictionary] connectionList] objectForKey:@(c.outConnection)]];
         // スタックを空に
-        [_candidatesStack removeAllObjects];
-        // バッファを空に
-        [_buffer setString:@""];
+        [self finishSelection];
     }
 }
 

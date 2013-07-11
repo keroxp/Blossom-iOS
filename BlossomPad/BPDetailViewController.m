@@ -11,7 +11,6 @@
 @interface BPDetailViewController ()
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
-@property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 
@@ -57,7 +56,7 @@
     self.textView.inputView = kvc.mainKeyboardViewController.view;
     self.textView.inputAccessoryView = kvc.candidateViewController.view;
     self.textView.userInteractionEnabled = NO;
-    self.keyboardViewController = kvc;
+    self.keyboard = kvc;
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }

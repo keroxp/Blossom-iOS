@@ -33,16 +33,16 @@
 		{"key":"b","pieces":["ば","び","ぶ","べ","ぼ"]},
 		{"key":"n","pieces":["な","に","ぬ","ね","の"]},
 		{"key":"m","pieces":["ま","み","む","め","も"]},		
-		{"key":"commma","label":","},
-		{"key":"period","label":"."},
-		{"key":"hyphen","label":"-"}				
+		{"key":"comma","label":",", "kanaLabel":"、"},
+		{"key":"period","label":".", "kanaLabel":"。"},
+		{"key":"hyphen","label":"-", "kanaLabel":"ー"}
 	],
 	[
         {"key":"add","label":"＋","isTrigger":true},
         {"key":"number","label":"123","isTrigger":true},
         {"key":"symbol","label":";:@","isTrigger":true},
         {"key":"space","isRepeatable":true,"isFunctional":true,"width":542.0},
-        {"key":"small","isFunctional":true,"label":"小"},
+        {"key":"small","isFunctional":true,"label":"小", "pieces":["ゃ","っ","ゅ","ん","ょ"]},
         {"key":"close","isFunctional":true,"label":"閉"}
 	]
 ]

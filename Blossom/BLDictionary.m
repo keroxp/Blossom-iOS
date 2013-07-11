@@ -8,6 +8,7 @@
 
 #import "BLDictionary.h"
 #import "BLDictEntry.h"
+#import "BLKeyboard.h"
 
 static BLDictionary *shared;
 
@@ -100,6 +101,9 @@ static BLDictionary *shared;
         if (e) {
             abort();
         }
+        [[NSNotificationCenter defaultCenter] addObserverForName:BLKeyboardDidSelectCandidateNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [_candidates removeAllObjects];
+        }];
     }
     return self;
 }

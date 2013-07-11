@@ -13,8 +13,7 @@
 @interface BPDetailViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) Entry *entry;
-@property (nonatomic) BLKeyboard *keyboardViewController;
-
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (nonatomic) BLKeyboard *keyboard;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "BLKey.h"
+#import "BLKeyboard.h"
 #define kDefaultFrame CGRectMake(0,0,82,74)
 #define kLeftMargin 10.0f
 
@@ -34,6 +35,7 @@
         _keystr = [self objectForKey:@"key" ofJSON:JSON];
         _pieces = [self objectForKey:@"pieces" ofJSON:JSON];
         _keylabel = [self objectForKey:@"label" ofJSON:JSON];
+        _kanaKeyLabel = [self objectForKey:@"kanaLabel" ofJSON:JSON];
         _keyWidth = (w) ? w : 82;
         _keyHeight = (h) ? h : 74;
         _indexPath = [NSIndexPath indexPathForRow:index inSection:line];
@@ -65,6 +67,26 @@
 - (NSString *)keylabel
 {
     return (_keylabel) ? _keylabel : _keystr;
+}
+
+- (NSString *)kanaKeyLabel
+{
+    return (_kanaKeyLabel) ? _kanaKeyLabel : self.keylabel;
+}
+
+- (void)setLabelForMode:(NSInteger)mode
+{
+    BLInputMode im = mode;
+    switch (im) {
+        case BLInputModeAlphabet:
+            [self setTitle:self.keylabel forState:UIControlStateNormal];
+            break;
+        case BLInputModeRomaKana:
+            [self setTitle:self.kanaKeyLabel forState:UIControlStateNormal];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)setTouchesBeganBlock:(BLKeyTouchHandlingBlock)began

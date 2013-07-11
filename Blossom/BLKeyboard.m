@@ -13,6 +13,7 @@
 #import "UIView+FrameChange.h"
 
 NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputModeDidChangeNotification";
+NSString *const BLKeyboardDidSelectCandidateNotification = @"BLKeyboardDidSelectCandidateNotification";
 
 @interface BLKeyboard (){
     // 入力された文字列
@@ -72,6 +73,10 @@ NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputMode
     [self toggleCandidateView:NO];
     //
     [_originalBuffer setString:@""];
+    
+    [self setInputMode:BLInputModeAlphabet];
+    // 通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:BLKeyboardDidSelectCandidateNotification object:candidate];
 }
 
 - (void)candidateController:(BLCandidateViewController *)controller
@@ -166,6 +171,10 @@ NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputMode
     if (_originalBuffer.length > 0) {
         // バッファがあればバッファから文字を削除
         [_originalBuffer deleteCharactersInRange:NSMakeRange(_originalBuffer.length - 1, 1)];
+        if (_originalBuffer.length == 0) {
+            // インプットモードを戻す
+            [self setInputMode:BLInputModeAlphabet];
+        }
         [self.client setMarkedText:_originalBuffer selectedRange:NSMakeRange(_originalBuffer.length, 0)];
         [self.candidateViewController presentSuggestion:_originalBuffer];
     }else{
@@ -193,7 +202,7 @@ NSString *const BLKeyboardInputModeDidChangeNotification = @"BLKeyboardInputMode
     }
 }
 
-- (void)handleSmall3
+- (void)handleSmall
 {
     if (_originalBuffer.length > 0) {
         //あいうえおやゆよつわ
