@@ -49,8 +49,6 @@
 		A6711CC5173671F3005F28B8 /* romakana.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC3173671F3005F28B8 /* romakana.json */; };
 		A6711CC6173671F3005F28B8 /* smalls.json in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC4173671F3005F28B8 /* smalls.json */; };
 		A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */; };
-		A6711F8317368654005F28B8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711F8217368654005F28B8 /* Icon-72.png */; };
-		A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6711F8417368657005F28B8 /* Icon-72@2x.png */; };
 		A6711F8917369B80005F28B8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8817369B80005F28B8 /* CFNetwork.framework */; };
 		A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8A17369B95005F28B8 /* libicucore.dylib */; };
 		A6711F8D17369B9D005F28B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6711F8C17369B9D005F28B8 /* Security.framework */; };
@@ -121,8 +119,6 @@
 		A6711CC3173671F3005F28B8 /* romakana.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = romakana.json; path = BlossomPad/romakana.json; sourceTree = "<group>"; };
 		A6711CC4173671F3005F28B8 /* smalls.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = smalls.json; path = BlossomPad/smalls.json; sourceTree = "<group>"; };
 		A6711CC717367B1C005F28B8 /* candidatebgselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "candidatebgselected@2x.png"; path = "BlossomPad/candidatebgselected@2x.png"; sourceTree = "<group>"; };
-		A6711F8217368654005F28B8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		A6711F8417368657005F28B8 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		A6711F8817369B80005F28B8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A6711F8A17369B95005F28B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		A6711F8C17369B9D005F28B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -157,8 +153,6 @@
 		A63F15EC1735307D00ECE693 = {
 			isa = PBXGroup;
 			children = (
-				A6711F8417368657005F28B8 /* Icon-72@2x.png */,
-				A6711F8217368654005F28B8 /* Icon-72.png */,
 				A6531185173A218D00FAC864 /* Blossom */,
 				A63F15FE1735307D00ECE693 /* BlossomPad */,
 				A63F15F71735307D00ECE693 /* Frameworks */,
@@ -414,8 +408,6 @@
 				A6711CC5173671F3005F28B8 /* romakana.json in Resources */,
 				A6711CC6173671F3005F28B8 /* smalls.json in Resources */,
 				A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */,
-				A6711F8317368654005F28B8 /* Icon-72.png in Resources */,
-				A6711F8517368657005F28B8 /* Icon-72@2x.png in Resources */,
 				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
 				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
 				A6F0F10E178158940037CE08 /* BLCandidateCell.xib in Resources */,
