@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EC60E77F-3E38-4AB3-88DC-8049C282A5E6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BlossomPad</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0EFC4556-B440-4D00-9CC4-2497C5244974</key>
+		<string>ssh://github.com/keroxp/Blossom-iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BlossomPad.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0EFC4556-B440-4D00-9CC4-2497C5244974</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/keroxp/Blossom-iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0EFC4556-B440-4D00-9CC4-2497C5244974</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0EFC4556-B440-4D00-9CC4-2497C5244974</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlossomPad</string>
+		</dict>
+	</array>
+</dict>
+</plist>
