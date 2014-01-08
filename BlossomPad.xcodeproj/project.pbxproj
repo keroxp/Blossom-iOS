@@ -9,8 +9,20 @@
 /* Begin PBXBuildFile section */
 		6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0F50DE8E5408B9D2CB69A /* libPods.a */; };
 		A603359A178EDC5500AFFA0F /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = A6033599178EDC5500AFFA0F /* dict.txt */; };
+		A604BD4B187D834E0042D7A5 /* icon-orig.png in Resources */ = {isa = PBXBuildFile; fileRef = A604BD4A187D834E0042D7A5 /* icon-orig.png */; };
+		A604BD4D187D83550042D7A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A604BD4C187D83550042D7A5 /* Images.xcassets */; };
 		A60F724C17510F130032C78C /* BLDictEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = A60F724B17510F130032C78C /* BLDictEntry.m */; };
 		A62F9B78173A8E130045A4F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */; };
+		A63106DF187D88940043307C /* char.bin in Resources */ = {isa = PBXBuildFile; fileRef = A63106D6187D88940043307C /* char.bin */; };
+		A63106E0187D88940043307C /* dicrc in Resources */ = {isa = PBXBuildFile; fileRef = A63106D7187D88940043307C /* dicrc */; };
+		A63106E1187D88940043307C /* left-id.def in Resources */ = {isa = PBXBuildFile; fileRef = A63106D8187D88940043307C /* left-id.def */; };
+		A63106E2187D88940043307C /* matrix.bin in Resources */ = {isa = PBXBuildFile; fileRef = A63106D9187D88940043307C /* matrix.bin */; };
+		A63106E3187D88940043307C /* pos-id.def in Resources */ = {isa = PBXBuildFile; fileRef = A63106DA187D88940043307C /* pos-id.def */; };
+		A63106E4187D88940043307C /* rewrite.def in Resources */ = {isa = PBXBuildFile; fileRef = A63106DB187D88940043307C /* rewrite.def */; };
+		A63106E5187D88940043307C /* right-id.def in Resources */ = {isa = PBXBuildFile; fileRef = A63106DC187D88940043307C /* right-id.def */; };
+		A63106E6187D88940043307C /* sys.dic in Resources */ = {isa = PBXBuildFile; fileRef = A63106DD187D88940043307C /* sys.dic */; };
+		A63106E7187D88940043307C /* unk.dic in Resources */ = {isa = PBXBuildFile; fileRef = A63106DE187D88940043307C /* unk.dic */; };
+		A63106F2187D88F50043307C /* libmecab.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A63106EF187D88E50043307C /* libmecab.a */; };
 		A63F15F91735307D00ECE693 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15F81735307D00ECE693 /* UIKit.framework */; };
 		A63F15FB1735307D00ECE693 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FA1735307D00ECE693 /* Foundation.framework */; };
 		A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F15FC1735307D00ECE693 /* CoreGraphics.framework */; };
@@ -57,12 +69,42 @@
 		A6F0F10E178158940037CE08 /* BLCandidateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6F0F10D178158940037CE08 /* BLCandidateCell.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A63106EE187D88E50043307C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A63106EA187D88E50043307C /* mecab.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = mecab;
+		};
+		A63106F0187D88EB0043307C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A63106EA187D88E50043307C /* mecab.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = mecab;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		54552EB0DC5440F389C0D877 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A6033599178EDC5500AFFA0F /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dict.txt; path = Blossom/dict.txt; sourceTree = "<group>"; };
+		A604BD4A187D834E0042D7A5 /* icon-orig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-orig.png"; sourceTree = "<group>"; };
+		A604BD4C187D83550042D7A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A60F724A17510F130032C78C /* BLDictEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLDictEntry.h; sourceTree = "<group>"; };
 		A60F724B17510F130032C78C /* BLDictEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDictEntry.m; sourceTree = "<group>"; };
 		A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		A63106D6187D88940043307C /* char.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = char.bin; sourceTree = "<group>"; };
+		A63106D7187D88940043307C /* dicrc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dicrc; sourceTree = "<group>"; };
+		A63106D8187D88940043307C /* left-id.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "left-id.def"; sourceTree = "<group>"; };
+		A63106D9187D88940043307C /* matrix.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = matrix.bin; sourceTree = "<group>"; };
+		A63106DA187D88940043307C /* pos-id.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "pos-id.def"; sourceTree = "<group>"; };
+		A63106DB187D88940043307C /* rewrite.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rewrite.def; sourceTree = "<group>"; };
+		A63106DC187D88940043307C /* right-id.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "right-id.def"; sourceTree = "<group>"; };
+		A63106DD187D88940043307C /* sys.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = sys.dic; sourceTree = "<group>"; };
+		A63106DE187D88940043307C /* unk.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = unk.dic; sourceTree = "<group>"; };
+		A63106E8187D88CA0043307C /* libmecab.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libmecab.a; path = "mecab/build/Debug-iphoneos/libmecab.a"; sourceTree = "<group>"; };
+		A63106EA187D88E50043307C /* mecab.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mecab.xcodeproj; path = mecab/mecab.xcodeproj; sourceTree = "<group>"; };
 		A63F15F51735307D00ECE693 /* BlossomPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlossomPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63F15F81735307D00ECE693 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A63F15FA1735307D00ECE693 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -144,15 +186,50 @@
 				A63F15FD1735307D00ECE693 /* CoreGraphics.framework in Frameworks */,
 				A6711F8B17369B95005F28B8 /* libicucore.dylib in Frameworks */,
 				6EEE6BB4AC5045999C48A03C /* libPods.a in Frameworks */,
+				A63106F2187D88F50043307C /* libmecab.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A63106D5187D88940043307C /* ipadic */ = {
+			isa = PBXGroup;
+			children = (
+				A63106D6187D88940043307C /* char.bin */,
+				A63106D7187D88940043307C /* dicrc */,
+				A63106D8187D88940043307C /* left-id.def */,
+				A63106D9187D88940043307C /* matrix.bin */,
+				A63106DA187D88940043307C /* pos-id.def */,
+				A63106DB187D88940043307C /* rewrite.def */,
+				A63106DC187D88940043307C /* right-id.def */,
+				A63106DD187D88940043307C /* sys.dic */,
+				A63106DE187D88940043307C /* unk.dic */,
+			);
+			path = ipadic;
+			sourceTree = "<group>";
+		};
+		A63106EB187D88E50043307C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A63106EF187D88E50043307C /* libmecab.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A63106F3187D89000043307C /* MeCab */ = {
+			isa = PBXGroup;
+			children = (
+				A63106D5187D88940043307C /* ipadic */,
+				A63106EA187D88E50043307C /* mecab.xcodeproj */,
+			);
+			name = MeCab;
+			sourceTree = "<group>";
+		};
 		A63F15EC1735307D00ECE693 = {
 			isa = PBXGroup;
 			children = (
+				A63106F3187D89000043307C /* MeCab */,
 				A6531185173A218D00FAC864 /* Blossom */,
 				A63F15FE1735307D00ECE693 /* BlossomPad */,
 				A63F15F71735307D00ECE693 /* Frameworks */,
@@ -173,6 +250,7 @@
 		A63F15F71735307D00ECE693 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A63106E8187D88CA0043307C /* libmecab.a */,
 				A62F9B77173A8E130045A4F7 /* AudioToolbox.framework */,
 				A6711F8C17369B9D005F28B8 /* Security.framework */,
 				A6711F8A17369B95005F28B8 /* libicucore.dylib */,
@@ -193,6 +271,7 @@
 				A63F164C1735FB3600ECE693 /* Singletons */,
 				A63F162A1735395200ECE693 /* Models */,
 				A63F164B1735FB2E00ECE693 /* Controllers */,
+				A604BD4C187D83550042D7A5 /* Images.xcassets */,
 				A63F15FF1735307D00ECE693 /* Supporting Files */,
 			);
 			path = BlossomPad;
@@ -201,6 +280,7 @@
 		A63F15FF1735307D00ECE693 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A604BD4A187D834E0042D7A5 /* icon-orig.png */,
 				A63F16001735307D00ECE693 /* BlossomPad-Info.plist */,
 				A63F16011735307D00ECE693 /* InfoPlist.strings */,
 				A63F16041735307D00ECE693 /* main.m */,
@@ -354,6 +434,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A63106F1187D88EB0043307C /* PBXTargetDependency */,
 			);
 			name = BlossomPad;
 			productName = BlossomPad;
@@ -369,6 +450,11 @@
 				CLASSPREFIX = BP;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Yusuke Srakuai / Keio University Masui Toshiyuki Laboratory";
+				TargetAttributes = {
+					A63F15F41735307D00ECE693 = {
+						DevelopmentTeam = 2M4NMV4P4Y;
+					};
+				};
 			};
 			buildConfigurationList = A63F15F01735307D00ECE693 /* Build configuration list for PBXProject "BlossomPad" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -380,12 +466,28 @@
 			mainGroup = A63F15EC1735307D00ECE693;
 			productRefGroup = A63F15F61735307D00ECE693 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A63106EB187D88E50043307C /* Products */;
+					ProjectRef = A63106EA187D88E50043307C /* mecab.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A63F15F41735307D00ECE693 /* BlossomPad */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A63106EF187D88E50043307C /* libmecab.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libmecab.a;
+			remoteRef = A63106EE187D88E50043307C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A63F15F31735307D00ECE693 /* Resources */ = {
@@ -394,23 +496,34 @@
 			files = (
 				A63F16031735307D00ECE693 /* InfoPlist.strings in Resources */,
 				A63F160B1735307D00ECE693 /* Default.png in Resources */,
+				A63106E4187D88940043307C /* rewrite.def in Resources */,
 				A63F160D1735307D00ECE693 /* Default@2x.png in Resources */,
 				A63F160F1735307D00ECE693 /* Default-568h@2x.png in Resources */,
 				A63F16121735307D00ECE693 /* MainStoryboard.storyboard in Resources */,
+				A63106E6187D88940043307C /* sys.dic in Resources */,
 				A63F1640173565CE00ECE693 /* keybg@2x.png in Resources */,
+				A63106E7187D88940043307C /* unk.dic in Resources */,
 				A63F1641173565CE00ECE693 /* keyboard.json in Resources */,
 				A63F16541736149A00ECE693 /* keyboardbg@2x.png in Resources */,
 				A63F16551736149A00ECE693 /* piebg@2x.png in Resources */,
 				A63F16561736149A00ECE693 /* piepiecebg@2x.png in Resources */,
+				A63106E3187D88940043307C /* pos-id.def in Resources */,
+				A63106E1187D88940043307C /* left-id.def in Resources */,
 				A63F165B1736409E00ECE693 /* candidatebg@2x.png in Resources */,
 				A6711CB8173643A3005F28B8 /* togglebutton@2x.png in Resources */,
 				A6711CBA17364455005F28B8 /* candidateseparator@2x.png in Resources */,
+				A63106E2187D88940043307C /* matrix.bin in Resources */,
+				A63106DF187D88940043307C /* char.bin in Resources */,
 				A6711CC5173671F3005F28B8 /* romakana.json in Resources */,
+				A604BD4B187D834E0042D7A5 /* icon-orig.png in Resources */,
+				A604BD4D187D83550042D7A5 /* Images.xcassets in Resources */,
 				A6711CC6173671F3005F28B8 /* smalls.json in Resources */,
+				A63106E0187D88940043307C /* dicrc in Resources */,
 				A6711CC817367B1C005F28B8 /* candidatebgselected@2x.png in Resources */,
 				A6531194173A218D00FAC864 /* BLCandidateViewController.xib in Resources */,
 				A6531197173A218D00FAC864 /* BLKeyboardViewController.xib in Resources */,
 				A6F0F10E178158940037CE08 /* BLCandidateCell.xib in Resources */,
+				A63106E5187D88940043307C /* right-id.def in Resources */,
 				A603359A178EDC5500AFFA0F /* dict.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,6 +575,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A63106F1187D88EB0043307C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = mecab;
+			targetProxy = A63106F0187D88EB0043307C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A63F16011735307D00ECE693 /* InfoPlist.strings */ = {
@@ -547,6 +668,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54552EB0DC5440F389C0D877 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
 				INFOPLIST_FILE = "BlossomPad/BlossomPad-Info.plist";
@@ -556,6 +681,7 @@
 					"\"$(SRCROOT)/leveldb\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -564,6 +690,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54552EB0DC5440F389C0D877 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlossomPad/BlossomPad-Prefix.pch";
 				INFOPLIST_FILE = "BlossomPad/BlossomPad-Info.plist";
@@ -573,6 +703,7 @@
 					"\"$(SRCROOT)/leveldb\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
